@@ -1,0 +1,10 @@
+{
+  "host":"www.cnblogs.com",
+  "name":"博客园",
+  "author":"wujiechun",
+  "vesion":"2020-06-27",
+  "title_pattern":"<a id=\"cb_post_title_url\" class=\".*?\" href=\".*?\">.*?<span>(.*?)</span>.*?</a>",
+  "content_pattern":"<div class=\"postBody\">(.*?)</div>",
+  "content_replaces":[],
+  "md_replaces": []
+}

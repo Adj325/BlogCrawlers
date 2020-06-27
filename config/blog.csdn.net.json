@@ -1,0 +1,10 @@
+{
+  "host":"blog.csdn.net",
+  "name":"CSDN",
+  "author":"wujiechun",
+  "vesion":"2020-06-27",
+  "title_pattern":"<h1 class=\"title-article\">(.*?)</h1>",
+  "content_pattern":"<article class=\"baidu_pl\">(.*?)</article>",
+  "content_replaces":[],
+  "md_replaces": []
+}

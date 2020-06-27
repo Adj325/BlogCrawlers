@@ -1,0 +1,22 @@
+{
+  "host": "www.jianshu.com",
+  "name": "简书",
+  "author": "wujiechun",
+  "vesion": "2020-06-27",
+  "title_pattern": "<h1 class=\"_1RuRku\">(.*?)</h1>",
+  "content_pattern": "<article class=\"_2rhmJa\">(.*?)</article>",
+  "content_replaces": [
+
+    [
+      "data-original-src=\"",
+      "src=\"https:"
+    ],
+    [
+      "<div class=\"image-caption\">.*?</div>",
+      ""
+    ]
+  ],
+  "md_replaces": [
+    ["https://upload-\n", "https://upload-"]
+  ]
+}
