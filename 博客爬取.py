@@ -1,8 +1,22 @@
 import re
 import os
-import requests
+try:
+    import requests
+except:
+    os.system('pip install requests')
+    import requests
+    
+try:
+    import html2text as ht
+except:
+    os.system('pip install html2text')
+    import html2text as ht
 
-import html2text as ht
+try:
+    import pangu
+except:
+    os.system('pip install pangu')
+    import pangu
 
 headers = {
     'Upgrade-Insecure-Requests': '1',
@@ -32,11 +46,12 @@ class BlogCrawler:
         self.load_config()
 
     def run(self):
-        # blog_url = input('输入博客URL: ').trim()
+        blog_url = input('输入博客URL: ').strip()
         # blog_url = 'https://www.jianshu.com/p/215600b11413'
         # blog_url = 'https://blog.csdn.net/hellozpc/article/details/106861972'
         # blog_url = 'https://www.cnblogs.com/wanlei/p/10650325.html'
-        blog_url = 'https://segmentfault.com/a/1190000011105644'
+        #blog_url = 'https://segmentfault.com/a/1190000011105644'
+        blog_url = 'https://blog.51cto.com/yht1990/2503819'
         blog_url_host = self.get_host_from_url(blog_url)
         print('网站:', blog_url_host)
         blog = Blog()
@@ -63,9 +78,9 @@ class BlogCrawler:
         title_pattern = rule['title_pattern']
         titles = re.findall(title_pattern, html, re.DOTALL)
         if len(titles) == 0:
-            title = ''
+            title = 'default'
         else:
-            title = titles[0]
+            title = pangu.spacing_text(titles[0])
         blog.title = title
         print('标题:', title)
 
@@ -78,8 +93,6 @@ class BlogCrawler:
             content = contents[0]
             content = '<h1><a href="{}">{}</a></h1><br><br>'.format(blog.url, blog.title) + content
             for src, dst in rule['content_replaces']:
-                print(src, dst)
-                print(src in content)
                 content = re.sub(src, dst, content)
         blog.content = content
         # print('正文:', content)
@@ -93,12 +106,16 @@ class BlogCrawler:
         md_content = md_content.replace('\r', '')
         while ' \n' in md_content:
             md_content = md_content.replace(' \n', '\n')
+        #md_content = md_content.replace('\n', '\n\n')
         while '\n\n\n' in md_content:
             md_content = md_content.replace('\n\n\n', '\n\n')
         # print(' MD:', md_content)
 
+        # 正则替换
         for src, dst in rule['md_replaces']:
             md_content = re.sub(src, dst, md_content)
+        # 加空格
+        md_content = pangu.spacing_text(md_content)
         with open("blogs" + os.sep + title + '.md', 'w', encoding='utf-8') as f:
             f.write(md_content)
         pass
@@ -122,4 +139,4 @@ class BlogCrawler:
 
 blogCrawler = BlogCrawler()
 blogCrawler.run()
-# https://blog.csdn.net/hellozpc/article/details/81436980
+

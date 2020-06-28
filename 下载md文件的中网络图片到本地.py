@@ -2,10 +2,20 @@ import os
 import re
 import sys
 import time
-import requests
 import traceback
-from PIL import Image
 
+try:
+    import requests
+except:
+    os.system('pip install requests')
+    import requests
+
+try:
+    from PIL import Image
+except:
+    os.system('pip install pillow')
+    from PIL import Image
+    
 headers = {
     'Upgrade-Insecure-Requests': '1',
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.56 Safari/537.36'
@@ -65,12 +75,14 @@ def process(md_file):
                     if len(host) == 0:
                         continue
                     print('   ', media_no, ', '.join(host))
-                    headers['host'] = host[0]
-                    
+                    if host[0] in ['segmentfault.com', 'user-images.githubusercontent.com']:
+                        headers.pop ('host', '') 
+                    else:
+                        headers['host'] = host[0]
+
                     r = requests.get(media_url, headers=headers)
                     print('   ', r.headers["Content-Type"])
                     is_webp = False
-                    # print(r.text)
                     # 过滤非图片
                     if 'image' not in r.headers["Content-Type"]:
                         continue
@@ -139,7 +151,7 @@ if len(sys.argv) == 2:
         process(sys.argv[1])
         print('提示: 处理成功!')
 else:
-    inp = input('回车: 处理当前目录下的所有md文件\ndir: 处理当前目录及其子目录下的所有md文件\n输入：')
+    inp = input('回车: 处理当前目录下的所有md文件\n dir: 处理当前目录及其子目录下的所有md文件\n输入：')
     print()
     print('当前目录: ' + os.getcwd() + '\n')
     if inp == "dir":
