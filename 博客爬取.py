@@ -18,6 +18,12 @@ except:
     os.system('pip install pangu')
     import pangu
 
+try:
+    from bs4 import BeautifulSoup
+except:
+    os.system('pip install BeautifulSoup4')
+    from bs4 import BeautifulSoup
+
 headers = {
     'Upgrade-Insecure-Requests': '1',
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.56 Safari/537.36',
@@ -49,9 +55,14 @@ class BlogCrawler:
         blog_url = input('输入博客URL: ').strip()
         # blog_url = 'https://www.jianshu.com/p/215600b11413'
         # blog_url = 'https://blog.csdn.net/hellozpc/article/details/106861972'
-        # blog_url = 'https://www.cnblogs.com/wanlei/p/10650325.html'
-        #blog_url = 'https://segmentfault.com/a/1190000011105644'
-        blog_url = 'https://blog.51cto.com/yht1990/2503819'
+        blog_url = 'https://www.cnblogs.com/wanlei/p/10650325.html'
+        # blog_url = 'https://segmentfault.com/a/1190000011105644'
+        # blog_url = 'https://blog.51cto.com/yht1990/2503819'
+        
+        # blog_url = 'https://zhuanlan.zhihu.com/p/28375308'
+        # blog_url = 'https://mp.weixin.qq.com/s/-zKO0TZPqhCB6nyuUyADUw'
+        # blog_url = 'https://www.jb51.net/article/174387.htm'
+        # blog_url = 'https://juejin.im/post/5ef7328cf265da22a8513da2'
         blog_url_host = self.get_host_from_url(blog_url)
         print('网站:', blog_url_host)
         blog = Blog()
@@ -65,8 +76,13 @@ class BlogCrawler:
     def get_html_from_blog(self, blog, rule):
         s = requests.session()
         r = s.get(blog.url, headers=headers)
+        encoding_type = self.get_html_chatset(r.text)
+        # 设置编码格式
+        r.encoding = encoding_type
+        print('编码格式:', r.encoding)
         # 获取文本内容
         html = r.text
+        soup = BeautifulSoup(html, 'lxml')
         if False:
             # 增加代码标签
             html = re.sub('<code.*?>', '<code>```\n', html)
@@ -75,25 +91,23 @@ class BlogCrawler:
             f.write(html)
             
         # 正则获取标题
-        title_pattern = rule['title_pattern']
-        titles = re.findall(title_pattern, html, re.DOTALL)
+        title_bs_args = rule['title_bs_args']
+        titles = self.get_content_by_bs_args(soup, title_bs_args, 'title')
+
         if len(titles) == 0:
             title = 'default'
         else:
-            title = pangu.spacing_text(titles[0])
+            title = pangu.spacing_text(titles)
         blog.title = title
         print('标题:', title)
 
         # 提取正文内容
-        content_pattern = rule['content_pattern']
-        contents = re.findall(content_pattern, html, re.DOTALL)
-        if len(contents) == 0:
-            content = ''
-        else:
-            content = contents[0]
-            content = '<h1><a href="{}">{}</a></h1><br><br>'.format(blog.url, blog.title) + content
-            for src, dst in rule['content_replaces']:
-                content = re.sub(src, dst, content)
+        content_bs_args = rule['content_bs_args']
+        content = self.get_content_by_bs_args(soup, content_bs_args)
+        
+        content = '<h1><a href="{}">{}</a></h1><br><br>'.format(blog.url, blog.title) + content
+        for src, dst in rule['content_replaces']:
+            content = re.sub(src, dst, content)
         blog.content = content
         # print('正文:', content)
 
@@ -136,7 +150,19 @@ class BlogCrawler:
         else:
             return hosts[0]
 
-
+    @staticmethod
+    def get_content_by_bs_args(soup, bs_args_list, type="content"):
+        for bs_args in bs_args_list:
+            soup = soup.find(bs_args['name'], attrs = bs_args['attrs'])
+        if not type == "content":
+            return soup.get_text()
+        else:
+            return str(soup)
+    @staticmethod
+    def get_html_chatset(html):
+        charset = 'utf-8'
+        charset = re.findall('''<meta.*?charset=\"?(.*?)[\"; ]''', html)[0]
+        return charset
 blogCrawler = BlogCrawler()
 blogCrawler.run()
 

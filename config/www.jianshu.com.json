@@ -1,10 +1,20 @@
 {
   "host": "www.jianshu.com",
   "name": "简书",
-  "author": "wujiechun",
-  "vesion": "2020-06-27",
-  "title_pattern": "<h1 class=\"_1RuRku\">(.*?)</h1>",
-  "content_pattern": "<article class=\"_2rhmJa\">(.*?)</article>",
+  "author": "dcLunatic",
+  "vesion": "2020-06-28",
+  "title_bs_args": [
+    {
+      "name": "h1", 
+      "attrs": {"class": "_1RuRku"}
+    }
+  ],
+  "content_bs_args": [
+    {
+      "name": "article",
+      "attrs": {"class": "_2rhmJa"}
+    }
+  ],
   "content_replaces": [
 
     [

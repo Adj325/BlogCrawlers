@@ -1,18 +1,18 @@
 {
-  "host":"www.cnblogs.com",
-  "name":"博客园",
+  "host":"mp.weixin.qq.com",
+  "name":"微信公众号文章",
   "author":"dcLunatic",
   "vesion":"2020-06-28",
   "title_bs_args": [
     {
-      "name": "a", 
-      "attrs": {"id": "cb_post_title_url"}
+      "name": "h2", 
+      "attrs": {"class": "rich_media_title"}
     }
   ],
   "content_bs_args": [
     {
       "name": "div",
-      "attrs": {"class": "postBody"}
+      "attrs": {"class": "rich_media_content"}
     }
   ],
   "content_replaces":[],
