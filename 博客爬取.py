@@ -54,8 +54,8 @@ class BlogCrawler:
     def run(self):
         blog_url = input('输入博客URL: ').strip()
         # blog_url = 'https://www.jianshu.com/p/215600b11413'
-        # blog_url = 'https://blog.csdn.net/hellozpc/article/details/106861972'
-        blog_url = 'https://www.cnblogs.com/wanlei/p/10650325.html'
+        blog_url = 'https://blog.csdn.net/hellozpc/article/details/106861972'
+        # blog_url = 'https://www.cnblogs.com/wanlei/p/10650325.html'
         # blog_url = 'https://segmentfault.com/a/1190000011105644'
         # blog_url = 'https://blog.51cto.com/yht1990/2503819'
         
@@ -114,8 +114,11 @@ class BlogCrawler:
         # 转换为 MD
         # md_content = Tomd(content).markdown
         # content = re.sub('<a id=".*?"></a>', '', content)
+        # code_tag_replace_text = 'magic&%sd我他喵真帅sf*codestart*-sdfa*'
+        # content = content.replace('<code>', code_tag_replace_text).replace('</code>', code_tag_replace_text)
         text_maker = ht.HTML2Text()
         md_content = text_maker.handle(content)
+
         # 去空行
         md_content = md_content.replace('\r', '')
         while ' \n' in md_content:
@@ -131,7 +134,9 @@ class BlogCrawler:
         # 加空格
         md_content = pangu.spacing_text(md_content)
         # 修复pangu带来的md格式错误
-        md_content = self.fix_mdfile_question(md_content)
+        md_content = self.fix_mdfile_bold_format(md_content)
+        # 修复不严格的代码片段
+        md_content = self.fix_mdfile_code_format(md_content)
         with open("blogs" + os.sep + title + '.md', 'w', encoding='utf-8') as f:
             f.write(md_content)
         pass
@@ -160,6 +165,7 @@ class BlogCrawler:
             return soup.get_text()
         else:
             return str(soup)
+            
     @staticmethod
     def get_html_chatset(html):
         charset = 'utf-8'
@@ -167,7 +173,7 @@ class BlogCrawler:
         return charset
 
     @staticmethod
-    def fix_mdfile_question(text):
+    def fix_mdfile_bold_format(text):
         question_regex = ['\*\* (.*?) \*\*', '\* (.*?) \*']
         fixed_template = ['**{}**', '*{}*']
         assert(len(question_regex) == len(fixed_template))
@@ -176,5 +182,47 @@ class BlogCrawler:
             for m in match_list:
                 text = text.replace(m.group(), fixed_template[index].format(m.group(1)))
         return text
+    @staticmethod
+    def fix_mdfile_code_format(text):
+        lines = text.split('\n')
+        code_start_line_count = -1
+        code_end_line_count = -1
+        cur_lines_count = 0
+        while cur_lines_count < len(lines):
+            if code_start_line_count == -1:
+                if lines[cur_lines_count] == '' and cur_lines_count < len(lines) - 1 and lines[cur_lines_count + 1][0:4] == '    ':
+                    # 代码开始
+                    code_start_line_count = cur_lines_count
+                cur_lines_count += 1
+            else:
+                # 代码已经开始了
+                if lines[cur_lines_count][0:4] == '    ':
+                    if cur_lines_count < len(lines) - 2 and lines[cur_lines_count + 1] == '' and not lines[cur_lines_count + 2][0:4] == '    ':
+                        # 代码结束的标志1
+                        code_end_line_count = cur_lines_count + 1
+                        # 这里+1 与 下边的+1不冲突
+                        cur_lines_count += 1
+                        
+                        lines[code_start_line_count] = '```'
+                        lines[code_end_line_count] = '```'
+                        for i in range(code_start_line_count + 1, code_end_line_count):
+                            lines[i] = lines[i][4::]
+                        code_start_line_count = -1
+                        code_end_line_count = -1
+                    elif cur_lines_count == len(lines) - 1 and lines[cur_lines_count + 1] == '':
+                        # 代码结束的标志1
+                        code_end_line_count = cur_lines_count + 1
+                        lines[code_start_line_count] = '```'
+                        lines[code_end_line_count] = '```'
+                        code_start_line_count = -1
+                        code_end_line_count = -1
+                    cur_lines_count += 1
+                else:
+                    cur_lines_count += 1
+        lines_concat = ''
+        for line in lines:
+            lines_concat += '{}\n'.format(line)
+        return lines_concat
+        
 blogCrawler = BlogCrawler()
 blogCrawler.run()
