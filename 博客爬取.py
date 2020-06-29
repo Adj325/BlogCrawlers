@@ -130,6 +130,8 @@ class BlogCrawler:
             md_content = re.sub(src, dst, md_content)
         # 加空格
         md_content = pangu.spacing_text(md_content)
+        # 修复pangu带来的md格式错误
+        md_content = self.fix_mdfile_question(md_content)
         with open("blogs" + os.sep + title + '.md', 'w', encoding='utf-8') as f:
             f.write(md_content)
         pass
@@ -163,6 +165,16 @@ class BlogCrawler:
         charset = 'utf-8'
         charset = re.findall('''<meta.*?charset=\"?(.*?)[\"; ]''', html)[0]
         return charset
+
+    @staticmethod
+    def fix_mdfile_question(text):
+        question_regex = ['\*\* (.*?) \*\*', '\* (.*?) \*']
+        fixed_template = ['**{}**', '*{}*']
+        assert(len(question_regex) == len(fixed_template))
+        for index in range(len(fixed_template)):
+            match_list = re.finditer(question_regex[index], text)
+            for m in match_list:
+                text = text.replace(m.group(), fixed_template[index].format(m.group(1)))
+        return text
 blogCrawler = BlogCrawler()
 blogCrawler.run()
-
