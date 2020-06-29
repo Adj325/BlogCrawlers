@@ -54,12 +54,12 @@ class BlogCrawler:
     def run(self):
         blog_url = input('输入博客URL: ').strip()
         # blog_url = 'https://www.jianshu.com/p/215600b11413'
-        blog_url = 'https://blog.csdn.net/hellozpc/article/details/106861972'
+        # blog_url = 'https://blog.csdn.net/hellozpc/article/details/106861972'
         # blog_url = 'https://www.cnblogs.com/wanlei/p/10650325.html'
         # blog_url = 'https://segmentfault.com/a/1190000011105644'
         # blog_url = 'https://blog.51cto.com/yht1990/2503819'
         
-        # blog_url = 'https://zhuanlan.zhihu.com/p/28375308'
+        blog_url = 'https://zhuanlan.zhihu.com/p/28375308'
         # blog_url = 'https://mp.weixin.qq.com/s/-zKO0TZPqhCB6nyuUyADUw'
         # blog_url = 'https://www.jb51.net/article/174387.htm'
         # blog_url = 'https://juejin.im/post/5ef7328cf265da22a8513da2'
@@ -169,7 +169,7 @@ class BlogCrawler:
     @staticmethod
     def get_html_chatset(html):
         charset = 'utf-8'
-        charset = re.findall('''<meta.*?charset=\"?(.*?)[\"; ]''', html)[0]
+        charset = re.findall('''<meta.*?char[sS]et=["']?(.*?)[";' ]''', html)[0]
         return charset
 
     @staticmethod
