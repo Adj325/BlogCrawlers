@@ -59,7 +59,7 @@ class BlogCrawler:
         # blog_url = 'https://segmentfault.com/a/1190000011105644'
         # blog_url = 'https://blog.51cto.com/yht1990/2503819'
         
-        blog_url = 'https://zhuanlan.zhihu.com/p/28375308'
+        #blog_url = 'https://zhuanlan.zhihu.com/p/28375308'
         # blog_url = 'https://mp.weixin.qq.com/s/-zKO0TZPqhCB6nyuUyADUw'
         # blog_url = 'https://www.jb51.net/article/174387.htm'
         # blog_url = 'https://juejin.im/post/5ef7328cf265da22a8513da2'
@@ -137,9 +137,29 @@ class BlogCrawler:
         md_content = self.fix_mdfile_bold_format(md_content)
         # 修复不严格的代码片段
         md_content = self.fix_mdfile_code_format(md_content)
+        # 修复断行
+        md_content = self.fix_mdfile_wrong_line_break(md_content)
         with open("blogs" + os.sep + title + '.md', 'w', encoding='utf-8') as f:
             f.write(md_content)
         pass
+
+    @staticmethod
+    def fix_mdfile_wrong_line_break(md_content):
+        links = re.findall('\[.*?\n.*?\]\(.*?://.*?\)', md_content)
+        for link in links:
+            lin = link.split('\n')
+            for li in lin:
+                if 'http' in li:
+                    continue
+                else:
+                    md_content = md_content.replace(link.strip(), link.strip().replace('\n', ''))
+
+        # 连接含有 - 会断行
+        urls = re.findall('://(.*?)-', md_content)
+        for url in urls:
+            md_content = md_content.replace(url+'-\n', url+'-')
+        else:
+            return md_content
 
     def load_config(self):
         config_path = 'config'
