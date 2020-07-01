@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="origin" />
+    <meta property="og:description" content="阅读目录： 准备工作 搭建 RabbitMQ Server 单机版 RabbitMQ Server 高可用集群相关概念 搭建 RabbitMQ Server 高可用集群 搭建 HAProxy 负载均衡" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>搭建 RabbitMQ Server 高可用集群 - 田园里的蟋蟀 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="//common.cnblogs.com/favicon.ico?v=20200522" type="image/x-icon" />
+    
+    <link rel="stylesheet" href="https://www.cnblogs.com/css/blog-common.min.css" />
+    <link id="MainCss" rel="stylesheet" href="https://www.cnblogs.com/skins/blacklowkey/bundle-blacklowkey.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://www.cnblogs.com/xishuai/custom.css?v=ShB0pM2YIacz8a0tDkZdO8sFhvk=" />
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="https://www.cnblogs.com/skins/blacklowkey/bundle-blacklowkey-mobile.min.css" />
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/xishuai/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/xishuai/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/xishuai/wlwmanifest.xml" />
+    <script src="https://common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+    <script src="https://www.cnblogs.com/js/blog-common.min.js"></script>
+    <script>
+        var currentBlogId = 124657;
+        var currentBlogApp = 'xishuai';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var skinName = 'BlackLowKey';
+    </script>
+    
+    
+    
+</head>
+<body>
+    <a name="top"></a>
+    <div id="page_begin_html">
+        <!--github彩条-->
+<a href="https://github.com/yuezhongxin" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://images0.cnblogs.com/blog2015/435188/201503/131337049339339.png" alt="Fork me on GitHub" data-canonical-src="https://images0.cnblogs.com/blog2015/435188/201503/131337049339339.png"></a>
+    </div>
+    
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/xishuai/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="返回主页" /></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/xishuai/">田园里的蟋蟀</a>
+</h1>
+<h2>
+写代码，写博客，学英语。
+</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/xishuai/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E7%94%B0%E5%9B%AD%E9%87%8C%E7%9A%84%E8%9F%8B%E8%9F%80">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/xishuai/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			
+			<span id="stats_post_count">随笔 - 
+368&nbsp; </span>
+<span id="stats_article_count">文章 - 
+0&nbsp; </span>
+<span id="stats-comment_count">评论 - 
+5034</span>
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class = "postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/xishuai/p/centos-rabbitmq-cluster-and-haproxy.html">
+    <span>搭建 RabbitMQ Server 高可用集群</span>
+    
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                
+<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+    <p>阅读目录：</p>
+<ul>
+<li><strong>准备工作</strong></li>
+<li><strong>搭建 RabbitMQ Server 单机版</strong></li>
+<li><strong>RabbitMQ Server 高可用集群相关概念</strong></li>
+<li><strong>搭建 RabbitMQ Server 高可用集群</strong></li>
+<li><strong>搭建 HAProxy 负载均衡</strong></li>
+</ul>
+<p>因为公司测试服务器暂不能用，只能在自己电脑上重新搭建一下 RabbitMQ Server 高可用集群，正好把这个过程记录下来，以便日后查看。</p>
+<p>公司测试服务器上的 RabbitMQ 集群，我搭建的是三台服务器，因为自己电脑空间有限，这边只能搭建两台服务器用作高可用集群，用的是 Vagrant 虚拟机管理工具。</p>
+<p>环境介绍：</p>
+<p>|     RabbitMQ   |   节点	  |   IP 地址	  |   工作模式  |   	操作系统   |<br>
+|-----------------|------------|----------|----------|<br>
+|     node1	  |   192.168.1.50  |   	DISK	 |   CentOS 7.0 - 64位   |<br>
+|     node2	  |   192.168.1.51  |   	DISK  |   	CentOS 7.0 - 64位   |</p>
+<p>整体架构：</p>
+<img src="https://images2018.cnblogs.com/blog/435188/201804/435188-20180427122219477-216329665.png" style="width: 700px;">
+<h2 id="1-准备工作">1. 准备工作</h2>
+<p>首先，在<code>```
+node1```
+</code>服务器上，修改<code>```
+vi /etc/hostname```
+</code>：</p>
+<pre><code>```
+node1
+```
+</code></pre>
+<p>在<code>```
+node2```
+</code>服务器上，修改<code>```
+vi /etc/hostname```
+</code>：</p>
+<pre><code>```
+node2
+```
+</code></pre>
+<p>然后在<code>```
+node1```
+</code>服务器上，修改<code>```
+vi /etc/hosts```
+</code>：</p>
+<pre><code>```
+node1 192.168.1.50
+node2 192.168.1.51
+127.0.0.1   node1
+::1         node1
+```
+</code></pre>
+<p>在<code>```
+node2```
+</code>服务器上，修改<code>```
+vi /etc/hosts```
+</code>：</p>
+<pre><code>```
+192.168.1.50 node1
+192.168.1.51 node2
+127.0.0.1   node2
+::1         node2
+```
+</code></pre>
+<p>然后查看下<code>```
+hostnamectl status```
+</code>，如果不正确的话，需要再进行设置下：</p>
+<pre><code>```
+[root@node1 ~]# hostnamectl status
+   Static hostname: node1
+         Icon name: computer-vm
+           Chassis: vm
+        Machine ID: 241163503ce842c489360d0a48a606fc
+           Boot ID: cdb59c025cb447e3afed7317af78979e
+    Virtualization: oracle
+  Operating System: CentOS Linux 7 (Core)
+       CPE OS Name: cpe:/o:centos:centos:7
+            Kernel: Linux 3.10.0-229.el7.x86_64
+      Architecture: x86_64
+[root@node1 ~]# hostnamectl --static set-hostname node1
+```
+</code></pre>
+<p>为了后面我们安装的顺利，我们最好再配置一下代理：</p>
+<pre><code>```
+[root@node1 ~]# export http_proxy=http://192.168.1.44:1087;export https_proxy=http://192.168.1.44:1087;
+[root@node1 ~]# curl ip.cn
+当前 IP：104.245.13.31 来自：美国 Linost
+```
+</code></pre>
+<h2 id="2-搭建-rabbitmq-server-单机版">2. 搭建 RabbitMQ Server 单机版</h2>
+<p>下面以<code>```
+node1```
+</code>服务器做演示示例。</p>
+<p>首先，更新软件包和存储库：</p>
+<pre><code>```
+[root@node1 ~]# yum -y update
+```
+</code></pre>
+<p>然后安装 Erlang（RabbitMQ 运行需要 Erlang 环境）：</p>
+<pre><code>```
+[root@node1 ~]# vi /etc/yum.repos.d/rabbitmq-erlang.repo
+[root@node1 ~]# [rabbitmq-erlang]
+name=rabbitmq-erlang
+baseurl=https://dl.bintray.com/rabbitmq/rpm/erlang/20/el/7
+gpgcheck=1
+gpgkey=https://dl.bintray.com/rabbitmq/Keys/rabbitmq-release-signing-key.asc
+repo_gpgcheck=0
+enabled=1
+
+[root@node1 ~]# yum -y install erlang socat
+```
+</code></pre>
+<p>然后安装 RabbitMQ Server：</p>
+<pre><code>```
+[root@node1 ~]# mkdir -p ~/download &amp;&amp; cd ~/download
+[root@node1 download]# wget https://www.rabbitmq.com/releases/rabbitmq-server/v3.6.10/rabbitmq-server-3.6.10-1.el7.noarch.rpm
+[root@node1 download]# rpm --import https://www.rabbitmq.com/rabbitmq-release-signing-key.asc
+[root@node1 download]# rpm -Uvh rabbitmq-server-3.6.10-1.el7.noarch.rpm
+```
+</code></pre>
+<p>卸载 RabbitMQ 命令：</p>
+<pre><code>```
+[root@node1 ~]# rpm -e rabbitmq-server-3.6.10-1.el7.noarch
+[root@node1 ~]# rm -rf /var/lib/rabbitmq/     //清除rabbitmq配置文件
+```
+</code></pre>
+<p>安装好之后，就可以启动 RabbitMQ Server 了：</p>
+<pre><code>```
+[root@node1 download]# systemctl start rabbitmq-server
+```
+</code></pre>
+<p>也可以添加到系统服务中启动：</p>
+<pre><code>```
+[root@node1 download]# systemctl enable rabbitmq-server
+Created symlink from /etc/systemd/system/multi-user.target.wants/rabbitmq-server.service to /usr/lib/systemd/system/rabbitmq-server.service.
+```
+</code></pre>
+<p>启动成功之后，我们可以查看下 RabbitMQ Server 的状态：</p>
+<pre><code>```
+[root@node1 download]# systemctl status rabbitmq-server
+● rabbitmq-server.service - RabbitMQ broker
+   Loaded: loaded (/usr/lib/systemd/system/rabbitmq-server.service; disabled)
+   Active: active (running) since 五 2018-04-27 04:44:31 CEST; 3min 27s ago
+  Process: 17216 ExecStop=/usr/sbin/rabbitmqctl stop (code=exited, status=0/SUCCESS)
+ Main PID: 17368 (beam.smp)
+   Status: &quot;Initialized&quot;
+   CGroup: /system.slice/rabbitmq-server.service
+           ├─17368 /usr/lib64/erlang/erts-9.3/bin/beam.smp -W w -A 64 -P 1048576 -t 5000000 -stbt db -zdbbl 32000 -K true -- -root /usr/lib64/erlang -progname erl -- -home /var/lib/rabbitmq -- -pa /usr...
+           ├─17521 /usr/lib64/erlang/erts-9.3/bin/epmd -daemon
+           ├─17655 erl_child_setup 1024
+           ├─17675 inet_gethost 4
+           └─17676 inet_gethost 4
+
+4月 27 04:44:30 node1 rabbitmq-server[17368]: RabbitMQ 3.6.10. Copyright (C) 2007-2017 Pivotal Software, Inc.
+4月 27 04:44:30 node1 rabbitmq-server[17368]: ##  ##      Licensed under the MPL.  See http://www.rabbitmq.com/
+4月 27 04:44:30 node1 rabbitmq-server[17368]: ##  ##
+4月 27 04:44:30 node1 rabbitmq-server[17368]: ##########  Logs: /var/log/rabbitmq/rabbit@node1.log
+4月 27 04:44:30 node1 rabbitmq-server[17368]: ######  ##        /var/log/rabbitmq/rabbit@node1-sasl.log
+4月 27 04:44:30 node1 rabbitmq-server[17368]: ##########
+4月 27 04:44:30 node1 rabbitmq-server[17368]: Starting broker...
+4月 27 04:44:31 node1 rabbitmq-server[17368]: systemd unit for activation check: &quot;rabbitmq-server.service&quot;
+4月 27 04:44:31 node1 systemd[1]: Started RabbitMQ broker.
+4月 27 04:44:31 node1 rabbitmq-server[17368]: completed with 0 plugins.
+[root@node1 download]# systemctl enable rabbitmq-server
+ln -s '/usr/lib/systemd/system/rabbitmq-server.service' '/etc/systemd/system/multi-user.target.wants/rabbitmq-server.service'
+```
+</code></pre>
+<p>然后启动 RabbitMQ Web 管理控制台：</p>
+<pre><code>```
+[root@node1 download]# rabbitmq-plugins enable rabbitmq_management
+The following plugins have been enabled:
+  amqp_client
+  cowlib
+  cowboy
+  rabbitmq_web_dispatch
+  rabbitmq_management_agent
+  rabbitmq_management
+
+Applying plugin configuration to rabbit@node1... started 6 plugins.
+```
+</code></pre>
+<p>RabbitMQ Server 默认<code>```
+guest```
+</code>用户，只能<code>```
+localhost```
+</code>地址访问，我们还需要创建管理用户：</p>
+<pre><code>```
+[root@node1 download]# rabbitmqctl add_user admin admin123 &amp;&amp; 
+rabbitmqctl set_user_tags admin administrator &amp;&amp; 
+rabbitmqctl set_permissions -p / admin &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;
+```
+</code></pre>
+<p>然后添加防火墙运行访问的端口：</p>
+<pre><code>```
+[root@node1 download]# firewall-cmd --zone=public --permanent --add-port=4369/tcp &amp;&amp; 
+firewall-cmd --zone=public --permanent --add-port=25672/tcp &amp;&amp; 
+firewall-cmd --zone=public --permanent --add-port=5671-5672/tcp &amp;&amp; 
+firewall-cmd --zone=public --permanent --add-port=15672/tcp &amp;&amp; 
+firewall-cmd --zone=public --permanent --add-port=61613-61614/tcp &amp;&amp; 
+firewall-cmd --zone=public --permanent --add-port=1883/tcp &amp;&amp; 
+firewall-cmd --zone=public --permanent --add-port=8883/tcp
+success
+```
+</code></pre>
+<p>重新启动防火墙：</p>
+<pre><code>```
+[root@node1 download]# firewall-cmd --reload
+success
+```
+</code></pre>
+<p>上面这些做完了，RabbitMQ 单机版的部署也完成了，我们可以浏览器访问``：</p>
+<p><img src="https://images2018.cnblogs.com/blog/435188/201804/435188-20180427110006812-1681884185.png" alt="" loading="lazy"></p>
+<p>将上面的搭建过程，在<code>```
+node2```
+</code>服务器上，再做重复一边。</p>
+<h2 id="3-rabbitmq-server-高可用集群相关概念">3. RabbitMQ Server 高可用集群相关概念</h2>
+<h3 id="设计集群的目的">设计集群的目的</h3>
+<ul>
+<li>允许消费者和生产者在 RabbitMQ 节点崩溃的情况下继续运行。</li>
+<li>通过增加更多的节点来扩展消息通信的吞吐量。</li>
+</ul>
+<h3 id="集群配置方式">集群配置方式</h3>
+<ul>
+<li><strong>cluster</strong>：不支持跨网段，用于同一个网段内的局域网；可以随意的动态增加或者减少；节点之间需要运行相同版本的 RabbitMQ 和 Erlang。</li>
+<li><strong>federation</strong>：应用于广域网，允许单台服务器上的交换机或队列接收发布到另一台服务器上交换机或队列的消息，可以是单独机器或集群。federation 队列类似于单向点对点连接，消息会在联盟队列之间转发任意次，直到被消费者接受。通常使用 federation 来连接 internet 上的中间服务器，用作订阅分发消息或工作队列。</li>
+<li><strong>shovel</strong>：连接方式与 federation 的连接方式类似，但它工作在更低层次。可以应用于广域网。</li>
+</ul>
+<h3 id="节点类型">节点类型</h3>
+<ul>
+<li><strong>RAM node</strong>：内存节点将所有的队列、交换机、绑定、用户、权限和 vhost 的元数据定义存储在内存中，好处是可以使得像交换机和队列声明等操作更加的快速。</li>
+<li><strong>Disk node</strong>：将元数据存储在磁盘中，单节点系统只允许磁盘类型的节点，防止重启 RabbitMQ 的时候，丢失系统的配置信息。</li>
+</ul>
+<blockquote>
+<p>问题说明：RabbitMQ 要求在集群中至少有一个磁盘节点，所有其他节点可以是内存节点，当节点加入或者离开集群时，必须要将该变更通知到至少一个磁盘节点。如果集群中唯一的一个磁盘节点崩溃的话，集群仍然可以保持运行，但是无法进行其他操作（增删改查），直到节点恢复。<br>
+解决方案：设置两个磁盘节点，至少有一个是可用的，可以保存元数据的更改。</p>
+</blockquote>
+<h3 id="erlang-cookie">Erlang Cookie</h3>
+<p>Erlang Cookie 是保证不同节点可以相互通信的密钥，要保证集群中的不同节点相互通信必须共享相同的 Erlang Cookie。具体的目录存放在<code>```
+/var/lib/rabbitmq/.erlang.cookie```
+</code>。</p>
+<blockquote>
+<p>说明：这就要从 rabbitmqctl 命令的工作原理说起，RabbitMQ 底层是通过 Erlang 架构来实现的，所以 rabbitmqctl 会启动 Erlang 节点，并基于 Erlang 节点来使用 Erlang 系统连接 RabbitMQ 节点，在连接过程中需要正确的 Erlang Cookie 和节点名称，Erlang 节点通过交换 Erlang Cookie 以获得认证。</p>
+</blockquote>
+<h3 id="镜像队列">镜像队列</h3>
+<p>RabbitMQ 的 Cluster 集群模式一般分为两种，普通模式和镜像模式。</p>
+<ul>
+<li><strong>普通模式</strong>：默认的集群模式，以两个节点（rabbit01、rabbit02）为例来进行说明。对于 Queue 来说，消息实体只存在于其中一个节点 rabbit01（或者 rabbit02），rabbit01 和 rabbit02 两个节点仅有相同的元数据，即队列的结构。当消息进入 rabbit01 节点的 Queue 后，consumer 从 rabbit02 节点消费时，RabbitMQ 会临时在 rabbit01、rabbit02 间进行消息传输，把 A 中的消息实体取出并经过 B 发送给 consumer。所以 consumer 应尽量连接每一个节点，从中取消息。即对于同一个逻辑队列，要在多个节点建立物理 Queue。否则无论 consumer 连 rabbit01 或 rabbit02，出口总在 rabbit01，会产生瓶颈。当 rabbit01 节点故障后，rabbit02 节点无法取到 rabbit01 节点中还未消费的消息实体。如果做了消息持久化，那么得等 rabbit01 节点恢复，然后才可被消费；如果没有持久化的话，就会产生消息丢失的现象。</li>
+<li><strong>镜像模式</strong>：将需要消费的队列变为镜像队列，存在于多个节点，这样就可以实现 RabbitMQ 的 HA 高可用性。作用就是消息实体会主动在镜像节点之间实现同步，而不是像普通模式那样，在 consumer 消费数据时临时读取。缺点就是，集群内部的同步通讯会占用大量的网络带宽。</li>
+</ul>
+<p>镜像队列实现了 RabbitMQ 的高可用性（HA），具体的实现策略如下所示：</p>
+<table>
+<thead>
+<tr>
+<th>ha-mode</th>
+<th>ha-params</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>all</td>
+<td>空</td>
+<td>镜像队列将会在整个集群中复制。当一个新的节点加入后，也会在这 个节点上复制一份。</td>
+</tr>
+<tr>
+<td>exactly</td>
+<td>count</td>
+<td>镜像队列将会在集群上复制 count 份。如果集群数量少于 count 时候，队列会复制到所有节点上。如果大于 Count 集群，有一个节点 crash 后，新进入节点也不会做新的镜像。</td>
+</tr>
+<tr>
+<td>nodes</td>
+<td>node name</td>
+<td>镜像队列会在 node name 中复制。如果这个名称不是集群中的一个，这不会触发错误。如果在这个 node list 中没有一个节点在线，那么这个 queue 会被声明在 client 连接的节点。</td>
+</tr>
+</tbody>
+</table>
+<p>实例列举：</p>
+<pre><code>```
+queue_args(&quot;x-ha-policy&quot;:&quot;all&quot;) //定义字典来设置额外的队列声明参数
+channel.queue_declare(queue=&quot;hello-queue&quot;,argument=queue_args)
+```
+</code></pre>
+<p>如果需要设定特定的节点（以<code>```
+rabbit@localhost```
+</code>为例），再添加一个参数：</p>
+<pre><code>```
+queue_args(&quot;x-ha-policy&quot;:&quot;nodes&quot;,
+           &quot;x-ha-policy-params&quot;:[&quot;rabbit@localhost&quot;])
+channel.queue_declare(queue=&quot;hello-queue&quot;,argument=queue_args)
+```
+</code></pre>
+<p>可以通过命令行查看那个主节点进行了同步：</p>
+<pre><code>```
+$ rabbitmqctl list_queue name slave_pids synchronised_slave_pids
+```
+</code></pre>
+<p>以上内容主要参考：<a href="https://blog.csdn.net/WoogeYu/article/details/51119101">RabbitMQ 分布式集群架构</a></p>
+<h2 id="4-搭建-rabbitmq-server-高可用集群">4. 搭建 RabbitMQ Server 高可用集群</h2>
+<p>理解了上面的概念之后，我们再搭建 RabbitMQ Server 高可用集群，就非常容易了。</p>
+<p>默认<code>```
+.erlang.cookie```
+</code>文件是隐藏的，<code>```
+ls```
+</code>命令并不能查看，你也可以手动搜索下文件：</p>
+<pre><code>```
+[root@node1 ~]# find / -name &quot;.erlang.cookie&quot;
+/var/lib/rabbitmq/.erlang.cookie
+[root@node1 ~]# cat /var/lib/rabbitmq/.erlang.cookie
+LBOTELUJAMXDMIXNTZMB
+```
+</code></pre>
+<p>将<code>```
+node1```
+</code>服务器中的<code>```
+.erlang.cookie```
+</code>文件，拷贝到<code>```
+node2```
+</code>服务器上：</p>
+<pre><code>```
+[root@node1 ~]# scp /var/lib/rabbitmq/.erlang.cookie root@node2:/var/lib/rabbitmq
+```
+</code></pre>
+<p>先停止运行节点，然后以后台方式启动 RabbitMQ Server（<code>```
+node1```
+</code>和<code>```
+node2```
+</code>分别执行）：</p>
+<pre><code>```
+[root@node1 ~]# rabbitmqctl stop
+[root@node1 ~]# rabbitmq-server -detached
+```
+</code></pre>
+<p>然后我们以<code>```
+node1```
+</code>作为集群中心，在<code>```
+node2```
+</code>上执行加入集群中心命令（节点类型为磁盘节点）：</p>
+<pre><code>```
+[root@node1 ~]# rabbitmqctl stop_app
+[root@node1 ~]# rabbitmqctl reset 
+[root@node1 ~]# rabbitmqctl join_cluster rabbit@node1
+//默认是磁盘节点，如果是内存节点的话，需要加--ram参数
+[root@node1 ~]# rabbitmqctl start_app
+```
+</code></pre>
+<p>查看集群的状态（包含<code>```
+node1```
+</code>和<code>```
+node2```
+</code>节点）：</p>
+<pre><code>```
+[root@node1 ~]# rabbitmqctl cluster_status
+Cluster status of node rabbit@node1
+[{nodes,[{disc,[rabbit@node1,rabbit@node2]}]},
+ {running_nodes,[rabbit@node2,rabbit@node1]},
+ {cluster_name,&lt;&lt;&quot;rabbit@node1&quot;&gt;&gt;},
+ {partitions,[]},
+ {alarms,[{rabbit@node2,[]},{rabbit@node1,[]}]}]
+```
+</code></pre>
+<p>我们可以从 RabbitMQ Web 管理界面，看到集群的信息：</p>
+<p><img src="https://images2018.cnblogs.com/blog/435188/201804/435188-20180427115352040-1554357729.png" alt="" loading="lazy"></p>
+<h2 id="5-搭建-haproxy-负载均衡">5. 搭建 HAProxy 负载均衡</h2>
+<p>HAProxy 是一个免费的负载均衡软件，可以运行于大部分主流的 Linux 操作系统上。</p>
+<p>HAProxy 提供了 L4(TCP) 和 L7(HTTP) 两种负载均衡能力，具备丰富的功能。HAProxy 的社区非常活跃，版本更新快速（最新稳定版 1.7.2 于 2017/01/13 推出）。最关键的是，HAProxy 具备媲美商用负载均衡器的性能和稳定性。它当前不仅仅是免费负载均衡软件的首选，更几乎成为了唯一选择。</p>
+<p>因为 RabbitMQ 本身不提供负载均衡，下面我们就搭建 HAProxy，用作 RabbitMQ 集群的负载均衡。</p>
+<p>HAProxy 安装在<code>```
+node1```
+</code>服务器上，安装命令：</p>
+<pre><code>```
+[root@node1 ~]# rpm -ivh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-5.noarch.rpm//
+[root@node1 ~]# yum -y install haproxy
+```
+</code></pre>
+<p>配置 HAProxy：</p>
+<pre><code>```
+[root@node1 ~]# cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.bak
+[root@node1 ~]# vi /etc/haproxy/haproxy.cfg
+```
+</code></pre>
+<p>将下面的配置添加到<code>```
+/etc/haproxy/haproxy.cfg```
+</code>文件中：</p>
+<pre><code>```
+global
+    log     127.0.0.1  local0 info
+    log     127.0.0.1  local1 notice
+    daemon
+    maxconn 4096
+
+defaults
+    log     global
+    mode    tcp
+    option  tcplog
+    option  dontlognull
+    retries 3
+    option  abortonclose
+    maxconn 4096
+    timeout connect  5000ms
+    timeout client  3000ms
+    timeout server  3000ms
+    balance roundrobin
+
+listen private_monitoring
+    bind    0.0.0.0:8100
+    mode    http
+    option  httplog
+    stats   refresh  5s
+    stats   uri  /stats
+    stats   realm   Haproxy
+    stats   auth  admin:admin
+
+listen rabbitmq_admin
+    bind    0.0.0.0:8102
+    server  node1 node1:15672
+    server  node2 node2:15672
+
+listen rabbitmq_cluster
+    bind    0.0.0.0:8101
+    mode    tcp
+    option  tcplog
+    balance roundrobin
+    timeout client  3h
+    timeout server  3h
+    server  node1  node1:5672  check  inter  5000  rise  2  fall  3
+    server  node2  node2:5672  check  inter  5000  rise  2  fall  3
+```
+</code></pre>
+<p>然后启动 HAProxy：</p>
+<pre><code>```
+[root@node1 ~]# haproxy -f /etc/haproxy/haproxy.cfg
+```
+</code></pre>
+<p>外部访问的话，需要关闭下防火墙：</p>
+<pre><code>```
+[root@node1 ~]# systemctl disable firewalld.service
+rm '/etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service'
+rm '/etc/systemd/system/basic.target.wants/firewalld.service'
+[root@node1 ~]# systemctl stop firewalld.service
+```
+</code></pre>
+<p>HAProxy 配置了三个地址：</p>
+<ul>
+<li><code>```
+http://node1:8100/stats```
+</code>：HAProxy 负载均衡信息地址，账号密码：<code>```
+admin/admin```
+</code>。</li>
+<li><code>```
+http://node1:8101```
+</code>：RabbitMQ Server Web 管理界面（基于负载均衡）。</li>
+<li><code>```
+http://node1:8102```
+</code>：RabbitMQ Server 服务地址（基于负载均衡）。</li>
+</ul>
+<p>通过访问<code>```
+http://node1:8100/stats```
+</code>，查看 HAProxy 负载均衡信息：</p>
+<p><img src="https://images2018.cnblogs.com/blog/435188/201804/435188-20180427122037478-1475206062.png" alt="" loading="lazy"></p>
+<p>参考资料：</p>
+<ul>
+<li><a href="https://www.howtoing.com/how-to-install-rabbitmq-server-on-centos-7">如何在CentOS 7上安装RabbitMQ服务器</a>（有点坑，要结合下面文章中的命令）</li>
+<li><a href="http://www.dahouduan.com/2017/11/22/centos6-yum-install-rabbitmq/">Centos 6 通过 yum 安装 Rabbitmq</a></li>
+<li><a href="https://segmentfault.com/a/1190000010300803">RabbitMQ集群安装</a></li>
+<li><a href="https://blog.csdn.net/WoogeYu/article/details/51119101">RabbitMQ分布式集群架构</a>（<strong>推荐</strong>）</li>
+<li><a href="https://geewu.gitbooks.io/rabbitmq-quick/content/RabbitMQ%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%BE%E7%BD%AE%E4%B8%8E%E9%AB%98%E5%8F%AF%E7%94%A8%E6%80%A7%E8%AE%A8%E8%AE%BA.html">RabbitMQ 分布式设置和高可用性讨论</a></li>
+<li><a href="https://www.jianshu.com/p/97fbf9c82872">RabbitMQ 高可用集群</a></li>
+</ul>
+
+</div>
+<div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2018-04-27 12:34</span>&nbsp;
+<a href="https://www.cnblogs.com/xishuai/">田园里的蟋蟀</a>&nbsp;
+阅读(<span id="post_view_count">...</span>)&nbsp;
+评论(<span id="post_comment_count">...</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=8961847" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(8961847);return false;">收藏</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script src="https://common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 124657, cb_blogApp = 'xishuai', cb_blogUserGuid = '3d3b4137-4ae0-e111-aa3f-842b2b196315';
+    var cb_entryId = 8961847, cb_entryCreatedDate = '2018-04-27 12:34', cb_postType = 1; 
+    loadViewCount(cb_entryId);
+    loadSideColumnAd();
+</script><a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<script>
+    var commentManager = new blogCommentManager();
+    commentManager.renderComments(0);
+</script>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"></div>
+    <div id="opt_under_post"></div>
+    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+    <script>
+        var mobileVisit = screen.width < 500;
+        window.googletag = window.googletag || { cmd: [] };
+        googletag.cmd.push(function () {
+            googletag.defineSlot('/1090369/C1', [300, 250], 'div-gpt-ad-1592365906576-0').addService(googletag.pubads());
+            if (!mobileVisit) {
+                googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1592366332455-0').addService(googletag.pubads());
+            }
+            googletag.pubads().enableSingleRequest();
+            googletag.enableServices();
+        });
+    </script>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id='div-gpt-ad-1592365906576-0' style='width: 300px; height: 250px;'>
+            <script>
+                if (canShowAdsense()) {
+                    googletag.cmd.push(function () { googletag.display('div-gpt-ad-1592365906576-0'); });
+                }
+                else {
+                    $('#cnblogs_c1').hide();
+                }
+            </script>
+        </div>
+    </div>
+    <div id="under_post_news"></div>
+    <div id="cnblogs_c2" class="c_ad_block">
+        <div id='div-gpt-ad-1592366332455-0' style='width: 468px; height: 60px;'>
+            <script>
+                if (!mobileVisit) {
+                    if (canShowAdsense()) {
+                        googletag.cmd.push(function () { googletag.display('div-gpt-ad-1592366332455-0'); });
+                    } else {
+                        $('#cnblogs_c2').hide();
+                    }
+                }
+            </script>
+        </div>
+    </div>
+    <div id="under_post_kb"></div>
+    <div id="HistoryToday" class="c_ad_block"></div>
+    <script type="text/javascript">
+        fixPostBody();
+        deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);        deliverAdT2();
+        deliverAdC1();
+        deliverAdC2();
+        loadNewsAndKb();
+        loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+
+<div id="sidebar_ad"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright &copy; 2020 田园里的蟋蟀
+<br /><span id="poweredby">Powered by .NET Core on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    <div id="page_end_html">
+        <!--<script type='text/javascript'>
+(function() {
+    var c = document.createElement('script'); 
+    c.type = 'text/javascript';
+    c.async = true;
+    c.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'noscript.cnitblog.com/boot/50096';
+    var h = document.getElementsByTagName('script')[0];
+    h.parentNode.insertBefore(c, h);
+})();
+</script>-->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-58935471-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    </div>
+</body>
+</html>

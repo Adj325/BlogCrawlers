@@ -1,0 +1,15 @@
+{
+  "host": "c.biancheng.net",
+  "name": "编程帮",
+  "author": "wujiechun",
+  "vesion": "2020-06-27",
+  "encoding": "utf-8",
+  "title_pattern": "<title>(.*?)</title>",
+  "content_type": "bs",
+  "content_pattern": "#arc-body",
+  "content_replaces": [
+	["<img alt=\".*?\" src=\"", "<img src=\"http://c.biancheng.net"]
+  ],
+  "md_replaces": [
+  ]
+}

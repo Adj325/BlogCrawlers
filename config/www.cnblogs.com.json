@@ -3,6 +3,8 @@
   "name":"博客园",
   "author":"wujiechun",
   "vesion":"2020-06-27",
+  "encoding":"utf-8",
+  "content_type":"re",
   "title_pattern":"<a id=\"cb_post_title_url\" class=\".*?\" href=\".*?\">.*?<span>(.*?)</span>.*?</a>",
   "content_pattern":"<div class=\"postBody\">(.*?)</div>",
   "content_replaces":[],

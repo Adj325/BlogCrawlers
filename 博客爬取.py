@@ -18,6 +18,14 @@ except:
     os.system('pip install pangu')
     import pangu
 
+try:
+    from bs4 import BeautifulSoup
+except:
+    os.system('pip install beautifulsoup4')
+    os.system('pip install lxml')
+    from bs4 import BeautifulSoup
+
+    
 headers = {
     'Upgrade-Insecure-Requests': '1',
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.56 Safari/537.36',
@@ -51,7 +59,7 @@ class BlogCrawler:
         # blog_url = 'https://blog.csdn.net/hellozpc/article/details/106861972'
         # blog_url = 'https://www.cnblogs.com/wanlei/p/10650325.html'
         #blog_url = 'https://segmentfault.com/a/1190000011105644'
-        blog_url = 'https://blog.51cto.com/yht1990/2503819'
+        #blog_url = 'https://blog.51cto.com/yht1990/2503819'
         blog_url_host = self.get_host_from_url(blog_url)
         print('网站:', blog_url_host)
         blog = Blog()
@@ -65,15 +73,21 @@ class BlogCrawler:
     def get_html_from_blog(self, blog, rule):
         s = requests.session()
         r = s.get(blog.url, headers=headers)
+        if rule['encoding'] is not None:
+            r.encoding = 'utf-8'
         # 获取文本内容
         html = r.text
+
+        soup = BeautifulSoup(html, 'lxml')
         if False:
+        
             # 增加代码标签
             html = re.sub('<code.*?>', '<code>```\n', html)
-            html = re.sub('</code>', '\n```</code>', html)
+            html = re.sub('</code>', '```\n</code>', html)
         with open('temp.html', 'w', encoding='utf-8') as f:
             f.write(html)
-            
+
+        
         # 正则获取标题
         title_pattern = rule['title_pattern']
         titles = re.findall(title_pattern, html, re.DOTALL)
@@ -84,16 +98,22 @@ class BlogCrawler:
         blog.title = title
         print('标题:', title)
 
-        # 提取正文内容
-        content_pattern = rule['content_pattern']
-        contents = re.findall(content_pattern, html, re.DOTALL)
-        if len(contents) == 0:
-            content = ''
+        if rule['content_type'] == 'bs':
+            content = soup.select(rule['content_pattern']).pop()
+            content = str(content)
+
         else:
-            content = contents[0]
-            content = '<h1><a href="{}">{}</a></h1><br><br>'.format(blog.url, blog.title) + content
-            for src, dst in rule['content_replaces']:
-                content = re.sub(src, dst, content)
+            # 提取正文内容
+            content_pattern = rule['content_pattern']
+            contents = re.findall(content_pattern, html, re.DOTALL)
+            if len(contents) == 0:
+                content = ''
+            else:
+                content = contents[0]
+
+        content = '<h1><a href="{}">{}</a></h1><br><br>'.format(blog.url, blog.title) + content
+        for src, dst in rule['content_replaces']:
+            content = re.sub(src, dst, content)
         blog.content = content
         # print('正文:', content)
 
@@ -116,8 +136,22 @@ class BlogCrawler:
             md_content = re.sub(src, dst, md_content)
         # 加空格
         md_content = pangu.spacing_text(md_content)
+
+        # ** *
+        for star_line in re.findall('\*(.*?)\*', md_content):
+            md_content = md_content.replace('{}'.format(star_line), '{}'.format(star_line.strip()))
+        # 异常断行
+        md_content = re.sub('-\n', '-', md_content)
+
+        # 规范代码标签
+        #md_content = re.sub('[ ]```', '```', md_content)
+        
+
+        # 过滤非法字符
+        title = re.sub('[\/:*?"<>|]', '-', title)
         with open("blogs" + os.sep + title + '.md', 'w', encoding='utf-8') as f:
             f.write(md_content)
+            
         pass
 
     def load_config(self):
@@ -138,5 +172,6 @@ class BlogCrawler:
 
 
 blogCrawler = BlogCrawler()
-blogCrawler.run()
+while True:
+    blogCrawler.run()
 

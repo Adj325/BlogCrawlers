@@ -3,6 +3,8 @@
   "name": "简书",
   "author": "wujiechun",
   "vesion": "2020-06-27",
+  "encoding":"utf-8",
+  "content_type":"re",
   "title_pattern": "<h1 class=\"_1RuRku\">(.*?)</h1>",
   "content_pattern": "<article class=\"_2rhmJa\">(.*?)</article>",
   "content_replaces": [
