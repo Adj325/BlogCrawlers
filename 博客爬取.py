@@ -139,10 +139,21 @@ class BlogCrawler:
         md_content = self.fix_mdfile_code_format(md_content)
         # 修复断行
         md_content = self.fix_mdfile_wrong_line_break(md_content)
+        # 修复代码方法 () 前的多余空格
+        md_content = self.fix_mdfile_wrong_spacing(md_content)
+        
         with open("blogs" + os.sep + title + '.md', 'w', encoding='utf-8') as f:
             f.write(md_content)
         pass
 
+        
+    @staticmethod
+    def fix_mdfile_wrong_spacing(md_content):
+        words = re.findall('(\w+) \(', md_content)
+        for word in words:
+            md_content = md_content.replace('{} ('.format(word), '{}('.format(word))
+        else:
+            return md_content
     @staticmethod
     def fix_mdfile_wrong_line_break(md_content):
         links = re.findall('\[.*?\n.*?\]\(.*?://.*?\)', md_content)

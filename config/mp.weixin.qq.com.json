@@ -15,6 +15,9 @@
       "attrs": {"class": "rich_media_content"}
     }
   ],
-  "content_replaces":[],
+  "content_replaces":[
+	["data-src=\"", "src=\""],
+	["<figcaption.*?>.*?</figcaption>", ""]
+  ],
   "md_replaces": []
 }
