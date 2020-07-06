@@ -59,10 +59,11 @@ class BlogCrawler:
         # blog_url = 'https://segmentfault.com/a/1190000011105644'
         # blog_url = 'https://blog.51cto.com/yht1990/2503819'
         
-        #blog_url = 'https://zhuanlan.zhihu.com/p/28375308'
+        # blog_url = 'https://zhuanlan.zhihu.com/p/28375308'
         # blog_url = 'https://mp.weixin.qq.com/s/-zKO0TZPqhCB6nyuUyADUw'
         # blog_url = 'https://www.jb51.net/article/174387.htm'
-        # blog_url = 'https://juejin.im/post/5ef7328cf265da22a8513da2'
+        blog_url = 'https://juejin.im/post/5ef7328cf265da22a8513da2'
+        
         blog_url_host = self.get_host_from_url(blog_url)
         print('网站:', blog_url_host)
         blog = Blog()
@@ -240,7 +241,7 @@ class BlogCrawler:
                             lines[i] = lines[i][4::]
                         code_start_line_count = -1
                         code_end_line_count = -1
-                    elif cur_lines_count == len(lines) - 1 and lines[cur_lines_count + 1] == '':
+                    elif cur_lines_count == len(lines) - 2 and lines[cur_lines_count + 1] == '':
                         # 代码结束的标志1
                         code_end_line_count = cur_lines_count + 1
                         lines[code_start_line_count] = '```'

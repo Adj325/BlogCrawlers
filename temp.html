@@ -1,0 +1,666 @@
+<!DOCTYPE html><html lang=zh-Hans data-vue-meta-server-rendered><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"><meta name=google-site-verification content=cCHsgG9ktuCTgWgYfqCJql8AeR4gAne4DTZqztPoirE><meta name=google-site-verification content=nPvn9R5NJLsZKTv5VKIbn0OmkRcJ4PC6KdDoTX3n5Mw><meta name=apple-itunes-app content="app-id=987739104"><meta name=baidu-site-verification content=qiK2a1kcFc><meta name=360-site-verification content=4c3c7d57d59f0e1a308462fbc7fd7e51><meta name=sogou_site_verification content=c49WUDZczQ><style>body {
+        font-size: 16px;
+        line-height: 2;
+      }
+      a, button, input {
+        margin: 1rem 1.5rem;
+      }
+      img {
+        width: 0;
+        height: 0;
+      }
+      #juejin {
+        overflow-x: hidden;
+      }</style><meta data-vue-meta="true" data-vmid="keywords" name="keywords" content="前端"/><meta data-vue-meta="true" data-vmid="description" name="description" content="一、技术栈 我们先简单了解一下要搭建一个团队的 UI 组件库，会涉及到哪些技术栈： Create React App：官方支持的 CLI 脚手架，提供一个零配置的现代构建设置； React: 用于构建用户界面的 JavaScript 库； Ant Desig"/><title data-vue-meta="true">是时候搭建你们团队的 UI 组件库了 - 掘金</title><link rel=apple-touch-icon sizes=180x180 href=https://b-gold-cdn.xitu.io/favicons/v2/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://b-gold-cdn.xitu.io/favicons/v2/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://b-gold-cdn.xitu.io/favicons/v2/favicon-16x16.png><link rel=manifest href=https://b-gold-cdn.xitu.io/favicons/v2/manifest.json><link rel=mask-icon href=https://b-gold-cdn.xitu.io/favicons/v2/safari-pinned-tab.svg color=#5bbad5><link rel="shortcut icon" href=https://b-gold-cdn.xitu.io/favicons/v2/favicon.ico><meta name=msapplication-config content=https://b-gold-cdn.xitu.io/favicons/v2/browserconfig.xml><meta name=theme-color content=#ffffff><link rel=search title=掘金 href=https://b-gold-cdn.xitu.io/conf/search.xml type=application/opensearchdescription+xml><link rel=stylesheet href=https://b-gold-cdn.xitu.io/ionicons/2.0.1/css/ionicons.min.css><link rel=stylesheet href=https://b-gold-cdn.xitu.io/asset/fw-icon/1.0.9/iconfont.css><link href=https://b-gold-cdn.xitu.io/v3/static/css/0.11b43bbc7239c183359c.css rel=stylesheet></head><body><div id="juejin" data-server-rendered="true" data-v-2285b811><div class="global-component-box" data-v-2285b811><!----><!----><!----><!----><!----><div class="emoji-barrage" data-v-4e8b2894 data-v-2285b811><!----></div><!----><!----><div class="bind-phone-number-modal-box" data-v-70c421cc data-v-2285b811><div st:block="bindPhoneNumberModal" class="modal-mask" style="display:none;" data-v-70c421cc data-v-70c421cc></div><form class="bind-phone-number-form" style="display:none;" data-v-70c421cc data-v-70c421cc><i title="关闭" class="close-btn ion-close-round" data-v-70c421cc></i><h1 class="title" data-v-70c421cc>提示</h1><h2 class="hint" data-v-70c421cc>根据我国<a href="http://www.cac.gov.cn/2017-08/25/c_1121541842.htm" target="_blank" style="color:#007fff">《互联网跟帖评论服务管理规定》</a>，您需要绑定手机号后才可在掘金社区内发布内容。</h2><div class="input-group" data-v-70c421cc><div class="input-box" data-v-70c421cc><input maxlength="64" placeholder="请输入要绑定的手机号码" value="" class="input" data-v-70c421cc></div><!----><!----></div><button st:name="bindBtn" class="btn" data-v-70c421cc>绑定手机</button></form></div></div><!----><div class="view-container" data-v-575c8a08 data-v-0b1a4f9a data-v-2285b811><div class="main-header-box" data-v-575c8a08><header class="main-header main-header unauthorized visible" data-v-4c5e2361 data-v-575c8a08><div class="container" data-v-4c5e2361><a href="/" class="logo" data-v-4c5e2361><img src="https://b-gold-cdn.xitu.io/v3/static/img/logo.a7995ad.svg" alt="掘金" class="logo-img" data-v-4c5e2361><img src="https://b-gold-cdn.xitu.io/v3/static/img/simplify-logo.3e3c253.svg" alt="掘金" class="mobile" data-v-4c5e2361></a><nav role="navigation" class="main-nav" data-v-4c5e2361><ul class="nav-list" data-v-4c5e2361><li class="main-nav-list" data-v-4c5e2361><div class="phone-show-menu" data-v-4c5e2361><span data-v-4c5e2361>首页</span><div class="icon ion-arrow-down-b" data-v-4c5e2361></div></div><ul class="phone-hide" data-v-4c5e2361><li class="nav-item link-item route-active" data-v-4c5e2361><a href="/" data-v-4c5e2361>首页</a></li><li class="nav-item link-item activities" data-v-4c5e2361><a href="/pins" data-v-4c5e2361>沸点</a></li><li class="nav-item link-item" data-v-4c5e2361><a href="/topics" data-v-4c5e2361>话题</a></li><li class="nav-item link-item book" data-v-4c5e2361><a href="/books" data-v-4c5e2361>小册</a></li><li class="nav-item link-item" data-v-4c5e2361><a href="/events/all" data-v-4c5e2361>活动</a></li></ul></li><li class="nav-item search" data-v-4c5e2361><form role="search" class="search-form" data-v-4c5e2361><input type="search" maxlength="32" placeholder="搜索掘金" value="" class="search-input" data-v-4c5e2361><img src="https://b-gold-cdn.xitu.io/v3/static/img/juejin-search-icon.6f8ba1b.svg" alt="搜索" class="search-icon" data-v-4c5e2361></form></li><!----><!----><!----><li class="nav-item submit" data-v-4c5e2361><img src="https://b-gold-cdn.xitu.io/v3/static/img/submit-icon.53f4253.svg" class="icon" data-v-4c5e2361><span data-v-4c5e2361>写文章</span><!----></li><li class="nav-item auth" data-v-4c5e2361><span class="login" data-v-4c5e2361>登录</span><span class="register" data-v-4c5e2361>注册</span></li></ul></nav></div></header></div><main class="container main-container" style="max-width:;" data-v-575c8a08><div class="view column-view" data-v-575c8a08 data-v-0b1a4f9a><div class="main-area article-area shadow" data-v-575c8a08 data-v-0b1a4f9a><article itemscope="itemscope" itemtype="http://schema.org/Article" class="article" data-v-0b1a4f9a><meta itemprop="url" content="https://juejin.im/post/5ef7328cf265da22a8513da2"><meta itemprop="headline" content="是时候搭建你们团队的 UI 组件库了"><meta itemprop="keywords" content="前端"><meta itemprop="datePublished" content="2020-06-27T11:58:12.397Z"><meta itemprop="image" content="https://user-gold-cdn.xitu.io/2020/6/27/172f5a37a1f8c347?w=7360&amp;h=3906&amp;f=jpeg&amp;s=1764953"><div itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="name" content="辻目"><meta itemprop="url" content="https://juejin.im/user/5b63a08ee51d455d947199f4"></div><div itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="掘金"><div itemprop="logo" itemscope="itemscope" itemtype="https://schema.org/ImageObject"><meta itemprop="url" content="https://b-gold-cdn.xitu.io/icon/icon-white-180.png"><meta itemprop="width" content="180"><meta itemprop="height" content="180"></div></div><div class="author-info-block" data-v-0b1a4f9a><a href="/post/5ef7328cf265da22a8513da2" target="_blank" rel="" class="avatar-link" data-v-0b1a4f9a><div data-src="https://b-gold-cdn.xitu.io/v3/static/img/default-avatar.e30559a.svg" class="lazy avatar avatar" style="background-image:none;" data-v-e232e062 data-v-4bc4293a data-v-0b1a4f9a></div></a><div class="author-info-box" data-v-0b1a4f9a><a href="/post/5ef7328cf265da22a8513da2" target="_blank" rel="" class="username username ellipsis" data-v-b8de4708 data-v-0b1a4f9a><!----></a><div class="meta-box" data-v-0b1a4f9a><time datetime="2020-06-27T11:58:12.397Z" title="Sat Jun 27 2020 19:58:12 GMT+0800 (China Standard Time)" class="time" data-v-0b1a4f9a>2020年06月27日</time><span class="views-count" data-v-0b1a4f9a>阅读 14566</span><!----></div></div><!----></div><div data-src="https://user-gold-cdn.xitu.io/2020/6/27/172f5a37a1f8c347?imageView2/1/w/1304/h/734/q/85/interlace/1" class="lazy thumb article-hero" style="background-image:none;background-size:cover;" data-v-e232e062 data-v-02a6947c data-v-0b1a4f9a></div><h1 class="article-title" data-v-0b1a4f9a>是时候搭建你们团队的 UI 组件库了</h1><div data-id="5ef734545188252e937bcf44" itemprop="articleBody" class="article-content" data-v-0b1a4f9a><h2 class="heading" data-id="heading-0">一、技术栈</h2>
+<p>我们先简单了解一下要搭建一个团队的 UI 组件库，会涉及到哪些技术栈：</p>
+<ul>
+<li>Create React App：官方支持的 CLI 脚手架，提供一个零配置的现代构建设置；</li>
+<li>React: 用于构建用户界面的 JavaScript 库；</li>
+<li>Ant Design：一套企业级 UI 设计语言和 React 组件库；</li>
+<li>Storybook: 辅助 UI 控件开发的工具，通过story创建独立的控件，让每个控件开发都有一个独立的开发调试环境；</li>
+<li>TypeScript：2020 最火的前端语言，是JavaScript类型的超集；</li>
+<li>ESLint &amp;&amp; husky：统一团队代码风格；</li>
+<li>Jest：JavaScript 测试框架，用于组件库的单元测试；</li>
+<li>Travis CI: 提供持续集成服务，用于进行项目的持续集成以及持续部署；</li>
+</ul>
+<h2 class="heading" data-id="heading-1">二、项目准备</h2>
+<h3 class="heading" data-id="heading-2">2.1 创建组件库的工程环境</h3>
+<p>使用 <code>Create React App</code> 创建 UI 组件库的前端工程环境。</p>
+<blockquote>
+<p>npx create-react-app ii-admin-base --typescript</p>
+</blockquote>
+<h3 class="heading" data-id="heading-3">2.2 安装 Storybook</h3>
+<p>采用自动方式安装 Storybook，命令如下：</p>
+<blockquote>
+<p>npx -p @storybook/cli sb init --type react_scripts</p>
+</blockquote>
+<ul>
+<li>参数 <code>react_scripts</code> 用来告诉 Storybook 当前项目使用 <code>Create React App</code> 创建的，Storybook会根据该参数来自动安装合适的包。</li>
+</ul>
+<h3 class="heading" data-id="heading-4">2.3 安装 Storybook 插件</h3>
+<h4 class="heading" data-id="heading-5">2.3.1 <code>addon-info</code> 插件</h4>
+<p><code>addon-info</code> 插件会自动识别组件传递的 props 生成表格。</p>
+<blockquote>
+<p>yarn add @storybook/addon-info -D
+yarn add @types/storybook__addon-info -D</p>
+</blockquote>
+<h2 class="heading" data-id="heading-6">三、配置 Storybook</h2>
+<p>在配置 Storybook 之前，先简单了解下 stories 的加载流程。</p>
+<p>stories 的加载是在 <code>.storybook/main.js</code> 或 <code>.storybook/preview.js</code> 这两个文件中进行。加载 stories 的最简便方式是按文件名进行加载。假设你的 stories 文件位于 <code>src/components</code> 目录，则可以通过如下方式进行加载：</p>
+<pre><code class="hljs javascript copyable" lang="javascript"><span class="hljs-comment">// .storybook/main.js</span>
+
+<span class="hljs-built_in">module</span>.exports = {
+  <span class="hljs-attr">stories</span>: [<span class="hljs-string">'../src/components/**/*.stories.js'</span>],
+};
+<span class="copy-code-btn">复制代码</span></code></pre><p>或者可以在 <code>.storybook/preview.js</code>  中加载所有的 <code>stories</code> ：</p>
+<pre><code class="hljs javascript copyable" lang="javascript"><span class="hljs-keyword">import</span> { configure } <span class="hljs-keyword">from</span> <span class="hljs-string">'@storybook/react'</span>;
+
+configure(<span class="hljs-built_in">require</span>.context(<span class="hljs-string">'../src/components'</span>, <span class="hljs-literal">true</span>, /\.stories\.js$/), <span class="hljs-built_in">module</span>);
+<span class="copy-code-btn">复制代码</span></code></pre><blockquote>
+<p>注意：在 <code>.storybook/preview.js</code> 文件中，只能调用一次 <code>configure</code> 函数。</p>
+</blockquote>
+<p><code>configure</code> 函数接收参数为：</p>
+<ul>
+<li>单个 require.context “req”</li>
+<li>从多个地方加载文件的 “req”s 数组；</li>
+<li>返回值是 <code>void</code> 或 <code>an array of module exports</code> 的加载函数；</li>
+</ul>
+<p>如果想从多个地方进行加载，可采用数组方式，如下所示：</p>
+<pre><code class="hljs javascript copyable" lang="javascript"><span class="hljs-keyword">import</span> { configure } <span class="hljs-keyword">from</span> <span class="hljs-string">'@storybook/react'</span>;
+
+configure(
+  [
+    <span class="hljs-built_in">require</span>.context(<span class="hljs-string">'../src/components'</span>, <span class="hljs-literal">true</span>, /\.stories\.js$/),
+    <span class="hljs-built_in">require</span>.context(<span class="hljs-string">'../lib'</span>, <span class="hljs-literal">true</span>, /\.stories\.js$/),
+  ],
+  <span class="hljs-built_in">module</span>
+);
+<span class="copy-code-btn">复制代码</span></code></pre><p><strong>注：</strong></p>
+<p>如果想引入一个文件夹下面的所有文件，或者引入能匹配一个正则表达式的所有文件，可以使用函数<code>require.context()</code>。<code>require.context()</code> 函数有 3 个参数：</p>
+<ul>
+<li>要搜索的文件夹目录；</li>
+<li>是否还应该搜索它的子目录；</li>
+<li>以及一个匹配文件的正则表达式；</li>
+</ul>
+<h3 class="heading" data-id="heading-7">3.1 配置 stories 显示顺序</h3>
+<p>若想改变 stories 的显示顺序，该如何操作？示例如下，将 <code>welcome.stories.tsx</code> 先添加至数组中，从而改变 stories 的显示顺序：</p>
+<pre><code class="hljs typescript copyable" lang="typescript"><span class="hljs-keyword">import</span> { configure } <span class="hljs-keyword">from</span> <span class="hljs-string">'@storybook/react'</span>;
+
+<span class="hljs-comment">// 将 welcome 文档说明置于顶部</span>
+<span class="hljs-keyword">const</span> loaderFn = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  <span class="hljs-keyword">const</span> allExports = [<span class="hljs-built_in">require</span>(<span class="hljs-string">'../src/welcome.stories.tsx'</span>)];
+  <span class="hljs-keyword">const</span> req = <span class="hljs-built_in">require</span>.context(<span class="hljs-string">'../src/components'</span>, <span class="hljs-literal">true</span>, <span class="hljs-regexp">/\.stories\.tsx$/</span>);
+  req.keys().forEach(<span class="hljs-function">(<span class="hljs-params">fname</span>) =&gt;</span> allExports.push(req(fname)));
+
+  <span class="hljs-keyword">return</span> allExports;
+};
+
+<span class="hljs-comment">// automatically import all files ending in *.stories.tsx</span>
+configure(loaderFn, <span class="hljs-keyword">module</span>);
+<span class="copy-code-btn">复制代码</span></code></pre><h3 class="heading" data-id="heading-8">3.2 支持 Typescript</h3>
+<p>要搭建的基础组件库是基于 Typescript 进行编写的，因此还需添加 Typescript 支持。配置 <code>./storybook/main.js</code> 文件，内容如下：</p>
+<pre><code class="hljs typescript copyable" lang="typescript">  webpackFinal: <span class="hljs-keyword">async</span> (config) =&gt; {
+    config.module.rules.push({
+      test: <span class="hljs-regexp">/\.(ts|tsx)$/</span>,
+      use: [
+        {
+          loader: <span class="hljs-built_in">require</span>.resolve(<span class="hljs-string">'babel-loader'</span>),
+          options: {
+            presets: [<span class="hljs-built_in">require</span>.resolve(<span class="hljs-string">'babel-preset-react-app'</span>)],
+          },
+        },
+      ],
+    });
+
+    <span class="hljs-keyword">return</span> config;
+  }
+<span class="copy-code-btn">复制代码</span></code></pre><h3 class="heading" data-id="heading-9">3.3 配置 less</h3>
+<p>要搭建的基础组件库是基于 Ant Design 做的二次封装，因此就不得不支持 less。针对 less，配置 <code>./storybook/main.js</code> 文件，内容如下：</p>
+<pre><code class="hljs typescript copyable" lang="typescript"> <span class="hljs-comment">// .storybook/main.js</span>
+
+ webpackFinal: <span class="hljs-keyword">async</span> (config) =&gt; {
+    config.module.rules.push({
+      test: <span class="hljs-regexp">/\.(ts|tsx)$/</span>,
+      use: [
+        {
+          loader: <span class="hljs-built_in">require</span>.resolve(<span class="hljs-string">'babel-loader'</span>),
+          options: {
+            presets: [<span class="hljs-built_in">require</span>.resolve(<span class="hljs-string">'babel-preset-react-app'</span>)],
+          },
+        },
+      ],
+    });
+
+    config.module.rules.push({
+      test: <span class="hljs-regexp">/\.less$/</span>,
+      loaders: [
+        <span class="hljs-string">'style-loader'</span>,
+        <span class="hljs-string">'css-loader'</span>,
+        {
+          loader: <span class="hljs-string">'less-loader'</span>,
+          options: {
+            lessOptions: {
+              javascriptEnabled: <span class="hljs-literal">true</span>,
+            },
+          },
+        },
+      ],
+      include: [path.resolve(__dirname, <span class="hljs-string">'../src'</span>), <span class="hljs-regexp">/[\\/]node_modules[\\/].*antd/</span>],
+    });
+
+    <span class="hljs-keyword">return</span> config;
+  },
+<span class="copy-code-btn">复制代码</span></code></pre><p>完成上述内容配置，发现导入的 less 文件<strong>不生效</strong>。针对这一问题，进行了以下几点排查。</p>
+<p><strong>问题1：</strong><br>
+如果 <code>less-loader</code> 版本是 6.0 以上，则如下配置会<strong>报错</strong>：</p>
+<pre><code class="hljs typescript copyable" lang="typescript">{
+  loader: <span class="hljs-string">"less-loader"</span>,
+  options: {
+    javascriptEnabled: <span class="hljs-literal">true</span>
+  }
+}
+<span class="copy-code-btn">复制代码</span></code></pre><p>需修改成：</p>
+<pre><code class="hljs typescript copyable" lang="typescript"> {
+   loader: <span class="hljs-string">'less-loader'</span>,
+     options: {
+       lessOptions: {
+         javascriptEnabled: <span class="hljs-literal">true</span>,
+       },
+     },
+ }
+<span class="copy-code-btn">复制代码</span></code></pre><p><strong>问题2：</strong><br>
+storybook 5.3.0 与 storybook 5.2.x 存在一些差异，见<a target="_blank" href="https://github.com/storybookjs/presets/tree/master/packages/preset-create-react-app" rel="nofollow noopener noreferrer">参考链接</a>。cra(create-react-app)的 file-loader 会拦截所有其他文件，导致less 文件不能进入less-loader中。针对这一问题，需配置 @storybook/preset-create-react-app，配置内容如下：</p>
+<pre><code class="hljs javascript copyable" lang="javascript">{
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'@storybook/preset-create-react-app'</span>,
+    <span class="hljs-attr">options</span>: {
+      <span class="hljs-attr">craOverrides</span>: {
+        <span class="hljs-attr">fileLoaderExcludes</span>: [<span class="hljs-string">'less'</span>],
+      },
+  },
+}
+<span class="copy-code-btn">复制代码</span></code></pre><p><strong>问题3：</strong><br>
+此次搭建的基础组件库是基于 Ant Design 做的二次封装，再对 Ant Design 组件进行引用时，发现样式不生效。针对这一问题，可以在 <code>preview.tsx</code> 进行如下配置：</p>
+<pre><code class="hljs typescript copyable" lang="typescript"><span class="hljs-keyword">import</span> { configure } <span class="hljs-keyword">from</span> <span class="hljs-string">'@storybook/react'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'antd/dist/antd.less'</span>    <span class="hljs-comment">// 引入 antd 样式</span>
+<span class="copy-code-btn">复制代码</span></code></pre><h3 class="heading" data-id="heading-10">3.4 添加全局装饰器</h3>
+<p>启动 Storybook，会发现右侧 stories 内容紧靠着左侧菜单栏，整体感觉非常紧凑、不美观。针对这种情况通常可以通过添加 padding 来解决。那么该如何让 padding 对 Storybook 中的所有 stories 进行生效呢？这个时候就需使用到全局装饰器。
+</p><figure><img alt="企业微信20200620091122.png" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2020/6/27/172f59d67ded24f1?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="312"><figcaption></figcaption></figure>
+在 <code>.storybook</code>&nbsp;目录下，创建全局装饰器，如下所示：<p></p>
+<pre><code class="hljs typescript copyable" lang="typescript">// .storybook/decorators/WrapperDecorator/index.tsx
+
+import React from 'react';
+
+const wrapperStyle: React.CSSProperties = {
+  padding: '20px 40px',
+};
+
+// 创建一个样式包裹的装饰器
+const WrapperDecorator = (storyFn) =&gt; &lt;div style={wrapperStyle}&gt;{storyFn()}&lt;/div&gt;;
+
+export default WrapperDecorator;
+<span class="copy-code-btn">复制代码</span></code></pre><p>然后在 preview.tsx 添加该装饰器即可。</p>
+<pre><code class="hljs typescript copyable" lang="typescript"><span class="hljs-comment">// .storybook/preview.tsx </span>
+
+<span class="hljs-keyword">import</span> { addDecorator, configure } <span class="hljs-keyword">from</span> <span class="hljs-string">'@storybook/react'</span>;
+<span class="hljs-keyword">import</span> WrapperDecorator <span class="hljs-keyword">from</span> <span class="hljs-string">'./decorators/WrapperDecorator'</span>;
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">'antd/dist/antd.less'</span>;
+
+<span class="hljs-comment">// 通过addDecorator添加插件</span>
+addDecorator(WrapperDecorator);
+<span class="copy-code-btn">复制代码</span></code></pre><p>最后效果如下所示。
+</p><figure><img alt="WX20200620-092009.png" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2020/6/27/172f59d67e86d888?imageView2/0/w/1280/h/960/ignore-error/1" data-width="863" data-height="242"><figcaption></figcaption></figure><p></p>
+<h2 class="heading" data-id="heading-11">四、组件开发</h2>
+<h3 class="heading" data-id="heading-12">4.1 验证码输入组件</h3>
+<p>此次要示例的验证码输入组件是一个带验证码发送功能的 Input 组件，如下图所示。
+</p><figure><img alt="Kapture 2020-06-27 at 9.55.02.gif" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2020/6/27/172f59d67e7f1407?imageslim" data-width="477" data-height="72"><figcaption></figcaption></figure>
+整个组件是在 Ant Design 的 Input 组件上进行的二次开发，详细代码如下图示所示：<p></p>
+<pre><code class="hljs javascript copyable" lang="javascript"><span class="hljs-keyword">import</span> React, { useState, FC } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> { Input } <span class="hljs-keyword">from</span> <span class="hljs-string">'antd'</span>;
+<span class="hljs-keyword">import</span> { InputProps } <span class="hljs-keyword">from</span> <span class="hljs-string">'antd/lib/input'</span>;
+<span class="hljs-keyword">import</span> classNames <span class="hljs-keyword">from</span> <span class="hljs-string">'classnames'</span>;
+
+<span class="hljs-keyword">export</span> interface InputVerifyProps extends InputProps {
+  <span class="hljs-comment">/** 发送验证码接口函数 */</span>
+  sendCode: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-keyword">void</span>;
+  <span class="hljs-comment">/** 倒计时时间 */</span>
+  countDown?: number;
+  <span class="hljs-comment">/** 初始验证码文本内容 */</span>
+  initCodeText?: string;
+  <span class="hljs-comment">/** 重新发送验证码文本内容 */</span>
+  reCodeText?: string;
+  <span class="hljs-comment">/** 验证码类名 */</span>
+  codeClassname?: string;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> InputVerify: FC&lt;InputVerifyProps&gt; = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> { sendCode, countDown, initCodeText, reCodeText, codeClassname, ...restProps } = props;
+
+  <span class="hljs-keyword">const</span> [codeText, setCodeText] = useState(initCodeText);
+  <span class="hljs-keyword">const</span> [codeStatus, setCodeStatus] = useState(<span class="hljs-literal">false</span>);
+  
+  <span class="hljs-keyword">const</span> handleCountDown = <span class="hljs-function">(<span class="hljs-params">timer: ReturnType&lt;<span class="hljs-keyword">typeof</span> setTimeout&gt; | <span class="hljs-literal">null</span>, count: number</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (timer) {
+      clearTimeout(timer);
+    }
+
+    <span class="hljs-keyword">if</span> (count &lt;= <span class="hljs-number">0</span>) {
+      setCodeText(reCodeText);
+      setCodeStatus(<span class="hljs-literal">false</span>);
+    } <span class="hljs-keyword">else</span> {
+      setCodeText(<span class="hljs-string">`<span class="hljs-subst">${count}</span> s`</span>);
+
+      <span class="hljs-keyword">const</span> newTimer: ReturnType&lt;<span class="hljs-keyword">typeof</span> setTimeout&gt; = setTimeout(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+        handleCountDown(newTimer, count - <span class="hljs-number">1</span>);
+      }, <span class="hljs-number">1000</span>);
+    }
+  };
+
+  <span class="hljs-keyword">const</span> handleCodeClick = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+    <span class="hljs-keyword">if</span> (codeStatus) <span class="hljs-keyword">return</span>;
+
+    sendCode &amp;&amp; sendCode();
+    setCodeStatus(<span class="hljs-literal">true</span>);
+    handleCountDown(<span class="hljs-literal">null</span>, countDown <span class="hljs-keyword">as</span> number);
+  };
+
+  <span class="hljs-keyword">const</span> codeCls = classNames(<span class="hljs-string">'ii-verify-button'</span>, codeClassname, {
+    <span class="hljs-string">'ii-verify-button-disabled'</span>: codeStatus,
+  });
+
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Input</span>
+      <span class="hljs-attr">data-testid</span>=<span class="hljs-string">"test-input-verify"</span>
+      {<span class="hljs-attr">...restProps</span>}
+      <span class="hljs-attr">suffix</span>=<span class="hljs-string">{</span>
+        &lt;<span class="hljs-attr">span</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{codeCls}</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{handleCodeClick}</span>&gt;</span>
+          {codeText}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+      }
+    /&gt;
+  );
+};
+
+InputVerify.defaultProps = {
+  countDown: 60,
+  initCodeText: '发送验证码',
+  reCodeText: '重新发送',
+};
+
+export default InputVerify;
+</span><span class="copy-code-btn">复制代码</span></code></pre><h3 class="heading" data-id="heading-13">4.2 添加单元测试</h3>
+<p>完成组件开发任务后，接下来就需添加单元测试。针对验证码输入组件，单元测试主要分两个方面，一方面测试 antd 原生 Input 组件是否正常工作，另一方面则是测试验证码输入组件是否正常工作。</p>
+<pre><code class="hljs javascript copyable" lang="javascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> { render, fireEvent, wait, RenderResult } <span class="hljs-keyword">from</span> <span class="hljs-string">'@testing-library/react'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'@testing-library/jest-dom'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'@testing-library/jest-dom/extend-expect'</span>;
+<span class="hljs-keyword">import</span> InputVerify, { InputVerifyProps } <span class="hljs-keyword">from</span> <span class="hljs-string">'./InputVerify'</span>;
+
+<span class="hljs-keyword">const</span> antdProps: InputVerifyProps = {
+  <span class="hljs-attr">placeholder</span>: <span class="hljs-string">'antd input placeholder'</span>,
+  <span class="hljs-attr">size</span>: <span class="hljs-string">'large'</span>,
+  <span class="hljs-attr">sendCode</span>: jest.fn(),
+  <span class="hljs-attr">onPressEnter</span>: jest.fn(),
+  <span class="hljs-attr">onChange</span>: jest.fn(),
+};
+
+<span class="hljs-keyword">const</span> selfProps: InputVerifyProps = {
+  <span class="hljs-attr">countDown</span>: <span class="hljs-number">3</span>,
+  <span class="hljs-attr">initCodeText</span>: <span class="hljs-string">'发送验证码'</span>,
+  <span class="hljs-attr">reCodeText</span>: <span class="hljs-string">'再次发送'</span>,
+  <span class="hljs-attr">sendCode</span>: jest.fn(),
+};
+
+<span class="hljs-keyword">let</span> wrapper: RenderResult, <span class="hljs-attr">inputElement</span>: HTMLInputElement;
+
+describe(<span class="hljs-string">"Test InputVerify component on the props of antd's input component"</span>, () =&gt; {
+  beforeEach(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+    wrapper = render(&lt;InputVerify {...antdProps} /&gt;);
+    inputElement = wrapper.getByTestId('test-input-verify') as HTMLInputElement;
+  });
+
+  it("should have the input's class of antd", () =&gt; {
+    expect(inputElement).toBeInTheDocument();
+    expect(inputElement).toHaveClass('ant-input');
+  });
+
+  it('should support size', () =&gt; {
+    expect(inputElement).toHaveClass('ant-input-lg');
+  });
+
+  it('should trigger onChange event correctly', () =&gt; {
+    fireEvent.change(inputElement, { target: { value: 'input test' } });
+    expect(antdProps.onChange).toHaveBeenCalled();
+    expect(inputElement.value).toEqual('input test');
+  });
+});
+
+describe("Test InputVerify component on the self's props", () =&gt; {
+  beforeEach(() =&gt; {
+    wrapper = render(&lt;InputVerify {...selfProps} /&gt;);
+  });
+
+  it('should render the correct InputVerify component', () =&gt; {
+    const suffixElement = wrapper.getByText('发送验证码');
+
+    expect(suffixElement).toBeInTheDocument();
+    expect(suffixElement).toHaveClass('ii-verify-button');
+  });
+
+  it('click verify button should call the right callback ', async () =&gt; {
+    const suffixElement = wrapper.getByText('发送验证码');
+
+    fireEvent.click(suffixElement);
+    expect(selfProps.sendCode).toHaveBeenCalled();
+
+    await wait(
+      () =&gt; {
+        expect(wrapper.getByText('再次发送')).toBeInTheDocument();
+      },
+      { timeout: 4000 }
+    );
+  });
+});
+
+<span class="copy-code-btn">复制代码</span></code></pre><h3 class="heading" data-id="heading-14">4.3 组件说明文档</h3>
+<p>当开发完单个组件，还需添加相应的文档说明，告诉其他人该如何使用这个组件。</p>
+<h4 class="heading" data-id="heading-15">4.3.1 自动生成说明文档</h4>
+<p>如果想通过注释方式来自动生成组件的说明文档，这个时候就需借助 <code>react-docgen</code> 插件。由于 <code>@storybook/addon-info</code>依赖包对 <code>react-docgen</code>  插件已进行了集成，所以编写注释的时候只需按照 <a target="_blank" href="https://jsdoc.app/about-getting-started.html" rel="nofollow noopener noreferrer">JSDoc</a> 标准来编写就会生成相应的说明文档。</p>
+<pre><code class="hljs typescript copyable" lang="typescript"><span class="hljs-comment">/**
+ * 带验证码功能的输入组件，适用于要发送验证码的场景。
+ *
+ * ## 引用方法
+ *
+ * ~~~javascript
+ * import { InputVerfiy } from 'ii-admin-base'
+ * ~~~
+ */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> InputVerify: FC&lt;InputVerifyProps&gt; = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
+<span class="copy-code-btn">复制代码</span></code></pre><p><strong>注意：</strong>
+<code>react-docgen</code> 插件要求组件还需通过 <code>export</code> 方式进行导出。</p>
+<h4 class="heading" data-id="heading-16">4.3.2 过滤 Prop Types</h4>
+<p><code>@storybook/addon-info</code> 插件在自动生成 Prop Types 的说明文档时，会连组件继承的 Props 也自动生成，这里面不仅包括了第三方依赖包携带的 props，还可能包括 HTML 元素的原生 Props。若要过滤这些 Props，就需借助依赖包 <code>react-docgen-typescript-loader</code>。</p>
+<p>先安装该依赖：</p>
+<blockquote>
+<p>yarn add react-docgen-typescript-loader -D</p>
+</blockquote>
+<p>然后配置 <code>main.js</code>文件，配置内容如下：</p>
+<pre><code class="hljs typescript copyable" lang="typescript"><span class="hljs-comment">// .storybook/main.js</span>
+
+config.module.rules.push({
+  test: <span class="hljs-regexp">/\.(ts|tsx)$/</span>,
+  use: [
+    {
+      loader: <span class="hljs-built_in">require</span>.resolve(<span class="hljs-string">'babel-loader'</span>),
+      options: {
+        presets: [<span class="hljs-built_in">require</span>.resolve(<span class="hljs-string">'babel-preset-react-app'</span>)],
+      },
+    },
+    <span class="hljs-comment">// 过滤 node_modules 中的 props</span>
+    {
+      loader: <span class="hljs-built_in">require</span>.resolve(<span class="hljs-string">'react-docgen-typescript-loader'</span>),
+      options: {
+        <span class="hljs-comment">// 将枚举或者联合类型转换成字符串形式，避免字符串字面量显示别名。</span>
+        shouldExtractLiteralValuesFromEnum: <span class="hljs-literal">true</span>,
+        <span class="hljs-comment">// 避免显示原生内置属性</span>
+        propFilter: <span class="hljs-function">(<span class="hljs-params">prop</span>) =&gt;</span> {
+          <span class="hljs-keyword">if</span> (prop.parent) {
+            <span class="hljs-keyword">return</span> !prop.parent.fileName.includes(<span class="hljs-string">'node_modules'</span>);
+          }
+
+          <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        },
+      },
+    },
+  ],
+});
+<span class="copy-code-btn">复制代码</span></code></pre><p><strong>注意：</strong></p>
+<p>在使用最新的 Storybook v5.3.19 版本时，发现上述配置并不生效。针对这一问题，可以将 Storybook 版本降至 5.3.18 来进行规避。
+</p><figure><img alt="WX20200620-165852.png" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2020/6/27/172f59d67fc56c84?imageView2/0/w/1280/h/960/ignore-error/1" data-width="382" data-height="194"><figcaption></figcaption></figure><p></p>
+<h2 class="heading" data-id="heading-17">五、构建及测试</h2>
+<h3 class="heading" data-id="heading-18">5.1 打包构建</h3>
+<h4 class="heading" data-id="heading-19">5.1.1 创建组件库的模块入口文件</h4>
+<p>在 <code>src/index.tsx</code> 文件中将所有组件都导入，再导出。这样就可以从入口文件直接导入所有组件。</p>
+<pre><code class="hljs javascript copyable" lang="javascript"><span class="hljs-keyword">export</span> { <span class="hljs-keyword">default</span> <span class="hljs-keyword">as</span> InputVerfiy } <span class="hljs-keyword">from</span> <span class="hljs-string">'./components/InputVerify'</span>;
+<span class="copy-code-btn">复制代码</span></code></pre><h4 class="heading" data-id="heading-20">5.1.2 编译 TS 文件</h4>
+<p>使用 CRA(Create-React-App) 默认会创建一个 <code>tsconfig.json</code> 文件，该配置文件是与开发环境相关的。要针对组件库进行打包编译，并生成标准的 ES modules，还需单独创建一个 <code>tsconfig.build.json</code> 文件。</p>
+<pre><code class="hljs json copyable" lang="json">/**
+ * 用于最后打包编译
+ */
+{
+  "compilerOptions": {
+    // 文件输出目录
+    "outDir": "dist",
+    // ESNext: 是标准的ES Modules形式
+    "module": "esnext",
+    // 指定编译以后符合什么样的ES标准
+    "target": "es5",
+    // 为每一个js文件生成一个对应的.d.ts类型文件，方便使用组件库的用户可以获得类型检查和ts提示
+    "declaration": true,
+    // jsx 是一种语法糖，是React.createElement的缩写。此处置为react，编译出来的文件就可以用React.createElement来代替JSX语法的过程
+    "jsx": "react",
+    // tsc 处理模块的方式和node不一样，默认处理方式是"classic"，针对绝对路径有的时候会找不到文件(一直向上找文件)，所以需设置成'node'。
+    "moduleResolution": "node",
+    // 默认不支持 import React from 'react'，只支持 import * as React from 'react'
+    "allowSyntheticDefaultImports": true
+  },
+  // 要编译哪些文件
+  "include": ["src"],
+  "exclude": ["src/**/*.test.tsx", "src/**/*.stories.tsx"]
+}
+
+<span class="copy-code-btn">复制代码</span></code></pre><p>然后在 <code>package.json</code> 文件中添加 <code>build:ts</code> 脚本，用于将 TS 文件编译成 ES modules 文件。</p>
+<blockquote>
+<p>"build:ts": "tsc -p tsconfig.build.json",</p>
+</blockquote>
+<h4 class="heading" data-id="heading-21">5.1.3 编译 less 文件</h4>
+<p>在 <code>package.json</code> 文件中添加 <code>build:css</code> 脚本，用于将 less 文件编译成 css 。</p>
+<blockquote>
+<p>"build:css": "lessc ./src/styles/index.less ./dist/index.css"</p>
+</blockquote>
+<h4 class="heading" data-id="heading-22">5.1.4 配置最终构建脚本</h4>
+<p>在 package.json 中配置最终的构建脚本 <code>build</code>，如下所示：</p>
+<pre><code class="hljs json copyable" lang="json"> "clean": "rimraf ./dist",
+ "build:ts": "tsc -p tsconfig.build.json",
+ "build:css": "lessc ./src/styles/index.less ./dist/index.css",
+ "build": "npm run clean &amp;&amp; npm run build:ts &amp;&amp; npm run build:css",
+<span class="copy-code-btn">复制代码</span></code></pre><ul>
+<li>使用 <code>rimraf</code> 来完成跨平台文件的删除；</li>
+</ul>
+<h3 class="heading" data-id="heading-23">5.2 本地测试组件库</h3>
+<h4 class="heading" data-id="heading-24">5.2.1 添加入口文件</h4>
+<p>在进行本地组件库测试之前，还需添加组件库的入口文件。配置 <code>package.json</code> 文件，添加如下字段：</p>
+<pre><code class="hljs json copyable" lang="json">"main": "dist/index.js",
+"module": "dist/index.js",
+"types": "dist/index.d.ts",
+<span class="copy-code-btn">复制代码</span></code></pre><p>其中：</p>
+<ul>
+<li><code>main</code> 字段：定义了 <code>npm</code> 包的入口文件；</li>
+<li><code>module</code> 字段：定义了 <code>npm</code> 包的 ES6 模块规范的入口文件；</li>
+</ul>
+<p><strong>注：</strong>
+此处使用 <code>main</code> 字段和 <code>module</code> 字段，相当于在一个包内同时发布了两种模块规范的版本。当打包工具遇到我们的模块时：</p>
+<ol>
+<li>如果它已经支持 pkg.module 字段则会优先使用 ES6 模块规范的版本，这样可以启用 Tree Shaking 机制；</li>
+<li>如果它还不识别 pkg.module 字段则会使用我们已经编译成 CommonJS 规范的版本，也不会阻碍打包流程。</li>
+</ol>
+<h4 class="heading" data-id="heading-25">5.2.2 使用 <code>npm link</code> 测试本地组件库</h4>
+<p>在组件库目录下，运行 <code>npm link</code> 命令，即创建软链接到全局的 node_modules 下。</p>
+<blockquote>
+<p>/Users/xxx/.nvm/versions/node/v12.14.0/lib/node_modules/ii-admin-base -&gt; /Users/xxx/Job/ii-admin-base</p>
+</blockquote>
+<p>在项目外层，创建一个测试目录 <code>test-ii-admin-base</code>，然后在该目录下运行 <code>npm link ii-admin-base</code> 命令，将测试目录的组件库 <code>ii-admin-base</code> 链接到全局：</p>
+<blockquote>
+<p><strong>➜ test-ii-admin-base</strong> npm link ii-admin-base
+/Users/xxx/Job/test-ii-admin-base/node_modules/ii-admin-base -&gt; /Users/xxx/.nvm/versions/node/v12.14.0/lib/node_modules/ii-admin-base -&gt; /Users/xxx/Job/ii-admin-base</p>
+</blockquote>
+<p>然后修改测试目录 <code>test-ii-admin-base</code> 的 package.json文件，手动添加依赖：</p>
+<pre><code class="hljs json copyable" lang="json"> "dependencies": {
+    ...,
+    "ii-admin-base": "0.1.0"
+<span class="copy-code-btn">复制代码</span></code></pre><p>这样就可以在测试目录中引用组件库 <code>ii-admin-base</code>。</p>
+<pre><code class="hljs javascript copyable" lang="javascript"><span class="hljs-keyword">import</span> { InputVerfiy } <span class="hljs-keyword">from</span> <span class="hljs-string">'ii-admin-base'</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">'ii-admin-base/dist/index.css'</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">'antd/dist/antd.css'</span>
+<span class="copy-code-btn">复制代码</span></code></pre><p><strong>注：</strong>
+如果在测试的过程中，报如下错误：
+</p><figure><img alt="企业微信20200626052311.png" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2020/6/27/172f59d680436000?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="259"><figcaption></figcaption></figure>
+这是因为我们开发组件库时使用了一个React版本，测试目录又使用了一个React版本，当一个项目中如果出现多个 React 版本就会报上述错误。针对这种情况，只需要在组件库目录下运行如下命令: <code>npm link ../test-ii-admin-base/node_modules/react</code> , 即将组件库的 react 版本链接到测试组件目录下，然后重新运行项目即可。<p></p>
+<h2 class="heading" data-id="heading-26">六、发布至 NPM</h2>
+<h3 class="heading" data-id="heading-27">6.1 登录 NPM 账号</h3>
+<p>先切换官方镜像源。</p>
+<blockquote>
+<p>npm config set registry <a target="_blank" href="http://registry.npmjs.org/" rel="nofollow noopener noreferrer">registry.npmjs.org/</a></p>
+</blockquote>
+<p>检测当前账号是否登录：</p>
+<blockquote>
+<p>npm whoami</p>
+</blockquote>
+<p>如果未登录，则使用 <code>npm adduser</code> 进行账号登录。</p>
+<h3 class="heading" data-id="heading-28">6.2 发布至 NPM</h3>
+<h4 class="heading" data-id="heading-29">6.2.1 添加描述信息</h4>
+<p>在发布到 NPM 之前，还需配置 <code>package.json</code> 文件，添加一些必要的描述信息：</p>
+<pre><code class="hljs json copyable" lang="json">{
+  "name": "ii-admin-base",
+  "version": "0.1.0",
+  "private": false,
+  "description": "A library of react components, which mainly stores components that can be reused by all business lines of AI-Indeeded Company.",
+  "author": "ShiMu",
+  "license": "MIT",
+  "keywords": [
+    "React",
+    "Component"
+  ],
+  "homepage": "https://lagrangelabs.github.io/ii-admin-base",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LagrangeLabs/ii-admin-base.git"
+  },
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public",
+    "prepublishOnly": "npm run build"
+  },
+  ...
+}
+<span class="copy-code-btn">复制代码</span></code></pre><p>其中：</p>
+<ul>
+<li>将 <code>private</code> 字段置为 <code>false</code> , 表示非私有包；</li>
+<li>添加 <code>description</code> 、 <code>author</code> 、 <code>license</code> 、 <code>keywords</code> 等相关字段;</li>
+<li>添加 <code>homepage</code> 字段，即项目主页URL；</li>
+<li>添加 <code>repository</code> 字段，即项目仓库地址URL；</li>
+<li>添加 <code>files</code> 字段，表示要将哪些文件上传到 npm 上去。如果什么都不写，则默认会使用 <code>.gitignore</code> 里面的信息。但要注意，不管 <code>.gitignore</code> 怎么配置，一些文件会始终发布到 package 上，这些文件包括 <code>package.json</code> 、 <code>README.md</code> 、 <code>LICENSE</code> 等等；</li>
+<li>添加 <code>prepublishOnly</code> 钩子函数，在该钩子函数中运行 <code>npm run build</code> ，用来确保 NPM 包发布之前采用的是最新编译的代码；</li>
+</ul>
+<h4 class="heading" data-id="heading-30">6.2.2 配置 <code>peerDependencies</code>  字段</h4>
+<p>此次搭建的组件库是在 React 基础上对 Ant Design 进行的二次封装。为了减少组件库体积，通常不会将React、Ant Design 等第三方依赖打包进去，其次若打包进去，可能还会造成各个版本之间的冲突。</p>
+<p>针对这种情况，可以提示用户如果要想使用当前组件库，还需安装以下核心依赖，如 <code>react</code> 、 <code>Ant Design</code> 等，这个时候就需利用 <code>package.json</code> 中的 <code>peerDependencies</code> 字段。当使用 <code>npm install</code> 安装依赖时， <code>peerDependencies</code> 声明的依赖不会被自动安装，而是通过输出 warining 日志告诉用户需安装以下依赖。</p>
+<pre><code class="hljs json copyable" lang="json">"peerDependencies": {
+    "react": "&gt;= 16.8.0",
+    "react-dom": "&gt;= 16.8.0",
+    "antd": "&gt;= 4.3.5"
+ },
+<span class="copy-code-btn">复制代码</span></code></pre><ul>
+<li>react 版本需大于等于 v16.8.0，因为在 v16.8.0 以上版本才引入了 React Hooks；</li>
+</ul>
+<h4 class="heading" data-id="heading-31">6.2.3 代码规范检查和单元测试检查</h4>
+<p>对于一个组件库来说，代码质量是非常重要的。为了防止不符合团队规范的代码或未通过单元测试的代码被commit 亦或者被 publish，需要使用一些钩子函数来验证开发者是否通过代码规范检查和单元测试检查。</p>
+<h5 class="heading" data-id="heading-32">6.2.3.1 添加代码规范检查</h5>
+<p>在  <code>package.json</code>文件中，添加 lint 脚本，针对 <code>src</code> 目录下的文件进行 eslint 检查。</p>
+<pre><code class="hljs json copyable" lang="json"> "lint": "eslint --ext js,ts,tsx, src --max-warnings 5",
+<span class="copy-code-btn">复制代码</span></code></pre><ul>
+<li><code>--max-warnings 5</code> : 表示最大允许的 warnings 警告是 5；</li>
+</ul>
+<h5 class="heading" data-id="heading-33">6.2.3.2 添加单元测试检查</h5>
+<p>在使用 CRA 创建项目时，默认会创建 <code>test</code> 脚本，但该脚本是用于开发环境，执行完后不会返回执行结果(即不会返回执行通过还是未通过)，而是一直处于 watch 模式下。针对这一情况，可以设置环境变量 <code>CI=true</code> ，即可返回测试运行结果。</p>
+<pre><code class="hljs json copyable" lang="json"> "test:nowatch": "cross-env CI=true npm run test"
+<span class="copy-code-btn">复制代码</span></code></pre><ul>
+<li>在不同的操作系统环境下，设置环境变量方式不一样。故需借助 <code>cross-env</code> 依赖包完成跨平台的环境变量设置。</li>
+</ul>
+<h5 class="heading" data-id="heading-34">6.2.3.3 commit 或 publish 前的流程检查</h5>
+<p>针对 commit 代码，安装 <code>husky</code> 依赖，在代码提交前先进行单元测试检查和代码规范检测，如下所示。在发布NPM 包之前也进行同样配置。</p>
+<pre><code class="hljs json copyable" lang="json">"scripts": {
+    ...,
+    "prepublishOnly": "npm run test:nowatch &amp;&amp; npm run lint &amp;&amp; npm run build"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run test:nowatch &amp;&amp; npm run lint"
+    }
+  },
+<span class="copy-code-btn">复制代码</span></code></pre><p>完成上述配置后，运行命令 <code>npm publish</code> 即可完成 NPM 包的发布。</p>
+<h2 class="heading" data-id="heading-35">七、配置持续集成环境</h2>
+<p>通常从各个业务线上抽离的基础组件库，会是各个业务线的团队成员一起来维护，这个时候就可以利用 Github 提供的 Github Organization 来共同维护这个组件库。</p>
+<p>在这种情况下，使用 Travis CI 进行持续集成就没有那么简单了。之前写过一篇文章<a target="_blank" href="https://juejin.im/post/5e9bb0f251882573965183a8" rel="">如何使用Travis CI对Github Organization下的代码进行持续集成</a>，可以参照该文章完成基础组件库的持续集成环境配置。</p>
+<h2 class="heading" data-id="heading-36">八、持续发布</h2>
+<p>Travis CI 还可以自动将组件库发布到 NPM 上，具体设置如下：</p>
+<ol>
+<li>进入 npm 个人账号中心，生成一个新的Token(权限选择 Read and Publish)，用于Travis CI 进行 npm 包的发布。</li>
+</ol>
+<p></p><figure><img alt="image.png" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2020/6/27/172f59d67fe9666c?imageView2/0/w/1280/h/960/ignore-error/1" data-width="414" data-height="84"><figcaption></figcaption></figure><p></p>
+<ol start="2">
+<li>在组件库目录下，运行 <code>travis setup npm --force</code> 命令，注意该命令会改写之前的 <code>travis.yml</code> 文件。此时会提示输入 NPM api key，如下所示，将刚才生成的Token值复制粘贴此处即可。</li>
+</ol>
+<blockquote>
+<p>NPM api key: ************************************</p>
+</blockquote>
+<p>改写后的 <code>travis.yml</code> 文件：</p>
+<pre><code class="hljs yaml copyable" lang="yaml"><span class="hljs-attr">language:</span> <span class="hljs-string">node_js</span>
+<span class="hljs-attr">node_js:</span>
+<span class="hljs-bullet">  -</span> <span class="hljs-string">stable</span>
+<span class="hljs-attr">cache:</span>
+<span class="hljs-attr">  directories:</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">node_modules</span>
+
+<span class="hljs-attr">env:</span>
+<span class="hljs-attr">  matrix:</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">CI=true</span>
+
+<span class="hljs-attr">script:</span>
+<span class="hljs-bullet">  -</span> <span class="hljs-string">npm</span> <span class="hljs-string">run</span> <span class="hljs-string">build-storybook</span>
+
+<span class="hljs-attr">deploy:</span>
+  <span class="hljs-comment"># 发布到 gh-pages 上</span>
+<span class="hljs-attr">  - provider:</span> <span class="hljs-string">script</span>
+<span class="hljs-attr">    skip_cleanup:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">    script:</span> <span class="hljs-string">bash</span> <span class="hljs-string">scripts/deploy.sh</span>
+<span class="hljs-attr">    on:</span>
+<span class="hljs-attr">      branch:</span> <span class="hljs-string">master</span>
+  <span class="hljs-comment"># 发布到 npm 上</span>
+<span class="hljs-attr">  - provider:</span> <span class="hljs-string">npm</span>
+<span class="hljs-attr">    skip_cleanup:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">    email:</span> <span class="hljs-string">xxxx@qq.com</span>
+<span class="hljs-attr">    api_key:</span>
+<span class="hljs-attr">      secure:</span> <span class="hljs-string">Lsb1/coESXgnDgcotaObyV7QKDVeZJWpAcduyZt/bxAqspN/EdOR2duraPpBHKzme7tOHT4ybIAQusJqSl36K/WX2WFXqhKHw+FoFOobK1aa/azQDkpwllgdxrlx0fCbLpxBPDdKxbJspXwphSgCi2rjY8F/PBdy4+g8IEh/FJQckuFHAEhpTuk+SZPJT5eAqhctxXSaNKB712x4vX9AJLHRT791nB388dsjKOz2NWGNJ14arxukvnb/Yt02hHWKpGQPgQQY9QjfENYnspFYBXYssKV2nhC+0EFoXNn6UK3C4gXo96hV2yqFbP0AhZdHiYxOJ/v1KN7xt+I3popw+puETFyno4TgepGqU/EvkB5r3DnB9CrYsOpeN4+wZtfVtwxMxxxJ8q/EbC7RH45b39056B0i7PnJViIHLWps3XxFQ/bi1CgWdiFyzNofwCYVV6uT0UNR0XZDqUzre10GBrvDogMNWPKMaTmJCWVA8c6AkB4XjfU/jY1xaWxbNuD+Z+p3uLSTKm+c2xrUJFl5KW4/ocyS8No/J+e/9uNkXYcTEdkwnBioWfT7OaBrIpzrkKL9RftkDzjkeUo8h9/XpXNHEUGMK6ZDO0n3zlQ8/qcMHJvS5dXbKmvwZ9GNnOS1EvR1X32MlTfcW0EzDgCXufyAK6UdUGm7jm+dfJJkD60g=</span>
+<span class="hljs-attr">    on:</span>
+<span class="hljs-attr">      branch:</span> <span class="hljs-string">master</span>
+<span class="hljs-attr">      repo:</span> <span class="hljs-string">LagrangeLabs/ii-admin-base</span>
+<span class="copy-code-btn">复制代码</span></code></pre><p><strong>注：</strong>
+Travis CI 在对组件库进行持续发布的时候，如果报如下问题：</p>
+<pre><code class="hljs bash copyable" lang="bash">sh: 1: cross-env: not found
+npm ERR! code ELIFECYCLE
+npm ERR! syscall spawn
+npm ERR! file sh
+<span class="copy-code-btn">复制代码</span></code></pre><p>针对这一问题，将 <code>package.json</code> 文件中的 <code>cross-env</code> 换成 <code>./node_mdoules/.bin/cross-env</code> 即可。</p>
+<pre><code class="hljs json copyable" lang="json"> "test:nowatch": "./node_modules/.bin/cross-env CI=true npm run test"
+<span class="copy-code-btn">复制代码</span></code></pre><h2 class="heading" data-id="heading-37">九、小结</h2>
+<p>至此，就完成了团队组件库的整个搭建过程。</p>
+<p><strong>其他：</strong></p>
+<ul>
+<li><a target="_blank" href="https://github.com/LagrangeLabs/ii-admin-base/tree/daily/1.0.0" rel="nofollow noopener noreferrer">仓库代码</a></li>
+<li><a target="_blank" href="https://lagrangelabs.github.io/ii-admin-base" rel="nofollow noopener noreferrer">预览地址</a></li>
+<li><a target="_blank" href="https://www.yuque.com/qg0ivw" rel="nofollow noopener noreferrer">了解我们团队</a></li>
+</ul>
+</div></article><div class="tag-list-box" data-v-575c8a08 data-v-0b1a4f9a><div class="tag-list-title" data-v-575c8a08 data-v-0b1a4f9a>关注下面的标签，发现更多相似文章</div><div st:block="tagList" class="tag-list" data-v-575c8a08 data-v-0b1a4f9a><a href="/tag/%E5%89%8D%E7%AB%AF" target="_blank" rel="" st:name="tag" class="item" data-v-0b1a4f9a><div data-src="https://lc-gold-cdn.xitu.io/bac28828a49181c34110.png?imageView2/2/w/42/h/42/q/85/interlace/1" class="lazy thumb tag-icon" style="background-image:none;background-size:contain;" data-v-e232e062 data-v-02a6947c data-v-0b1a4f9a></div><div class="tag-title" data-v-0b1a4f9a>前端</div></a></div></div><a href="/post/5ef7328cf265da22a8513da2" target="_blank" rel="" data-v-0b1a4f9a><div class="footer-author-block" data-v-0b1a4f9a><div itemscope="itemscope" itemtype="http://schema.org/Person" class="author" data-v-7bb2fea5 data-v-0b1a4f9a><!----><div class="author-info-block" data-v-7bb2fea5><a href="/post/5ef7328cf265da22a8513da2" target="_blank" rel="" class="avatar-link" data-v-7bb2fea5><div data-src="https://b-gold-cdn.xitu.io/v3/static/img/default-avatar.e30559a.svg" class="lazy avatar avatar" style="background-image:none;" data-v-e232e062 data-v-4bc4293a data-v-7bb2fea5></div></a><div class="author-info-box" data-v-7bb2fea5><div class="profile-box" data-v-7bb2fea5><a href="/post/5ef7328cf265da22a8513da2" target="_blank" rel="" class="username username ellipsis" data-v-b8de4708 data-v-7bb2fea5><!----></a><span class="position ellipsis" data-v-7bb2fea5></span></div><div class="meta-box" data-v-7bb2fea5><a href="/post/5ef7328cf265da22a8513da2" target="_blank" rel="" class="posts" data-v-7bb2fea5><span class="count post-count" data-v-7bb2fea5>发布了  篇专栏 · </span></a><span class="count" data-v-7bb2fea5>获得点赞  · </span><span class="count" data-v-7bb2fea5>获得阅读 </span></div></div><!----></div></div></div></a><div st:block="banner" class="article-banner" data-v-575c8a08 data-v-0b1a4f9a><a st:name="link" st:state="https://juejin.im/extension/?utm_source=juejin.im&amp;utm_medium=post&amp;utm_campaign=extension_promotion" href="https://juejin.im/extension/?utm_source=juejin.im&amp;utm_medium=post&amp;utm_campaign=extension_promotion" target="_blank" class="banner-title" data-v-575c8a08 data-v-0b1a4f9a>安装掘金浏览器插件</a><div class="banner-content" data-v-575c8a08 data-v-0b1a4f9a>打开新标签页发现好内容，掘金、GitHub、Dribbble、ProductHunt 等站点内容轻松获取。快来安装掘金浏览器插件获取高质量内容吧！</div></div><!----><!----><div id="comment-box" class="comment-list-box" data-v-155e8a6c data-v-0b1a4f9a><div class="title" data-v-155e8a6c>评论</div><div class="comment-form comment-form" data-v-2761ac2b data-v-155e8a6c><div class="avatar-box" data-v-2761ac2b><div data-src="https://b-gold-cdn.xitu.io/v3/static/img/default-avatar.e30559a.svg" class="lazy avatar avatar" style="background-image:none;" data-v-e232e062 data-v-4bc4293a data-v-2761ac2b></div></div><div class="form-box" data-v-2761ac2b><div class="input-box" data-v-2761ac2b><div class="auth-card" data-v-171c4b3f data-v-2761ac2b><!----><div contenteditable="true" spellcheck="false" placeholder="输入评论..." class="rich-input empty" data-v-171c4b3f data-v-2761ac2b><br data-v-171c4b3f data-v-2761ac2b></div></div><!----></div><!----></div><input type="file" class="hidden" data-v-2761ac2b></div><!----><!----></div></div><!----><!----><div st:block="sidebar" class="sidebar sidebar" data-v-bd87ff56 data-v-0b1a4f9a><div class="sidebar-block author-block shadow" data-v-8994b7e2 data-v-2c6cf58a data-v-bd87ff56><div class="block-title" data-v-8994b7e2>关于作者</div><div class="block-body" data-v-8994b7e2><a href="/post/5ef7328cf265da22a8513da2" target="_blank" rel="" class="user-item item" data-v-2c6cf58a><div data-src="https://b-gold-cdn.xitu.io/v3/static/img/default-avatar.e30559a.svg" class="lazy avatar avatar" style="background-image:none;" data-v-e232e062 data-v-4bc4293a data-v-2c6cf58a></div><div class="info-box" data-v-2c6cf58a><a href="/post/5ef7328cf265da22a8513da2" target="_blank" rel="" class="username" data-v-b8de4708 data-v-2c6cf58a><!----></a><!----></div></a><!----><!----><!----></div></div><!----><!----><!----><!----><!----><div class="sticky-block-box" data-v-bd87ff56><div class="sidebar-block catalog-block pure" data-v-8994b7e2 data-v-2757de2e data-v-bd87ff56><nav class="article-catalog" style="display:none;" data-v-0265697d data-v-2757de2e><div class="catalog-title" data-v-0265697d>目录</div><div class="catalog-body" data-v-0265697d><ul class="catalog-list" style="margin-top:0px;" data-v-0265697d></ul></div></nav></div></div></div><div class="article-suspended-panel article-suspended-panel" data-v-0c700a3a data-v-0b1a4f9a><div badge="298" class="like-btn panel-btn like-adjust with-badge" data-v-0c700a3a></div><div badge="35" class="comment-btn panel-btn comment-adjust with-badge" data-v-0c700a3a></div><div class="collect-btn panel-btn" data-v-0c700a3a><!----></div><div class="share-title" data-v-0c700a3a>分享</div><div class="weibo-btn share-btn panel-btn" data-v-0c700a3a></div><div class="qq-btn share-btn panel-btn" data-v-0c700a3a></div><div class="wechat-btn share-btn panel-btn" data-v-0c700a3a><img src="" class="wechat-qr-code-img shadow" style="display:none;" data-v-0c700a3a></div></div><div class="image-viewer-box" data-v-fa31c83e data-v-0b1a4f9a><!----></div><!----></div></main></div><!----></div>
+      <div id="jjis" style="display:none;" data-state="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="></div>
+      <div id="serverTime" style="display:none;">1594077605845</div>
+      
+      <script type=text/javascript src=https://b-gold-cdn.xitu.io/v3/static/js/runtime.301e7eea7ec3246f8b8c.js></script><script type=text/javascript src=https://b-gold-cdn.xitu.io/v3/static/js/0.a87cc5a01e86d5927346.js></script><script type=text/javascript src=https://b-gold-cdn.xitu.io/v3/static/js/1.42309921c134e997dc82.js></script></body></html>
+    
