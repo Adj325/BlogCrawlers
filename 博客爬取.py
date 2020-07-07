@@ -254,6 +254,6 @@ class BlogCrawler:
         for line in lines:
             lines_concat += '{}\n'.format(line)
         return lines_concat
-        
-blogCrawler = BlogCrawler()
-blogCrawler.run()
+while True:
+    blogCrawler = BlogCrawler()
+    blogCrawler.run()

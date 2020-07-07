@@ -16,5 +16,7 @@
     }
   ],
   "content_replaces":[],
-  "md_replaces": []
+  "md_replaces": [
+	["![复制代码](https://common.cnblogs.com/images/copycode.gif)", ""]
+  ]
 }
