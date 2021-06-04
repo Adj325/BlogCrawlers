@@ -7,16 +7,22 @@ except:
     import requests
     
 try:
-    import html2text as ht
+    from markdownify import markdownify
 except:
-    os.system('pip install html2text')
-    import html2text as ht
+    os.system('pip install markdownify')
+    from markdownify import markdownify
 
 try:
     import pangu
 except:
     os.system('pip install pangu')
     import pangu
+
+try:
+    import lxml
+except:
+    os.system('pip install lxml')
+    import lxml
 
 try:
     from bs4 import BeautifulSoup
@@ -29,7 +35,7 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.56 Safari/537.36',
 }
 
-
+soup = None
 class Blog:
     def __init__(self):
         self.title = ''
@@ -52,9 +58,9 @@ class BlogCrawler:
         self.load_config()
 
     def run(self):
-        blog_url = input('输入博客URL: ').strip()
+        blog_url = input('博客网址: ').strip()
         # blog_url = 'https://www.jianshu.com/p/215600b11413'
-        # blog_url = 'https://blog.csdn.net/hellozpc/article/details/106861972'
+        #blog_url = 'https://blog.csdn.net/hellozpc/article/details/106861972'
         # blog_url = 'https://www.cnblogs.com/wanlei/p/10650325.html'
         # blog_url = 'https://segmentfault.com/a/1190000011105644'
         # blog_url = 'https://blog.51cto.com/yht1990/2503819'
@@ -62,10 +68,10 @@ class BlogCrawler:
         # blog_url = 'https://zhuanlan.zhihu.com/p/28375308'
         # blog_url = 'https://mp.weixin.qq.com/s/-zKO0TZPqhCB6nyuUyADUw'
         # blog_url = 'https://www.jb51.net/article/174387.htm'
-        blog_url = 'https://juejin.im/post/5ef7328cf265da22a8513da2'
+        #blog_url = 'https://juejin.im/post/5ef7328cf265da22a8513da2'
         
         blog_url_host = self.get_host_from_url(blog_url)
-        print('网站:', blog_url_host)
+        print('博客网站:', blog_url_host)
         blog = Blog()
         blog.url = blog_url
         blog.host = blog_url_host
@@ -73,6 +79,7 @@ class BlogCrawler:
             print("未支持网站: " + blog.host)
             return
         self.get_html_from_blog(blog, self.rules[blog.host])
+        print()
 
     def get_html_from_blog(self, blog, rule):
         s = requests.session()
@@ -80,9 +87,10 @@ class BlogCrawler:
         encoding_type = self.get_html_chatset(r.text)
         # 设置编码格式
         r.encoding = encoding_type
-        print('编码格式:', r.encoding)
+        #print('编码格式:', r.encoding)
         # 获取文本内容
         html = r.text
+        #html = open('temp - 副本.html', encoding='utf-8').read()
         soup = BeautifulSoup(html, 'lxml')
         if False:
             # 增加代码标签
@@ -100,7 +108,7 @@ class BlogCrawler:
         else:
             title = pangu.spacing_text(titles)
         blog.title = title
-        print('标题:', title)
+        print('博客标题:', title)
 
         # 提取正文内容
         content_bs_args = rule['content_bs_args']
@@ -117,8 +125,9 @@ class BlogCrawler:
         # content = re.sub('<a id=".*?"></a>', '', content)
         # code_tag_replace_text = 'magic&%sd我他喵真帅sf*codestart*-sdfa*'
         # content = content.replace('<code>', code_tag_replace_text).replace('</code>', code_tag_replace_text)
-        text_maker = ht.HTML2Text()
-        md_content = text_maker.handle(content)
+        #text_maker = ht.HTML2Text()
+        #md_content = text_maker.handle(content)
+        md_content = markdownify(content)
 
         # 去空行
         md_content = md_content.replace('\r', '')
@@ -128,22 +137,25 @@ class BlogCrawler:
         while '\n\n\n' in md_content:
             md_content = md_content.replace('\n\n\n', '\n\n')
         # print(' MD:', md_content)
-
         # 正则替换
         for src, dst in rule['md_replaces']:
             md_content = re.sub(src, dst, md_content)
         # 加空格
         md_content = pangu.spacing_text(md_content)
+
         # 修复pangu带来的md格式错误
         md_content = self.fix_mdfile_bold_format(md_content)
         # 修复不严格的代码片段
         md_content = self.fix_mdfile_code_format(md_content)
         # 修复断行
         md_content = self.fix_mdfile_wrong_line_break(md_content)
+
         # 修复代码方法 () 前的多余空格
         md_content = self.fix_mdfile_wrong_spacing(md_content)
+        # 去除空白行
+        md_content = re.sub('\n[  ]+\n', '\n', md_content)
         
-        with open("blogs" + os.sep + title + '.md', 'w', encoding='utf-8') as f:
+        with open("blogs" + os.sep + title.replace('\n', '').replace('*', '').replace('/', ' ') + '.md', 'w', encoding='utf-8') as f:
             f.write(md_content)
         pass
 
@@ -155,6 +167,7 @@ class BlogCrawler:
             md_content = md_content.replace('{} ('.format(word), '{}('.format(word))
         else:
             return md_content
+
     @staticmethod
     def fix_mdfile_wrong_line_break(md_content):
         links = re.findall('\[.*?\n.*?\]\(.*?://.*?\)', md_content)
@@ -214,6 +227,7 @@ class BlogCrawler:
             for m in match_list:
                 text = text.replace(m.group(), fixed_template[index].format(m.group(1)))
         return text
+
     @staticmethod
     def fix_mdfile_code_format(text):
         lines = text.split('\n')
@@ -251,10 +265,7 @@ class BlogCrawler:
                     cur_lines_count += 1
                 else:
                     cur_lines_count += 1
-        lines_concat = ''
-        for line in lines:
-            lines_concat += '{}\n'.format(line)
-        return lines_concat
+        return '\n'.join(lines)
 while True:
     blogCrawler = BlogCrawler()
     blogCrawler.run()

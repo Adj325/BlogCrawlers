@@ -75,16 +75,20 @@ def process(md_file):
                     if len(host) == 0:
                         continue
                     print('   ', media_no, ', '.join(host))
+                    headers.pop('referer', '')
                     if host[0] in ['segmentfault.com', 'user-images.githubusercontent.com']:
-                        headers.pop ('host', '') 
+                        headers.pop('host', '')
+                    elif host[0] == 'ask.qcloudimg.com':
+                        headers['referer'] = 'https://cloud.tencent.com/developer/article/1691945'
                     else:
                         headers['host'] = host[0]
+                    
 
                     r = requests.get(media_url, headers=headers)
-                    print('   ', r.headers["Content-Type"])
+                    print('   ', media_no, r.headers["Content-Type"])
                     is_webp = False
                     # 过滤非图片
-                    if 'image' not in r.headers["Content-Type"]:
+                    if 'application/octet-stream' != r.headers["Content-Type"] and 'image' not in r.headers["Content-Type"]:
                         continue
 
                     # suffix = get_suffix(media_url)
@@ -94,6 +98,8 @@ def process(md_file):
                     if suffix == 'webp':
                         is_webp = True
                         suffix = 'png'
+                    elif suffix == 'octet-stream':
+                        suffix = get_suffix(media_url)
 
                     media_name = '{0:02d}.{1}'.format(media_no, suffix)
                     media_path = '{}/{}'.format(md_catalog, media_name)
@@ -158,7 +164,7 @@ else:
         md_files = get_mdfiles(os.getcwd())
     else:
         md_files = [os.getcwd() + '/' + f for f in os.listdir(os.getcwd()) if '.md' in f and '.old' not in f]
-    print('\n'.join(md_files))
+    #print('\n'.join(md_files))
     input('\n--回车后，开始处理--')
     for md_file in md_files:
         process(md_file)

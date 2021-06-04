@@ -5,12 +5,8 @@
   "vesion":"2020-06-28",
   "title_bs_args": [
     {
-      "name": "h1", 
-      "attrs": {"id": "sf-article_title"}
-    },
-    {
-      "name": "a",
-      "attrs": {}
+      "name": "a", 
+      "attrs": {"class": "text-body"}
     }
   ],
   "content_bs_args": [

@@ -1,0 +1,25 @@
+{
+  "host":"cloud.tencent.com",
+  "name":"腾讯云社区",
+  "author":"wujiechun",
+  "vesion":"2020-11-25",
+  "title_bs_args": [
+    {
+      "name": "h1",
+      "attrs": {"class": "article-title"}
+    }
+  ],
+  "content_bs_args": [
+    {
+      "name": "div",
+      "attrs": {"class": "rno-markdown J-articleContent"}
+    }
+  ],
+  "content_replaces":[
+	["<figure><div class=\"image-block\"><span class=\"lazy-image-holder\" dataurl=\"", "<img src=\""],
+	["\"></span></div></figure>", "?imageView2/2/w/1620\"img>"]
+  ],
+  "md_replaces": [
+    ["!\[\]\(data:image/svg\+xml;utf8,<svg[\w\W]*?</svg>\)", ""]
+  ]
+}
