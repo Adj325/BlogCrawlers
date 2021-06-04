@@ -34,7 +34,7 @@ headers = {
     'Upgrade-Insecure-Requests': '1',
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.56 Safari/537.36',
 }
-
+debug = True
 soup = None
 class Blog:
     def __init__(self):
@@ -126,35 +126,61 @@ class BlogCrawler:
         # code_tag_replace_text = 'magic&%sd我他喵真帅sf*codestart*-sdfa*'
         # content = content.replace('<code>', code_tag_replace_text).replace('</code>', code_tag_replace_text)
         #text_maker = ht.HTML2Text()
-        #md_content = text_maker.handle(content)
-        md_content = markdownify(content)
+        content1 = '''<pre><code class="java">@Component
+public class MyApplicationListener implements ApplicationListener&lt;ApplicationEvent&gt; {
+ 
+@Override
+public void onApplicationEvent(ApplicationEvent event) {
+  System.out.println("事件触发："+event.getClass().getName());
+}</code></pre><p>然后启动自己的springboot项目：</p><pre><code class="java">@SpringBootApplication
+public class ApplicationListenerDemoApplication {
 
-        # 去空行
-        md_content = md_content.replace('\r', '')
-        while ' \n' in md_content:
-            md_content = md_content.replace(' \n', '\n')
-        #md_content = md_content.replace('\n', '\n\n')
-        while '\n\n\n' in md_content:
-            md_content = md_content.replace('\n\n\n', '\n\n')
-        # print(' MD:', md_content)
+}
+</code>'''
+        #md_content = text_maker.handle(content)
+        md_content = markdownify(content, heading_style="ATX")
+        if debug:
+            print('===========【原始】============\n'+md_content)
+
         # 正则替换
         for src, dst in rule['md_replaces']:
             md_content = re.sub(src, dst, md_content)
+        if debug:
+            print('===========【正则替换】============\n'+md_content)
         # 加空格
         md_content = pangu.spacing_text(md_content)
+        if debug:
+            print('===========【加空格】============\n'+md_content)
+
+        # 修复 ```中文```
+        md_content = md_content.replace('```', '\n\n```\n\n')
+        if debug:
+            print('===========【修复 ```中文```】============\n'+md_content)
 
         # 修复pangu带来的md格式错误
         md_content = self.fix_mdfile_bold_format(md_content)
+
         # 修复不严格的代码片段
-        md_content = self.fix_mdfile_code_format(md_content)
+        #md_content = self.fix_mdfile_code_format(md_content)
         # 修复断行
         md_content = self.fix_mdfile_wrong_line_break(md_content)
 
         # 修复代码方法 () 前的多余空格
         md_content = self.fix_mdfile_wrong_spacing(md_content)
         # 去除空白行
-        md_content = re.sub('\n[  ]+\n', '\n', md_content)
-        
+        md_content = re.sub('\n[  ]+\n', '\n\n', md_content)
+        # 解决 {System 问题
+        md_content = md_content.replace('{', '{\n').replace('}', '\n}')
+        # 去空行
+        md_content = md_content.replace('\r', '')
+        while ' \n' in md_content:
+            md_content = md_content.replace(' \n', '\n')
+        while '\n\n\n' in md_content:
+            md_content = md_content.replace('\n\n\n', '\n\n')
+        if debug:
+            print('===========【去空行】============\n'+md_content)
+        md_content = md_content.replace('{\n\n', '{\n').replace('\n\n}', '\n}')
+        md_content = md_content.replace('```\n\n', '```\n').replace('\n\n```', '\n```')
         with open("blogs" + os.sep + title.replace('\n', '').replace('*', '').replace('/', ' ') + '.md', 'w', encoding='utf-8') as f:
             f.write(md_content)
         pass
@@ -266,6 +292,8 @@ class BlogCrawler:
                 else:
                     cur_lines_count += 1
         return '\n'.join(lines)
+
+debug = False
 while True:
     blogCrawler = BlogCrawler()
     blogCrawler.run()
