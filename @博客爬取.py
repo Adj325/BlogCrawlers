@@ -148,10 +148,10 @@ class BlogCrawler:
         md_content = self.fix_code_format_v2(md_content)
         # 修复代码方法 () 前的多余空格
         md_content = self.fix_mdfile_wrong_spacing(md_content)
-        md_content = self.fix_code_format_v2(md_content)
         md_content = self.remove_blank_line(md_content)
+        md_content = self.fix_code_format_v2(md_content)
         md_content = md_content.replace('```\n\n', '```\n').replace('\n\n```', '\n```')
-        with open("blogs" + os.sep + title.replace('\n', '').replace('*', '').replace('/', ' ') + '.md', 'w',
+        with open("blogs" + os.sep + title.replace('\n', '').replace('*', '').replace('/', ' ').replace(':', '：') + '.md', 'w',
                   encoding='utf-8') as f:
             md_content = '# [{}]({})\n\n'.format(blog.title, blog.url) + md_content
             f.write(md_content)

@@ -5,14 +5,14 @@
   "vesion": "2020-06-28",
   "title_bs_args": [
     {
-      "name": "h1", 
-      "attrs": {"class": "artical-title"}
+      "name": "title", 
+      "attrs": {}
     }
   ],
   "content_bs_args": [
     {
       "name": "div",
-      "attrs": {"class": "artical-content-bak main-content"}
+      "attrs": {"class": "article-content-wrap"}
     }
   ],
   "content_replaces": [
