@@ -1,0 +1,22 @@
+{
+  "host":"developer.aliyun.com",
+  "name":"阿里云开发者社区",
+  "author":"Adj325",
+  "vesion":"2021-08-22",
+  "title_bs_args": [
+    {
+      "name": "h1",
+      "attrs": {"class": "article-title"}
+    }
+  ],
+  "content_bs_args": [
+    {
+      "name": "div",
+      "attrs": {"class": "article-inner markdown-body"}
+    }
+  ],
+  "content_replaces":[],
+  "md_replaces": [
+    ["!\[\]\(data:image/svg\+xml;utf8,<svg[\w\W]*?</svg>\)", ""]
+  ]
+}

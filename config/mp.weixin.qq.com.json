@@ -1,0 +1,23 @@
+{
+  "host":"mp.weixin.qq.com",
+  "name":"微信公众号文章",
+  "author":"dcLunatic",
+  "vesion":"2020-06-28",
+  "title_bs_args": [
+    {
+      "name": "h1",
+      "attrs": {"class": "rich_media_title"}
+    }
+  ],
+  "content_bs_args": [
+    {
+      "name": "div",
+      "attrs": {"class": "rich_media_content"}
+    }
+  ],
+  "content_replaces":[
+	["data-src=\"", "src=\""],
+	["<figcaption.*?>.*?</figcaption>", ""]
+  ],
+  "md_replaces": []
+}

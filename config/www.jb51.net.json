@@ -1,0 +1,20 @@
+{
+    "host":"www.jb51.net",
+    "name":"脚本之家",
+    "author":"dcLunatic",
+    "vesion":"2020-06-28",
+    "title_bs_args": [
+      {
+        "name": "h1", 
+        "attrs": {"class": "title"}
+      }
+    ],
+    "content_bs_args": [
+      {
+        "name": "div",
+        "attrs": {"id": "content"}
+      }
+    ],
+    "content_replaces":[],
+    "md_replaces": []
+  }

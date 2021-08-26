@@ -1,10 +1,20 @@
 {
   "host": "blog.51cto.com",
   "name": "51cto",
-  "author": "wujiechun",
+  "author": "dcLunatic",
   "vesion": "2020-06-28",
-  "title_pattern": "<h1 class=\"artical-title\">(.*?)</h1>",
-  "content_pattern": "<div class=\"artical-content-bak main-content\">(.*?)</div>",
+  "title_bs_args": [
+    {
+      "name": "title", 
+      "attrs": {}
+    }
+  ],
+  "content_bs_args": [
+    {
+      "name": "div",
+      "attrs": {"class": "article-content-wrap"}
+    }
+  ],
   "content_replaces": [
   ],
   "md_replaces": [

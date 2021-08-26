@@ -1,10 +1,20 @@
 {
   "host":"segmentfault.com",
   "name":"segmentfault",
-  "author":"wujiechun",
-  "vesion":"2020-06-27",
-  "title_pattern":"<h1 class=\"h2 mb-3\" id=\"sf-article_title\">.*?<a class=\"text-body\" href=\".*?\">(.*?)</a>.*?</h1>",
-  "content_pattern": "<article .*?>(.*?)</article>",
+  "author":"dcLunatic",
+  "vesion":"2020-06-28",
+  "title_bs_args": [
+    {
+      "name": "a", 
+      "attrs": {"class": "text-body"}
+    }
+  ],
+  "content_bs_args": [
+    {
+      "name": "article",
+      "attrs": {}
+    }
+  ],
   "content_replaces":[
 	['src="https://cdn.segmentfault.com/v-5ef1b5ad/global/img/squares.svg" alt="图片描述" title="图片描述">', '>'],
 	['<img referrerpolicy="no-referrer" data-src="', '<img src="https://image-static.segmentfault.com']
