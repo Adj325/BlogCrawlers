@@ -94,9 +94,9 @@ def download_images_for_markdown_file(markdown_file_path):
     for image_idx, image_url in enumerate(image_urls):
         image_idx += 1
         # 链接去除无用字符
-        image_url = image_url.split('?')[0]
+        image_download_url = image_url.split('?')[0]
 
-        print('\t{}  url: {}'.format(image_idx, image_url))
+        print('\t{}  url: {}'.format(image_idx, image_download_url))
         if 'http' not in image_url: continue
 
         host = re.findall("://(.*?)/", image_url)
@@ -118,7 +118,7 @@ def download_images_for_markdown_file(markdown_file_path):
 
         # 下载文件
         try:
-            rep = requests.get(image_url, headers=headers)
+            rep = requests.get(image_download_url, headers=headers)
         except:
             traceback.print_exc()
             print('    下载失败！')
