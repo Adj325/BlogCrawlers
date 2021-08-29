@@ -1,22 +1,29 @@
 {
-  "host":"zhuanlan.zhihu.com",
-  "name":"知乎专栏",
-  "author":"dcLunatic",
-  "vesion":"2020-06-28",
+  "host": "zhuanlan.zhihu.com",
+  "name": "知乎专栏",
+  "author": "dcLunatic",
+  "version": "2020-06-28",
   "title_bs_args": [
     {
       "name": "h1",
-      "attrs": {"class": "Post-Title"}
+      "attrs": {
+        "class": "Post-Title"
+      }
     }
   ],
   "content_bs_args": [
     {
       "name": "div",
-      "attrs": {"class": "RichText ztext Post-RichText"}
+      "attrs": {
+        "class": "RichText ztext Post-RichText"
+      }
     }
   ],
-  "content_replaces":[],
+  "content_replaces": [],
   "md_replaces": [
-    ["!\[\]\(data:image/svg\+xml;utf8,<svg[\w\W]*?</svg>\)", ""]
+    [
+      "!\[\]\(data:image/svg\+xml;utf8,<svg[\w\W]*?</svg>\)",
+      ""
+    ]
   ]
 }

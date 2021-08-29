@@ -2,21 +2,24 @@
   "host": "www.jianshu.com",
   "name": "简书",
   "author": "dcLunatic",
-  "vesion": "2020-06-28",
+  "version": "2020-06-28",
   "title_bs_args": [
     {
-      "name": "h1", 
-      "attrs": {"class": "_1RuRku"}
+      "name": "h1",
+      "attrs": {
+        "class": "_1RuRku"
+      }
     }
   ],
   "content_bs_args": [
     {
       "name": "article",
-      "attrs": {"class": "_2rhmJa"}
+      "attrs": {
+        "class": "_2rhmJa"
+      }
     }
   ],
   "content_replaces": [
-
     [
       "data-original-src=\"",
       "src=\"https:"
@@ -27,6 +30,9 @@
     ]
   ],
   "md_replaces": [
-    ["https://upload-\n", "https://upload-"]
+    [
+      "https://upload-\n",
+      "https://upload-"
+    ]
   ]
 }

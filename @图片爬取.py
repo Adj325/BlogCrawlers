@@ -105,7 +105,7 @@ def download_images_for_markdown_file(markdown_file_path):
             print()
             continue
 
-        print('\t{} host: {}'.format(image_idx, ', '.join(host)))
+        # print('\t{} host: {}'.format(image_idx, ', '.join(host)))
 
         # 反爬处理
         headers.pop('referer', '')
@@ -187,13 +187,18 @@ if len(sys.argv) == 2:
         download_images_for_markdown_file(sys.argv[1])
         print('提示: 处理成功!')
 else:
-    inp = input('1: 处理当前目录下的所有 markdown 文件\n2: 处理当前目录及其子目录下的所有 markdown 文件\n输入：')
+    print('    1: 处理当前目录下的所有 markdown 文件')
+    print('    2: 处理当前目录及其子目录下的所有 markdown 文件')
+    print('enter: 处理 blogs 目录下的所有 markdown 文件')
+    choice = input('输入：')
     print()
     print('当前目录: ' + os.getcwd() + '\n')
-    if inp == "1":
+    if choice == "1":
         markdown_file_paths = [os.getcwd() + '/' + f for f in os.listdir(os.getcwd()) if '.md' in f and '.old' not in f]
-    else:
+    elif choice == "2":
         markdown_file_paths = get_markdown_files(os.getcwd())
+    else:
+        markdown_file_paths = get_markdown_files(os.getcwd() + "/blogs")
     input('\n--回车后，开始处理--')
     for markdown_file_path in markdown_file_paths:
         download_images_for_markdown_file(markdown_file_path)
