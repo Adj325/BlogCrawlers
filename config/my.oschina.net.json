@@ -1,0 +1,29 @@
+{
+	"host": "my.oschina.net",
+	"name": "阿里云开发者社区",
+	"author": "Adj325",
+	"vesion": "2021-08-29",
+	"title_bs_args": [
+		{
+			"name": "h1",
+			"attrs": {
+				"class": "article-box__title"
+			}
+		}
+	],
+	"content_bs_args": [
+		{
+			"name": "div",
+			"attrs": {
+				"class": "article-box__content"
+			}
+		}
+	],
+	"content_replaces": [],
+	"md_replaces": [
+		[
+			"",
+			""
+		]
+	]
+}
