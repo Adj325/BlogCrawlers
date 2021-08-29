@@ -2,11 +2,10 @@
 
 各大博客爬虫，爬取并保存为 markdown 文件。
 
-## 当前支持
-
 根据网址，匹配配置，爬取博客，保存至本地。
 
 ## 支持网站
+
 - 51CTO blog.51cto.com
 - CSDN blog.csdn.net
 - C语言编程网 c.biancheng.net
@@ -21,3 +20,7 @@
 - 简书 www.jianshu.com
 - 知乎专栏 zhuanlan.zhihu.com
 - 人人都是产品经理 www.woshipm.com
+
+# TODO
+
+- 配置支持模糊匹配 host

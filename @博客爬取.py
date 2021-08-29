@@ -216,6 +216,18 @@ class BlogCrawler:
         self.download_blog(blog, self.rule_dict[blog.host])
         print()
 
+    def load_config(self):
+        config_path = 'config'
+        config_filenames = os.listdir(config_path)
+        for config_filename in config_filenames:
+            config_name = config_filename[:-5:]
+            self.rule_dict[config_name] = eval(
+                open(config_path + os.sep + config_filename, 'r', encoding='utf-8').read())
+
+        config_dict = eval(open("config.json", 'r', encoding='utf-8').read())
+        self.tag_names = config_dict["tag_names"]
+        self.link_names = config_dict["link_names"]
+
     def download_blog(self, blog, rule_dict):
         s = requests.session()
         r = s.get(blog.url, headers=headers)
@@ -229,7 +241,7 @@ class BlogCrawler:
         blog_title = self.get_title_of_blog(soup, blog, rule_dict)
 
         # 获取正文内容
-        blog_content = self.get_content_of_blg(soup, blog, rule_dict)
+        blog_content = self.get_content_of_blog(soup, blog, rule_dict)
 
         with open('blog_content.html', 'w', encoding='utf-8') as f:
             f.write(blog_content)
@@ -250,10 +262,7 @@ class BlogCrawler:
         markdown_content = self.formatter.format(markdown_content)
 
         # 添加头部信息
-        header_format = '# [{}]({})\n\n> 标签： {}\n> 双链： {}\n\n{}'
-        tag_content = ' '.join(['#{}'.format(name) for name in self.tag_names if name in markdown_content])
-        link_content = ' '.join(['[[{}]]'.format(name) for name in self.link_names if name in markdown_content])
-        markdown_content = header_format.format(blog_title, blog.url, tag_content, link_content, markdown_content)
+        markdown_content = self.add_headers(blog_title, blog.url, markdown_content)
 
         blog_name = self.get_blog_name(blog_title)
         with open("blogs/{}.md".format(blog_name), 'w', encoding='utf-8') as f:
@@ -271,10 +280,17 @@ class BlogCrawler:
         print('博客标题:', blog_title)
         return blog_title
 
-    def get_content_of_blg(self, soup, blog, rule_dict):
+    def get_content_of_blog(self, soup, blog, rule_dict):
         content_bs_args = rule_dict['content_bs_args']
         blog_content = self.get_content_by_bs_args(soup, content_bs_args)
         return blog_content
+
+    def add_headers(self, blog_title, blog_url, markdown_content):
+        header_format = '# [{}]({})\n\n> 标签： {}\n> 双链： {}\n\n{}'
+        tag_content = ' '.join(['#{}'.format(name) for name in self.tag_names if name in markdown_content])
+        link_content = ' '.join(['[[{}]]'.format(name) for name in self.link_names if name in markdown_content])
+        markdown_content = header_format.format(blog_title, blog_url, tag_content, link_content, markdown_content)
+        return markdown_content
 
     @staticmethod
     def get_blog_name(blog_title):
@@ -301,18 +317,6 @@ class BlogCrawler:
         for src, dst in rule_dict['md_replaces']:
             markdown_content = re.sub(src, dst, markdown_content)
         return markdown_content
-
-    def load_config(self):
-        config_path = 'config'
-        config_filenames = os.listdir(config_path)
-        for config_filename in config_filenames:
-            config_name = config_filename[:-5:]
-            self.rule_dict[config_name] = eval(
-                open(config_path + os.sep + config_filename, 'r', encoding='utf-8').read())
-
-        config_dict = eval(open("config.json", 'r', encoding='utf-8').read())
-        self.tag_names = config_dict["tag_names"]
-        self.link_names = config_dict["link_names"]
 
     @staticmethod
     def get_host_from_url(url):
