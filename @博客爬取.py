@@ -51,7 +51,7 @@ class Blog:
 
 
 class MarkdownFormatter:
-    def format(self, blog_title, blog_url, markdown_content):
+    def format(self, markdown_content):
         # 中英文加空格
         markdown_content = pangu.spacing_text(markdown_content)
         markdown_content = markdown_content.replace('\r', '')
@@ -67,18 +67,18 @@ class MarkdownFormatter:
 
         # 移除空白行
         markdown_content = self.remove_blank_line(markdown_content)
+
         # 修复 {} 及 ```中文``` 问题
         markdown_content = self.fix_code_format(markdown_content)
 
-        # 移除空白行
-        markdown_content = self.remove_blank_line(markdown_content)
         # 移除 >
         markdown_content = self.remove_invalid_ref(markdown_content)
+
         # 移除图片描述
         markdown_content = self.remove_image_desc(markdown_content)
 
-        # 添加来源信息
-        markdown_content = '# [{}]({})\n\n> 标签： \n\n{}'.format(blog_title, blog_url, markdown_content)
+        # 移除空白行
+        markdown_content = self.remove_blank_line(markdown_content)
 
         return markdown_content
 
@@ -169,48 +169,6 @@ class MarkdownFormatter:
         return text
 
     @staticmethod
-    def fix_markdown_file_code_format(text):
-        lines = text.split('\n')
-        code_start_line_count = -1
-        code_end_line_count = -1
-        cur_lines_count = 0
-        while cur_lines_count < len(lines):
-            if code_start_line_count == -1:
-                if lines[cur_lines_count] == '' and cur_lines_count < len(lines) - 1 and lines[cur_lines_count + 1][
-                                                                                         0:4] == '    ':
-                    # 代码开始
-                    code_start_line_count = cur_lines_count
-                cur_lines_count += 1
-            else:
-                # 代码已经开始了
-                if lines[cur_lines_count][0:4] == '    ':
-                    if cur_lines_count < len(lines) - 2 and lines[cur_lines_count + 1] == '' and not lines[
-                                                                                                         cur_lines_count + 2][
-                                                                                                     0:4] == '    ':
-                        # 代码结束的标志1
-                        code_end_line_count = cur_lines_count + 1
-                        # 这里+1 与 下边的+1不冲突
-                        cur_lines_count += 1
-
-                        lines[code_start_line_count] = '```'
-                        lines[code_end_line_count] = '```'
-                        for i in range(code_start_line_count + 1, code_end_line_count):
-                            lines[i] = lines[i][4::]
-                        code_start_line_count = -1
-                        code_end_line_count = -1
-                    elif cur_lines_count == len(lines) - 2 and lines[cur_lines_count + 1] == '':
-                        # 代码结束的标志1
-                        code_end_line_count = cur_lines_count + 1
-                        lines[code_start_line_count] = '```'
-                        lines[code_end_line_count] = '```'
-                        code_start_line_count = -1
-                        code_end_line_count = -1
-                    cur_lines_count += 1
-                else:
-                    cur_lines_count += 1
-        return '\n'.join(lines)
-
-    @staticmethod
     def remove_invalid_ref(text):
         result = text[::]
         while '\n\n>\n' in result:
@@ -235,6 +193,8 @@ class MarkdownFormatter:
 class BlogCrawler:
     def __init__(self):
         self.rule_dict = {}
+        self.tag_names = []
+        self.link_names = []
         self.formatter = MarkdownFormatter()
         dirs = ['config', 'blogs']
         for dir_name in dirs:
@@ -287,7 +247,13 @@ class BlogCrawler:
         markdown_content = self.replace_words_after_markdownify(markdown_content, rule_dict)
 
         # 格式化
-        markdown_content = self.formatter.format(blog_title, blog.url, markdown_content)
+        markdown_content = self.formatter.format(markdown_content)
+
+        # 添加头部信息
+        header_format = '# [{}]({})\n\n> 标签： {}\n> 双链： {}\n\n{}'
+        tag_content = ' '.join(['#{}'.format(name) for name in self.tag_names if name in markdown_content])
+        link_content = ' '.join(['[[{}]]'.format(name) for name in self.link_names if name in markdown_content])
+        markdown_content = header_format.format(blog_title, blog.url, tag_content, link_content, markdown_content)
 
         blog_name = self.get_blog_name(blog_title)
         with open("blogs/{}.md".format(blog_name), 'w', encoding='utf-8') as f:
@@ -344,6 +310,10 @@ class BlogCrawler:
             self.rule_dict[config_name] = eval(
                 open(config_path + os.sep + config_filename, 'r', encoding='utf-8').read())
 
+        config_dict = eval(open("config.json", 'r', encoding='utf-8').read())
+        self.tag_names = config_dict["tag_names"]
+        self.link_names = config_dict["link_names"]
+
     @staticmethod
     def get_host_from_url(url):
         hosts = re.findall("://(.*?)/", url)
@@ -363,7 +333,6 @@ class BlogCrawler:
 
     @staticmethod
     def get_html_encoding(html):
-        charset = 'utf-8'
         charset = re.findall('''<meta.*?char[sS]et=["']?(.*?)[";' ]''', html)[0]
         return charset
 
@@ -377,7 +346,7 @@ if not is_test:
 else:
     formatter = MarkdownFormatter()
     markdown_content = open('markdown_content.md', encoding='utf-8').read()
-    markdown_content_formatted = formatter.format("标题", "链接", markdown_content)
+    markdown_content_formatted = formatter.format(markdown_content)
     print(markdown_content_formatted)
     with open('markdown_content_formatted.md', encoding='utf-8', mode='w') as f:
         f.write(markdown_content_formatted)
