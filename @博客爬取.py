@@ -31,6 +31,8 @@ except:
     os.system('pip install BeautifulSoup4')
     from bs4 import BeautifulSoup
 
+from utils.text import slugify
+
 headers = {
     'Upgrade-Insecure-Requests': '1',
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.56 Safari/537.36',
@@ -294,16 +296,7 @@ class BlogCrawler:
 
     @staticmethod
     def get_blog_name(blog_title):
-        blog_name = blog_title[::]
-        replace_words = (
-            ('\n', ''),
-            ('*', '_'),
-            ('/', '_'),
-            (':', '：'),
-        )
-        for src, dst in replace_words:
-            blog_name = blog_name.replace(src, dst)
-        return blog_name
+        return slugify(blog_title[::], allow_unicode=True)
 
     @staticmethod
     def replace_words_before_markdownify(blog, blog_content, rule_dict):
