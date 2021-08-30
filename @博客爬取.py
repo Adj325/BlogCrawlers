@@ -286,7 +286,7 @@ class BlogCrawler:
         return blog_content
 
     def add_headers(self, blog_title, blog_url, markdown_content):
-        header_format = '# [{}]({})\n\n> 标签： {}\n> 双链： {}\n\n{}'
+        header_format = '# [{}]({})\n\n> 标签： {}\n>\n> 双链： {}\n\n{}'
         tag_content = ' '.join(['#{}'.format(name) for name in self.tag_names if name in markdown_content])
         link_content = ' '.join(['[[{}]]'.format(name) for name in self.link_names if name in markdown_content])
         markdown_content = header_format.format(blog_title, blog_url, tag_content, link_content, markdown_content)
