@@ -1,41 +1,17 @@
-import re
 import os
+import re
 
-try:
-    import requests
-except:
-    os.system('pip install requests')
-    import requests
-
-try:
-    from markdownify import markdownify
-except:
-    os.system('pip install markdownify')
-    from markdownify import markdownify
-
-try:
-    import pangu
-except:
-    os.system('pip install pangu')
-    import pangu
-
-try:
-    import lxml
-except:
-    os.system('pip install lxml')
-    import lxml
-
-try:
-    from bs4 import BeautifulSoup
-except:
-    os.system('pip install BeautifulSoup4')
-    from bs4 import BeautifulSoup
+import pangu
+import requests
+from bs4 import BeautifulSoup
+from markdownify import markdownify
 
 from utils.text import slugify
 
 headers = {
     'Upgrade-Insecure-Requests': '1',
-    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.56 Safari/537.36',
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) \
+                  Chrome/67.0.3396.56 Safari/537.36',
 }
 
 soup = None
