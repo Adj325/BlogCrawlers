@@ -46,5 +46,9 @@ venv.bak/
 
 
 # proj-rel files
-blogs/
+blogs/*
+.temp/*
+
+# keep folders
+!*/**/.gitkeep
 

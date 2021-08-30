@@ -170,6 +170,7 @@ class MarkdownFormatter:
 
 class BlogCrawler:
     def __init__(self):
+        self.tmp_file_store_prefix = '.temp'
         self.rule_dict = {}
         self.tag_names = []
         self.link_names = []
@@ -221,7 +222,7 @@ class BlogCrawler:
         # 获取正文内容
         blog_content = self.get_content_of_blog(soup, blog, rule_dict)
 
-        with open('blog_content.html', 'w', encoding='utf-8') as f:
+        with open(os.path.join(self.tmp_file_store_prefix, 'blog_content.html'), 'w', encoding='utf-8') as f:
             f.write(blog_content)
 
         # 转换前，替换文本
@@ -230,7 +231,7 @@ class BlogCrawler:
         # 转换为 markdown
         markdown_content = markdownify(blog_content, heading_style="ATX")
 
-        with open('markdown_content.md', 'w', encoding='utf-8') as f:
+        with open(os.path.join(self.tmp_file_store_prefix, 'markdown_content.md'), 'w', encoding='utf-8') as f:
             f.write(markdown_content)
 
         # 转换前，替换文本
@@ -269,6 +270,19 @@ class BlogCrawler:
         link_content = ' '.join(['[[{}]]'.format(name) for name in self.link_names if name in markdown_content])
         markdown_content = header_format.format(blog_title, blog_url, tag_content, link_content, markdown_content)
         return markdown_content
+
+    def cleanup(self):
+        """
+        Do some cleanup stuff before exiting the BlogCrawler.
+        :return: None
+        """
+        import shutil
+        for root, dirs, files in os.walk(self.tmp_file_store_prefix):
+            for file in files:
+                if file != '.gitkeep':
+                    os.unlink(os.path.join(root, file))
+            for d in dirs:
+                shutil.rmtree(os.path.join(root, d))
 
     @staticmethod
     def get_blog_name(blog_title):
@@ -315,7 +329,10 @@ is_test = False
 if not is_test:
     while True:
         blogCrawler = BlogCrawler()
-        blogCrawler.run()
+        try:
+            blogCrawler.run()
+        except KeyboardInterrupt:
+            blogCrawler.cleanup()
 else:
     formatter = MarkdownFormatter()
     markdown_content = open('markdown_content.md', encoding='utf-8').read()
