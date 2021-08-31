@@ -192,11 +192,11 @@ class MarkdownFormatter:
 
 class BlogCrawler:
     def __init__(self):
-        self.rule_dict = {}
+        self.rules_dict = {}
         self.tag_names = []
         self.link_names = []
         self.formatter = MarkdownFormatter()
-        dirs = ['config', 'blogs']
+        dirs = ['config', 'blogs', '.temp']
         for dir_name in dirs:
             if not os.path.exists(dir_name):
                 os.mkdir(dir_name)
@@ -210,19 +210,29 @@ class BlogCrawler:
         blog = Blog()
         blog.url = blog_url
         blog.host = blog_url_host
-        if blog.host not in self.rule_dict.keys():
+
+        rule_dict = self.get_rule_dict_by_host(blog_url_host)
+        if rule_dict is not None:
+            self.download_blog(blog, rule_dict)
+        else:
             print("未支持网站: " + blog.host)
-            return
-        self.download_blog(blog, self.rule_dict[blog.host])
         print()
+
+    def get_rule_dict_by_host(self, blog_url_host):
+        if blog_url_host in self.rules_dict.keys():
+            return self.rules_dict[blog_url_host]
+
+        for host in self.rules_dict.keys():
+            if host in blog_url_host:
+                return self.rules_dict[host]
+        return None
 
     def load_config(self):
         config_path = 'config'
         config_filenames = os.listdir(config_path)
         for config_filename in config_filenames:
-            config_name = config_filename[:-5:]
-            self.rule_dict[config_name] = eval(
-                open(config_path + os.sep + config_filename, 'r', encoding='utf-8').read())
+            config_dict = eval(open(config_path + os.sep + config_filename, 'r', encoding='utf-8').read())
+            self.rules_dict[config_dict['host']] = config_dict
 
         config_dict = eval(open("config.json", 'r', encoding='utf-8').read())
         self.tag_names = config_dict["tag_names"]
@@ -234,8 +244,9 @@ class BlogCrawler:
         r.encoding = self.get_html_encoding(r.text)
         html = r.text
         soup = BeautifulSoup(html, 'lxml')
-        # with open('temp.html', 'w', encoding='utf-8') as f:
-        #     f.write(html)
+
+        with open('.temp/temp.html', 'w', encoding='utf-8') as f:
+            f.write(html)
 
         # 获取标题
         blog_title = self.get_title_of_blog(soup, blog, rule_dict)
@@ -243,7 +254,7 @@ class BlogCrawler:
         # 获取正文内容
         blog_content = self.get_content_of_blog(soup, blog, rule_dict)
 
-        with open('blog_content.html', 'w', encoding='utf-8') as f:
+        with open('.temp/blog_content.html', 'w', encoding='utf-8') as f:
             f.write(blog_content)
 
         # 转换前，替换文本
@@ -252,7 +263,7 @@ class BlogCrawler:
         # 转换为 markdown
         markdown_content = markdownify(blog_content, heading_style="ATX")
 
-        with open('markdown_content.md', 'w', encoding='utf-8') as f:
+        with open('.temp/markdown_content.md', 'w', encoding='utf-8') as f:
             f.write(markdown_content)
 
         # 转换前，替换文本
@@ -294,15 +305,8 @@ class BlogCrawler:
 
     @staticmethod
     def get_blog_name(blog_title):
-        blog_name = blog_title[::]
-        replace_words = (
-            ('\n', ''),
-            ('*', '_'),
-            ('/', '_'),
-            (':', '：'),
-        )
-        for src, dst in replace_words:
-            blog_name = blog_name.replace(src, dst)
+        blog_name = blog_title.strip('\n').strip('\n').strip(' ').strip(' ').strip('\t')
+        blog_name = re.sub(r"[\/\\\:\*\?\"\<\>\|]", '_', blog_name)
         return blog_name
 
     @staticmethod
@@ -349,8 +353,8 @@ if not is_test:
         blogCrawler.run()
 else:
     formatter = MarkdownFormatter()
-    markdown_content = open('markdown_content.md', encoding='utf-8').read()
+    markdown_content = open('.temp/markdown_content.md', encoding='utf-8').read()
     markdown_content_formatted = formatter.format(markdown_content)
     print(markdown_content_formatted)
-    with open('markdown_content_formatted.md', encoding='utf-8', mode='w') as f:
+    with open('.temp/markdown_content_formatted.md', encoding='utf-8', mode='w') as f:
         f.write(markdown_content_formatted)
