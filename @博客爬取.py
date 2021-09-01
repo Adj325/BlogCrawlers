@@ -171,11 +171,11 @@ class MarkdownFormatter:
 class BlogCrawler:
     def __init__(self):
         self.tmp_file_store_prefix = '.temp'
-        self.rule_dict = {}
+        self.rules_dict = {}
         self.tag_names = []
         self.link_names = []
         self.formatter = MarkdownFormatter()
-        dirs = ['config', 'blogs']
+        dirs = ['config', 'blogs', '.temp']
         for dir_name in dirs:
             if not os.path.exists(dir_name):
                 os.mkdir(dir_name)
@@ -189,19 +189,29 @@ class BlogCrawler:
         blog = Blog()
         blog.url = blog_url
         blog.host = blog_url_host
-        if blog.host not in self.rule_dict.keys():
+
+        rule_dict = self.get_rule_dict_by_host(blog_url_host)
+        if rule_dict is not None:
+            self.download_blog(blog, rule_dict)
+        else:
             print("未支持网站: " + blog.host)
-            return
-        self.download_blog(blog, self.rule_dict[blog.host])
         print()
+
+    def get_rule_dict_by_host(self, blog_url_host):
+        if blog_url_host in self.rules_dict.keys():
+            return self.rules_dict[blog_url_host]
+
+        for host in self.rules_dict.keys():
+            if host in blog_url_host:
+                return self.rules_dict[host]
+        return None
 
     def load_config(self):
         config_path = 'config'
         config_filenames = os.listdir(config_path)
         for config_filename in config_filenames:
-            config_name = config_filename[:-5:]
-            self.rule_dict[config_name] = eval(
-                open(config_path + os.sep + config_filename, 'r', encoding='utf-8').read())
+            config_dict = eval(open(config_path + os.sep + config_filename, 'r', encoding='utf-8').read())
+            self.rules_dict[config_dict['host']] = config_dict
 
         config_dict = eval(open("config.json", 'r', encoding='utf-8').read())
         self.tag_names = config_dict["tag_names"]
@@ -213,8 +223,9 @@ class BlogCrawler:
         r.encoding = self.get_html_encoding(r.text)
         html = r.text
         soup = BeautifulSoup(html, 'lxml')
-        # with open('temp.html', 'w', encoding='utf-8') as f:
-        #     f.write(html)
+
+        with open('.temp/temp.html', 'w', encoding='utf-8') as f:
+            f.write(html)
 
         # 获取标题
         blog_title = self.get_title_of_blog(soup, blog, rule_dict)
@@ -265,7 +276,7 @@ class BlogCrawler:
         return blog_content
 
     def add_headers(self, blog_title, blog_url, markdown_content):
-        header_format = '# [{}]({})\n\n> 标签： {}\n> 双链： {}\n\n{}'
+        header_format = '# [{}]({})\n\n> 标签： {}\n>\n> 双链： {}\n\n{}'
         tag_content = ' '.join(['#{}'.format(name) for name in self.tag_names if name in markdown_content])
         link_content = ' '.join(['[[{}]]'.format(name) for name in self.link_names if name in markdown_content])
         markdown_content = header_format.format(blog_title, blog_url, tag_content, link_content, markdown_content)
@@ -286,7 +297,8 @@ class BlogCrawler:
 
     @staticmethod
     def get_blog_name(blog_title):
-        return slugify(blog_title[::], allow_unicode=True)
+        blog_name = blog_title.strip('\n').strip('\n').strip(' ').strip(' ').strip('\t')
+        return slugify(blog_name[::], allow_unicode=True)
 
     @staticmethod
     def replace_words_before_markdownify(blog, blog_content, rule_dict):
@@ -335,8 +347,8 @@ if not is_test:
             blogCrawler.cleanup()
 else:
     formatter = MarkdownFormatter()
-    markdown_content = open('markdown_content.md', encoding='utf-8').read()
+    markdown_content = open('.temp/markdown_content.md', encoding='utf-8').read()
     markdown_content_formatted = formatter.format(markdown_content)
     print(markdown_content_formatted)
-    with open('markdown_content_formatted.md', encoding='utf-8', mode='w') as f:
+    with open('.temp/markdown_content_formatted.md', encoding='utf-8', mode='w') as f:
         f.write(markdown_content_formatted)

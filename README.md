@@ -9,7 +9,7 @@
 - 51CTO blog.51cto.com
 - CSDN blog.csdn.net
 - 腾讯云 cloud.tencent.com
-- 博客园 cnblogs.com www.cnblogs.com
+- 博客园 cnblogs.com
 - 阿里云开发者社区 developer.aliyun.com
 - 掘金 juejin.im
 - 微信推文 mp.weixin.qq.com
