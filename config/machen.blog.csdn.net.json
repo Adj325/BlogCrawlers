@@ -1,22 +1,24 @@
 {
-  "host":"machen.blog.csdn.net",
-  "name":"CSDN",
-  "author":"dcLunatic",
-  "vesion":"2020-06-28",
-  "title_pattern":"<h1 class=\"title-article\">(.*?)</h1>",
-  "content_pattern":"<article class=\"baidu_pl\">(.*?)</article>",
+  "host": "machen.blog.csdn.net",
+  "name": "CSDN",
+  "author": "dcLunatic",
+  "version": "2020-06-28",
   "title_bs_args": [
     {
-      "name": "h1", 
-      "attrs": {"class": "title-article"}
+      "name": "h1",
+      "attrs": {
+        "class": "title-article"
+      }
     }
   ],
   "content_bs_args": [
     {
       "name": "article",
-      "attrs": {"class": "baidu_pl"}
+      "attrs": {
+        "class": "baidu_pl"
+      }
     }
   ],
-  "content_replaces":[],
+  "content_replaces": [],
   "md_replaces": []
 }

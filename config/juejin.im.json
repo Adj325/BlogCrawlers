@@ -1,20 +1,24 @@
 {
-    "host":"juejin.im",
-    "name":"掘金",
-    "author":"dcLunatic",
-    "vesion":"2020-06-28",
-    "title_bs_args": [
-      {
-        "name": "h1", 
-        "attrs": {"class": "article-title"}
+  "host": "juejin.im",
+  "name": "掘金",
+  "author": "dcLunatic",
+  "version": "2020-06-28",
+  "title_bs_args": [
+    {
+      "name": "h1",
+      "attrs": {
+        "class": "article-title"
       }
-    ],
-    "content_bs_args": [
-      {
-        "name": "div",
-        "attrs": {"class": "article-content"}
+    }
+  ],
+  "content_bs_args": [
+    {
+      "name": "div",
+      "attrs": {
+        "class": "article-content"
       }
-    ],
-    "content_replaces":[],
-    "md_replaces": []
-  }
+    }
+  ],
+  "content_replaces": [],
+  "md_replaces": []
+}

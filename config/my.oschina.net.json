@@ -1,13 +1,13 @@
 {
-  "host": "developer.aliyun.com",
-  "name": "阿里云开发者社区",
+  "host": "my.oschina.net",
+  "name": "开源中国",
   "author": "Adj325",
-  "version": "2021-08-22",
+  "version": "2021-08-29",
   "title_bs_args": [
     {
       "name": "h1",
       "attrs": {
-        "class": "article-title"
+        "class": "article-box__title"
       }
     }
   ],
@@ -15,14 +15,14 @@
     {
       "name": "div",
       "attrs": {
-        "class": "article-inner markdown-body"
+        "class": "article-box__content"
       }
     }
   ],
   "content_replaces": [],
   "md_replaces": [
     [
-      "!\[\]\(data:image/svg\+xml;utf8,<svg[\w\W]*?</svg>\)",
+      "",
       ""
     ]
   ]

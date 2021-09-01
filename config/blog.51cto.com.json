@@ -2,17 +2,19 @@
   "host": "blog.51cto.com",
   "name": "51cto",
   "author": "dcLunatic",
-  "vesion": "2020-06-28",
+  "version": "2020-06-28",
   "title_bs_args": [
     {
-      "name": "title", 
+      "name": "title",
       "attrs": {}
     }
   ],
   "content_bs_args": [
     {
       "name": "div",
-      "attrs": {"class": "article-content-wrap"}
+      "attrs": {
+        "class": "article-content-wrap"
+      }
     }
   ],
   "content_replaces": [

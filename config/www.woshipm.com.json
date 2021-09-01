@@ -1,23 +1,30 @@
 {
-  "host":"www.woshipm.com",
-  "name":"人人都是产品经理",
-  "author":"wujiechun",
-  "vesion":"2020-11-26",
+  "host": "www.woshipm.com",
+  "name": "人人都是产品经理",
+  "author": "wujiechun",
+  "version": "2020-11-26",
   "title_bs_args": [
     {
       "name": "h2",
-      "attrs": {"class": "article--title"}
+      "attrs": {
+        "class": "article--title"
+      }
     }
   ],
   "content_bs_args": [
     {
       "name": "div",
-      "attrs": {"class": "article--content grap"}
+      "attrs": {
+        "class": "article--content grap"
+      }
     }
   ],
-  "content_replaces":[
+  "content_replaces": [
   ],
   "md_replaces": [
-    ["!\[\]\(data:image/svg\+xml;utf8,<svg[\w\W]*?</svg>\)", ""]
+    [
+      "!\[\]\(data:image/svg\+xml;utf8,<svg[\w\W]*?</svg>\)",
+      ""
+    ]
   ]
 }

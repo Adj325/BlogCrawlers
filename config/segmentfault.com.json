@@ -1,12 +1,14 @@
 {
-  "host":"segmentfault.com",
-  "name":"segmentfault",
-  "author":"dcLunatic",
-  "vesion":"2020-06-28",
+  "host": "segmentfault.com",
+  "name": "segmentfault",
+  "author": "dcLunatic",
+  "version": "2020-06-28",
   "title_bs_args": [
     {
-      "name": "a", 
-      "attrs": {"class": "text-body"}
+      "name": "a",
+      "attrs": {
+        "class": "text-body"
+      }
     }
   ],
   "content_bs_args": [
@@ -15,9 +17,15 @@
       "attrs": {}
     }
   ],
-  "content_replaces":[
-	['src="https://cdn.segmentfault.com/v-5ef1b5ad/global/img/squares.svg" alt="图片描述" title="图片描述">', '>'],
-	['<img referrerpolicy="no-referrer" data-src="', '<img src="https://image-static.segmentfault.com']
+  "content_replaces": [
+    [
+      'src="https://cdn.segmentfault.com/v-5ef1b5ad/global/img/squares.svg" alt="图片描述" title="图片描述">',
+      '>'
+    ],
+    [
+      "data-src=\"",
+      "src=\"https://segmentfault.com"
+    ]
   ],
   "md_replaces": []
 }
