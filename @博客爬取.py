@@ -1,39 +1,17 @@
-import re
 import os
+import re
 
-try:
-    import requests
-except:
-    os.system('pip install requests')
-    import requests
+import pangu
+import requests
+from bs4 import BeautifulSoup
+from markdownify import markdownify
 
-try:
-    from markdownify import markdownify
-except:
-    os.system('pip install markdownify')
-    from markdownify import markdownify
-
-try:
-    import pangu
-except:
-    os.system('pip install pangu')
-    import pangu
-
-try:
-    import lxml
-except:
-    os.system('pip install lxml')
-    import lxml
-
-try:
-    from bs4 import BeautifulSoup
-except:
-    os.system('pip install BeautifulSoup4')
-    from bs4 import BeautifulSoup
+from utils.text import slugify
 
 headers = {
     'Upgrade-Insecure-Requests': '1',
-    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.56 Safari/537.36',
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) \
+                  Chrome/67.0.3396.56 Safari/537.36',
 }
 
 soup = None
@@ -192,6 +170,7 @@ class MarkdownFormatter:
 
 class BlogCrawler:
     def __init__(self):
+        self.tmp_file_store_prefix = '.temp'
         self.rules_dict = {}
         self.tag_names = []
         self.link_names = []
@@ -254,7 +233,7 @@ class BlogCrawler:
         # 获取正文内容
         blog_content = self.get_content_of_blog(soup, blog, rule_dict)
 
-        with open('.temp/blog_content.html', 'w', encoding='utf-8') as f:
+        with open(os.path.join(self.tmp_file_store_prefix, 'blog_content.html'), 'w', encoding='utf-8') as f:
             f.write(blog_content)
 
         # 转换前，替换文本
@@ -263,7 +242,7 @@ class BlogCrawler:
         # 转换为 markdown
         markdown_content = markdownify(blog_content, heading_style="ATX")
 
-        with open('.temp/markdown_content.md', 'w', encoding='utf-8') as f:
+        with open(os.path.join(self.tmp_file_store_prefix, 'markdown_content.md'), 'w', encoding='utf-8') as f:
             f.write(markdown_content)
 
         # 转换前，替换文本
@@ -303,11 +282,23 @@ class BlogCrawler:
         markdown_content = header_format.format(blog_title, blog_url, tag_content, link_content, markdown_content)
         return markdown_content
 
+    def cleanup(self):
+        """
+        Do some cleanup stuff before exiting the BlogCrawler.
+        :return: None
+        """
+        import shutil
+        for root, dirs, files in os.walk(self.tmp_file_store_prefix):
+            for file in files:
+                if file != '.gitkeep':
+                    os.unlink(os.path.join(root, file))
+            for d in dirs:
+                shutil.rmtree(os.path.join(root, d))
+
     @staticmethod
     def get_blog_name(blog_title):
         blog_name = blog_title.strip('\n').strip('\n').strip(' ').strip(' ').strip('\t')
-        blog_name = re.sub(r"[\/\\\:\*\?\"\<\>\|]", '_', blog_name)
-        return blog_name
+        return slugify(blog_name[::], allow_unicode=True)
 
     @staticmethod
     def replace_words_before_markdownify(blog, blog_content, rule_dict):
@@ -350,7 +341,10 @@ is_test = False
 if not is_test:
     while True:
         blogCrawler = BlogCrawler()
-        blogCrawler.run()
+        try:
+            blogCrawler.run()
+        except KeyboardInterrupt:
+            blogCrawler.cleanup()
 else:
     formatter = MarkdownFormatter()
     markdown_content = open('.temp/markdown_content.md', encoding='utf-8').read()

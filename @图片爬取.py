@@ -3,22 +3,13 @@ import re
 import sys
 import time
 import traceback
-
-try:
-    import requests
-except:
-    os.system('pip install requests')
-    import requests
-
-try:
-    from PIL import Image
-except:
-    os.system('pip install pillow')
-    from PIL import Image
+import requests
+from PIL import Image
 
 headers = {
     'Upgrade-Insecure-Requests': '1',
-    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.56 Safari/537.36'
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 \
+                  (KHTML, like Gecko) Chrome/67.0.3396.56 Safari/537.36'
 }
 
 
