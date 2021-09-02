@@ -2,9 +2,10 @@ import os
 import re
 import sys
 import time
-import traceback
 import requests
+import traceback
 from PIL import Image
+from shutil import copyfile
 
 headers = {
     'Upgrade-Insecure-Requests': '1',
@@ -79,7 +80,8 @@ def download_images_for_markdown_file(markdown_file_path):
     # 创建图片资源目录
     image_relative_dirname = 'Resources_{}'.format(markdown_file_basename)
     markdown_image_dirname = '{}/{}'.format(markdown_file_dirname, image_relative_dirname)
-    if not os.path.exists(markdown_image_dirname): os.mkdir(markdown_image_dirname)
+    if not os.path.exists(markdown_image_dirname):
+        os.mkdir(markdown_image_dirname)
 
     is_modified = False
     for image_idx, image_url in enumerate(image_urls):
@@ -88,12 +90,22 @@ def download_images_for_markdown_file(markdown_file_path):
         image_download_url = image_url.split('?')[0]
 
         print('\t{}  url: {}'.format(image_idx, image_download_url))
-        if 'http' not in image_url: continue
 
+        # 本地资源处理，用于文件改名时，同时也改资源名称
         host = re.findall("://(.*?)/", image_url)
-        # 过滤本地链接
         if len(host) == 0:
-            print()
+            src_relative_path = image_url[::]
+            src_dirname, image_name = src_relative_path.split('/')
+            if image_name is not None:
+                dst_relative_path = '{}/{}'.format(image_relative_dirname, image_name)
+                src_path = '{}/{}'.format(markdown_file_dirname, src_relative_path)
+                dst_path = '{}/{}'.format(markdown_file_dirname, dst_relative_path)
+                if src_path != dst_path:
+                    copyfile(src_path, dst_path)
+                    print('\t{}  opt: copy to {}'.format(image_idx, dst_relative_path))
+                    print()
+                    markdown_file_content = markdown_file_content.replace(src_relative_path, dst_relative_path)
+                    is_modified = True
             continue
 
         # print('\t{} host: {}'.format(image_idx, ', '.join(host)))
@@ -149,6 +161,10 @@ def download_images_for_markdown_file(markdown_file_path):
         f.write(markdown_file_content)
 
 
+def dowmload_images():
+    pass
+
+
 def get_markdown_files(target_path):
     if target_path[-1] == "/":
         target_path = target_path[:-1:]
@@ -184,12 +200,14 @@ else:
     choice = input('输入：')
     print()
     print('当前目录: ' + os.getcwd() + '\n')
+    markdown_file_paths = []
     if choice == "1":
         markdown_file_paths = [os.getcwd() + '/' + f for f in os.listdir(os.getcwd()) if '.md' in f and '.old' not in f]
     elif choice == "2":
         markdown_file_paths = get_markdown_files(os.getcwd())
     else:
-        markdown_file_paths = get_markdown_files(os.getcwd() + "/blogs")
+        if os.path.exists(os.getcwd() + "/blogs"):
+            markdown_file_paths = get_markdown_files(os.getcwd() + "/blogs")
     input('\n--回车后，开始处理--')
     for markdown_file_path in markdown_file_paths:
         download_images_for_markdown_file(markdown_file_path)
