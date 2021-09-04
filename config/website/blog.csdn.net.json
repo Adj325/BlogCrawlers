@@ -1,24 +1,24 @@
 {
-  "host": "www.jb51.net",
-  "name": "脚本之家",
+  "host": "blog.csdn.net",
+  "name": "CSDN",
   "author": "dcLunatic",
   "version": "2020-06-28",
   "title_bs_args": [
     {
       "name": "h1",
       "attrs": {
-        "class": "title"
+        "class": "title-article"
       }
     }
   ],
   "content_bs_args": [
     {
-      "name": "div",
+      "name": "article",
       "attrs": {
-        "id": "content"
+        "class": "baidu_pl"
       }
     }
   ],
-  "content_replaces": [],
-  "md_replaces": []
+  "html_replaces": [],
+  "markdown_replaces": []
 }

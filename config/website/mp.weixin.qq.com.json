@@ -19,7 +19,7 @@
       }
     }
   ],
-  "content_replaces": [
+  "html_replaces": [
     [
       "data-src=\"",
       "src=\""
@@ -29,5 +29,5 @@
       ""
     ]
   ],
-  "md_replaces": []
+  "markdown_replaces": []
 }

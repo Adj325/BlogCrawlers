@@ -17,8 +17,6 @@
       }
     }
   ],
-  "content_replaces": [
-  ],
-  "md_replaces": [
-  ]
+  "html_replaces": [],
+  "markdown_replaces": []
 }

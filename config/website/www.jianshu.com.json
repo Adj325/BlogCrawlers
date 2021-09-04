@@ -19,7 +19,7 @@
       }
     }
   ],
-  "content_replaces": [
+  "html_replaces": [
     [
       "data-original-src=\"",
       "src=\"https:"
@@ -29,7 +29,7 @@
       ""
     ]
   ],
-  "md_replaces": [
+  "markdown_replaces": [
     [
       "https://upload-\n",
       "https://upload-"

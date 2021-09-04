@@ -61,7 +61,7 @@ def get_content_and_encoding(file_path):
             continue
 
 
-def download_images_for_markdown_file(markdown_file_path):
+def download_images_for_markdown_file(markdown_file_path, is_backup_old_file=True):
     markdown_file_basename = os.path.basename(markdown_file_path)
     markdown_file_dirname = os.path.dirname(markdown_file_path)
 
@@ -161,10 +161,6 @@ def download_images_for_markdown_file(markdown_file_path):
         f.write(markdown_file_content)
 
 
-def dowmload_images():
-    pass
-
-
 def get_markdown_files(target_path):
     if target_path[-1] == "/":
         target_path = target_path[:-1:]
@@ -184,34 +180,3 @@ def get_markdown_files(target_path):
         if len(result) != 0:
             li += result
     return li
-
-
-is_backup_old_file = True
-
-if len(sys.argv) == 2:
-    print(sys.argv)
-    if '.md' in sys.argv[1]:
-        download_images_for_markdown_file(sys.argv[1])
-        print('提示: 处理成功!')
-else:
-    print('    1: 处理当前目录下的所有 markdown 文件')
-    print('    2: 处理当前目录及其子目录下的所有 markdown 文件')
-    print('enter: 处理 blogs 目录下的所有 markdown 文件')
-    choice = input('输入：')
-    print()
-    print('当前目录: ' + os.getcwd() + '\n')
-    markdown_file_paths = []
-    if choice == "1":
-        markdown_file_paths = [os.getcwd() + '/' + f for f in os.listdir(os.getcwd()) if '.md' in f and '.old' not in f]
-    elif choice == "2":
-        markdown_file_paths = get_markdown_files(os.getcwd())
-    else:
-        if os.path.exists(os.getcwd() + "/blogs"):
-            markdown_file_paths = get_markdown_files(os.getcwd() + "/blogs")
-    input('\n--回车后，开始处理--')
-    for markdown_file_path in markdown_file_paths:
-        download_images_for_markdown_file(markdown_file_path)
-        print()
-
-print('提示: 1s后关闭窗口!')
-time.sleep(1)

@@ -1,24 +1,24 @@
 {
-  "host": "blog.csdn.net",
-  "name": "CSDN",
+  "host": "juejin.im",
+  "name": "掘金",
   "author": "dcLunatic",
   "version": "2020-06-28",
   "title_bs_args": [
     {
       "name": "h1",
       "attrs": {
-        "class": "title-article"
+        "class": "article-title"
       }
     }
   ],
   "content_bs_args": [
     {
-      "name": "article",
+      "name": "div",
       "attrs": {
-        "class": "baidu_pl"
+        "class": "article-content"
       }
     }
   ],
-  "content_replaces": [],
-  "md_replaces": []
+  "html_replaces": [],
+  "markdown_replaces": []
 }

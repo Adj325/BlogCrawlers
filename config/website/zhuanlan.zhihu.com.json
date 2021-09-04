@@ -1,13 +1,13 @@
 {
-  "host": "developer.aliyun.com",
-  "name": "阿里云开发者社区",
-  "author": "Adj325",
-  "version": "2021-08-22",
+  "host": "zhuanlan.zhihu.com",
+  "name": "知乎专栏",
+  "author": "dcLunatic",
+  "version": "2020-06-28",
   "title_bs_args": [
     {
       "name": "h1",
       "attrs": {
-        "class": "article-title"
+        "class": "Post-Title"
       }
     }
   ],
@@ -15,12 +15,12 @@
     {
       "name": "div",
       "attrs": {
-        "class": "article-inner markdown-body"
+        "class": "RichText ztext Post-RichText"
       }
     }
   ],
-  "content_replaces": [],
-  "md_replaces": [
+  "html_replaces": [],
+  "markdown_replaces": [
     [
       "!\[\]\(data:image/svg\+xml;utf8,<svg[\w\W]*?</svg>\)",
       ""

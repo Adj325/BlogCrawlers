@@ -19,9 +19,9 @@
       }
     }
   ],
-  "content_replaces": [
+  "html_replaces": [
   ],
-  "md_replaces": [
+  "markdown_replaces": [
     [
       "!\[\]\(data:image/svg\+xml;utf8,<svg[\w\W]*?</svg>\)",
       ""

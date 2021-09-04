@@ -1,13 +1,13 @@
 {
-  "host": "juejin.im",
-  "name": "掘金",
+  "host": "www.jb51.net",
+  "name": "脚本之家",
   "author": "dcLunatic",
   "version": "2020-06-28",
   "title_bs_args": [
     {
       "name": "h1",
       "attrs": {
-        "class": "article-title"
+        "class": "title"
       }
     }
   ],
@@ -15,10 +15,10 @@
     {
       "name": "div",
       "attrs": {
-        "class": "article-content"
+        "id": "content"
       }
     }
   ],
-  "content_replaces": [],
-  "md_replaces": []
+  "html_replaces": [],
+  "markdown_replaces": []
 }
