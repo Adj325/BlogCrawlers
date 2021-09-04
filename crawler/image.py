@@ -30,7 +30,7 @@ def get_image_suffix_from_content_type(content_type):
     if resource_type == 'webp':
         image_suffix = 'webp'
     else:
-        for candidate_suffix in ['jpg', 'png', 'gif']:
+        for candidate_suffix in ['jpg', 'jpeg', 'png', 'gif']:
             if resource_type.lower() == candidate_suffix:
                 image_suffix = candidate_suffix
                 break
@@ -161,22 +161,22 @@ def download_images_for_markdown_file(markdown_file_path, is_backup_old_file=Tru
         f.write(markdown_file_content)
 
 
-def get_markdown_files(target_path):
-    if target_path[-1] == "/":
-        target_path = target_path[:-1:]
-    li = []
+def get_markdown_files(target_dir_path):
+    if target_dir_path[-1] == "/":
+        target_dir_path = target_dir_path[:-1:]
+    markdown_file_paths = []
     dir_paths = []
-    for f in os.listdir(target_path):
-        if '_res' in f or 'Resources_' in f:
+    for filename in os.listdir(target_dir_path):
+        if '_res' in filename or 'Resources_' in filename:
             continue
-        name = target_path + "/" + f
+        name = os.path.join(target_dir_path, filename)
         if os.path.isdir(name):
             dir_paths.append(name)
-        elif '.md' in f and '.old' not in f:
-            li.append(name)
+        elif '.md' in filename and '.old' not in filename:
+            markdown_file_paths.append(name)
             print(name)
     for dir_path in dir_paths:
         result = get_markdown_files(dir_path)
         if len(result) != 0:
-            li += result
-    return li
+            markdown_file_paths += result
+    return markdown_file_paths

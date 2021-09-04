@@ -2,10 +2,15 @@ import re
 import pangu
 
 
-def format(markdown_content):
+def format_markdown(markdown_content):
+    # 移除 \r
+    markdown_content = markdown_content.replace('\r', '')
+
+    # 去除带来的 markdownify 下划线转义
+    markdown_content = remove_underline_from_markdownify(markdown_content)
+
     # 中英文加空格
     markdown_content = pangu.spacing_text(markdown_content)
-    markdown_content = markdown_content.replace('\r', '')
 
     # 修复 pangu 带来的md格式错误
     markdown_content = fix_markdown_file_bold_format(markdown_content)
@@ -22,16 +27,23 @@ def format(markdown_content):
     # 修复 {} 及 ```中文``` 问题
     markdown_content = fix_code_format(markdown_content)
 
-    # 移除 >
-    markdown_content = remove_invalid_ref(markdown_content)
+    # 优化引用文本
+    markdown_content = perf_reference(markdown_content)
 
-    # 移除图片描述
-    markdown_content = remove_image_desc(markdown_content)
+    # 图片内容优化
+    markdown_content = perf_image_content(markdown_content)
 
     # 移除空白行
     markdown_content = remove_blank_line(markdown_content)
 
     return markdown_content
+
+
+def remove_underline_from_markdownify(markdown_content):
+    """
+    1. 去除带来的 markdownify 下划线转义
+    """
+    return markdown_content.replace("\_", "_")
 
 
 def remove_blank_line(markdown_content):
@@ -120,16 +132,23 @@ def fix_markdown_file_bold_format(text):
     return text
 
 
-def remove_invalid_ref(text):
+def perf_reference(text):
     result = text[::]
+    # 去除前方多余换行
     while '\n\n>\n' in result:
-        result = result.replace('\n\n>\n', '\n\n')
+        result = result.replace('\n\n>\n', '\n\n', result)
+    # 去除中间无效引用
+    result = re.sub('\n>\n>\n', '>\n', result)
     while '\n>\n' in result:
         result = result.replace('\n>\n', '\n')
     return result
 
 
-def remove_image_desc(text):
+def perf_image_content(text):
+    """
+    1. 去除图片描述
+    2. 图片前后强制换行
+    """
     result = text[::]
     desc_list = re.findall('!\[(.*?)\]\(.*?\)', result)
     for desc in desc_list:
@@ -137,5 +156,10 @@ def remove_image_desc(text):
 
     link_list = re.findall('!\[\]\((.*?)\)', result)
     for link in link_list:
-        result = result.replace('![]({})'.format(link), '\n![]({})\n'.format(link))
+        result = result.replace('![]({})'.format(link), '\n\n![]({})\n\n'.format(link))
+    result = re.sub("[\n]+\n\n", "\n\n", result)
+    # 解决 "![]() 段落内容" 强制换行后出现的行前有空格问题
+    blank_lines = re.findall("\n (\S+)", result)
+    for blank_line in blank_lines:
+        result = result.replace(' ' + blank_line, blank_line)
     return result
