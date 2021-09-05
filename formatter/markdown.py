@@ -139,7 +139,6 @@ def fix_markdown_file_bold_format(text):
     for index in range(len(fixed_template)):
         match_list = re.finditer(question_regex[index], text)
         for m in match_list:
-            print(m.group())
             src_text = m.group()
             dst_text = fixed_template[index].format(m.group(1).strip())
             text = text.replace(src_text, dst_text)
