@@ -8,13 +8,13 @@ from bs4 import BeautifulSoup
 from markdownify import markdownify
 
 from formatter import markdown
-from utils.text import slugify
 
 HEADERS = {
     'Upgrade-Insecure-Requests': '1',
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) \
                   Chrome/67.0.3396.56 Safari/537.36',
 }
+
 
 class Blog:
     def __init__(self):
@@ -98,18 +98,18 @@ class BlogCrawler:
 
         # 转换为 markdown
         markdown_content = markdownify(blog_content, heading_style="ATX")
-        with open(os.path.join(self.temp_dir_path, 'markdown_content.md'), 'w', encoding='utf-8') as f:
+        with open(os.path.join(self.temp_dir_path, 'blog_markdown.md'), 'w', encoding='utf-8') as f:
             f.write(markdown_content)
 
         # 转换前，替换文本
         markdown_content = self.replace_words_after_markdownify(markdown_content, website_rule_dict)
 
         # 格式化
-        markdown_content = markdown.format(markdown_content)
+        markdown_content = markdown.format_markdown(markdown_content)
 
         # 添加头部信息
         markdown_content = self.add_headers(blog_title, blog.url, markdown_content)
-
+        markdown_content = re.sub('[\n]+\n\n', '\n\n', markdown_content)
         blog_file_path = os.path.join(self.blog_dir_path, "{}.md".format(self.get_blog_name(blog_title)))
         with open(blog_file_path, 'w', encoding='utf-8') as f:
             f.write(markdown_content)
@@ -153,7 +153,7 @@ class BlogCrawler:
     @staticmethod
     def get_blog_name(blog_title):
         blog_name = blog_title.strip('\n').strip('\n').strip(' ').strip(' ').strip('\t')
-        return slugify(blog_name[::], allow_unicode=True)
+        return re.sub(r"[\/\\\:\*\?\"\<\>\|]", '_', blog_name)
 
     @staticmethod
     def replace_words_before_markdownify(blog, blog_content, website_rule_dict):

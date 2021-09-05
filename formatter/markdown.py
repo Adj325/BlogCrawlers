@@ -15,6 +15,9 @@ def format_markdown(markdown_content):
     # 修复 pangu 带来的md格式错误
     markdown_content = fix_markdown_file_bold_format(markdown_content)
 
+    # 删除行末空格
+    markdown_content = remove_space_of_line_end(markdown_content)
+
     # 修复断行
     markdown_content = fix_markdown_file_wrong_line_break(markdown_content)
 
@@ -57,6 +60,11 @@ def remove_blank_line(markdown_content):
     while '\n\n\n' in markdown_content:
         markdown_content = markdown_content.replace('\n\n\n', '\n\n')
     return markdown_content
+
+
+def remove_space_of_line_end(text):
+    text = text.replace(' ', ' ')
+    return re.sub('[ ]+$', '', text)
 
 
 def get_code_language(code_content):
@@ -122,13 +130,19 @@ def fix_markdown_file_wrong_line_break(markdown_content):
 
 
 def fix_markdown_file_bold_format(text):
-    question_regex = ['\*\* (.*?) \*\*', '\* (.*?) \*']
+    """
+    去除 ** 或 * 的空格
+    """
+    question_regex = ['\*\*(.*?)\*\*', '\*(.*?)\*']
     fixed_template = ['**{}**', '*{}*']
     assert (len(question_regex) == len(fixed_template))
     for index in range(len(fixed_template)):
         match_list = re.finditer(question_regex[index], text)
         for m in match_list:
-            text = text.replace(m.group(), fixed_template[index].format(m.group(1)))
+            print(m.group())
+            src_text = m.group()
+            dst_text = fixed_template[index].format(m.group(1).strip())
+            text = text.replace(src_text, dst_text)
     return text
 
 
