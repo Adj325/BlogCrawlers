@@ -95,6 +95,10 @@ def download_images_for_markdown_file(markdown_file_path, is_backup_old_file=Tru
         host = re.findall("://(.*?)/", image_url)
         if len(host) == 0:
             src_relative_path = image_url[::]
+            part_length = len(src_relative_path.split('/'))
+            if part_length != 2:
+                print('\t{}  wrong path {}'.format(image_idx, src_relative_path))
+                continue
             src_dirname, image_name = src_relative_path.split('/')
             if image_name is not None:
                 dst_relative_path = '{}/{}'.format(image_relative_dirname, image_name)
