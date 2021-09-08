@@ -150,8 +150,9 @@ def perf_reference(text):
     # 去除前方多余换行
     while '\n\n>\n' in result:
         result = result.replace('\n\n>\n', '\n\n', result)
+
     # 去除中间无效引用
-    result = re.sub('\n>\n>\n', '>\n', result)
+    result = re.sub('\n>\n>\n', '\n>\n', result)
     while '\n>\n' in result:
         result = result.replace('\n>\n', '\n')
     return result

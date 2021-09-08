@@ -21,7 +21,7 @@ blogCrawler = BlogCrawler(BLOG_DIR_PATH, TEMP_DIR_PATH, WEBSITE_CONFIG_DIR_PATH,
 
 class MyTestCase(unittest.TestCase):
     def test_crawl_weixin(self):
-        blogCrawler.run("https://mp.weixin.qq.com/s/J1aDTJRBd03Nf9p3d5pHLQ")
+        blogCrawler.run("https://mp.weixin.qq.com/s?__biz=Mzg3NjU3NTkwMQ==&mid=2247521569&idx=1&sn=99ad369c36f6ef0ad5b95a90ea492171&scene=21#wechat_redirect")
 
 
 if __name__ == '__main__':
