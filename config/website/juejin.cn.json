@@ -1,13 +1,13 @@
 {
-  "host": "zhuanlan.zhihu.com",
-  "name": "知乎专栏",
+  "host": "juejin.cn",
+  "name": "掘金",
   "author": "dcLunatic",
   "version": "2020-06-28",
   "title_bs_args": [
     {
       "name": "h1",
       "attrs": {
-        "class": "Post-Title"
+        "class": "article-title"
       }
     }
   ],
@@ -15,15 +15,10 @@
     {
       "name": "div",
       "attrs": {
-        "class": "Post-RichText"
+        "class": "article-content"
       }
     }
   ],
   "html_replaces": [],
-  "markdown_replaces": [
-    [
-      "!\[\]\(data:image/svg\+xml;utf8,<svg[\w\W]*?</svg>\)",
-      ""
-    ]
-  ]
+  "markdown_replaces": []
 }
