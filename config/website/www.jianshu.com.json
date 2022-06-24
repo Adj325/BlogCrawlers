@@ -7,15 +7,15 @@
     {
       "name": "h1",
       "attrs": {
-        "class": "_1RuRku"
+        "class": "title"
       }
     }
   ],
   "content_bs_args": [
     {
-      "name": "article",
+      "name": "div",
       "attrs": {
-        "class": "_2rhmJa"
+        "class": "show-content"
       }
     }
   ],

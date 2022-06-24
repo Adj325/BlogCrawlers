@@ -116,8 +116,14 @@ class BlogCrawler:
 
     def get_title_of_blog(self, soup, blog, website_rule_dict):
         title_bs_args = website_rule_dict['title_bs_args']
-        titles = self.get_content_by_bs_args(soup, title_bs_args, 'title')
-
+        titles = []
+        try:
+            titles = self.get_content_by_bs_args(soup, title_bs_args, 'title')
+        except:
+            print('\n错误提示：标题提取失败')
+            print('\n标题参数: '+str(title_bs_args))
+            
+            
         if len(titles) == 0:
             blog_title = 'default'
         else:
@@ -129,6 +135,10 @@ class BlogCrawler:
     def get_content_of_blog(self, soup, website_rule_dict):
         content_bs_args = website_rule_dict['content_bs_args']
         blog_content = self.get_content_by_bs_args(soup, content_bs_args)
+        if blog_content == 'None':
+            print('\n错误提示：内容提取失败')
+            print('内容参数: ' + str(content_bs_args))
+            return ''
         return blog_content
 
     def add_headers(self, blog_title, blog_url, markdown_content):

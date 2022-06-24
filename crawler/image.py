@@ -120,6 +120,8 @@ def download_images_for_markdown_file(markdown_file_path, is_backup_old_file=Tru
             headers.pop('host', '')
         elif host[0] == 'ask.qcloudimg.com':
             headers['referer'] = 'https://cloud.tencent.com/developer/article/1691945'
+        elif 'pdai.tech' in image_download_url:
+            headers['referer'] = 'https://pdai.tech/'
         else:
             headers['host'] = host[0]
 

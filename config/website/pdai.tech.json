@@ -1,13 +1,13 @@
 {
-  "host": "cnblogs.com",
+  "host": "pdai.tech",
   "name": "博客园",
   "author": "dcLunatic",
-  "version": "2020-06-28",
+  "version": "2022-06-23",
   "title_bs_args": [
     {
-      "name": "h1",
+      "name": "title",
       "attrs": {
-        "class": "postTitle"
+        
       }
     }
   ],
@@ -15,11 +15,11 @@
     {
       "name": "div",
       "attrs": {
-        "id": "cnblogs_post_body"
+        "class": "theme-default-content content__default"
       }
     }
   ],
-  "html_replaces": [],
+  "html_replaces": [[" | Java 全栈知识体系",""]],
   "markdown_replaces": [
     [
       "![复制代码](https://common.cnblogs.com/images/copycode.gif)",
