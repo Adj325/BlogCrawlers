@@ -37,10 +37,14 @@ def get_image_suffix_from_content_type(content_type):
     return image_suffix
 
 
+def construct_image_name(image_idx, image_suffix):
+    return '{0:02d}_{1}.{2}'.format(image_idx, int(time.time()), image_suffix)
+
+
 def save_image_resource(rep, image_idx, image_dirname, image_suffix):
     is_webp_resource = image_suffix == 'webp'
     if is_webp_resource: image_suffix = 'png'
-    image_name = '{0:02d}.{1}'.format(image_idx, image_suffix)
+    image_name = construct_image_name(image_idx, image_suffix)
 
     image_file_path = '{}/{}'.format(image_dirname, image_name)
     with open(image_file_path, 'wb') as f:
@@ -94,15 +98,18 @@ def download_images_for_markdown_file(markdown_file_path, is_backup_old_file=Tru
         # 本地资源处理，用于文件改名时，同时也改资源名称
         host = re.findall("://(.*?)/", image_url)
         if len(host) == 0:
-            src_relative_path = image_url[::]
+            src_relative_path = image_url[::].replace('\\', '\/')
             part_length = len(src_relative_path.split('/'))
             if part_length != 2:
                 print('\t{}  wrong path {}'.format(image_idx, src_relative_path))
                 continue
             src_dirname, image_name = src_relative_path.split('/')
             if image_name is not None:
-                dst_relative_path = '{}/{}'.format(image_relative_dirname, image_name)
                 src_path = '{}/{}'.format(markdown_file_dirname, src_relative_path)
+
+                image_suffix = src_relative_path.split('.')[-1]
+                dst_file_name = construct_image_name(image_idx, image_suffix)
+                dst_relative_path = '{}/{}'.format(image_relative_dirname, dst_file_name)
                 dst_path = '{}/{}'.format(markdown_file_dirname, dst_relative_path)
                 if src_path != dst_path:
                     copyfile(src_path, dst_path)
