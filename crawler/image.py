@@ -104,19 +104,22 @@ def download_images_for_markdown_file(markdown_file_path, is_backup_old_file=Tru
                 print('\t{}  wrong path {}'.format(image_idx, src_relative_path))
                 continue
             src_dirname, image_name = src_relative_path.split('/')
-            if image_name is not None:
-                src_path = '{}/{}'.format(markdown_file_dirname, src_relative_path)
+            # 目录一致，不移动
+            if src_dirname == image_relative_dirname:
+                continue
+            if image_name is None:
+                continue
+            src_path = '{}/{}'.format(markdown_file_dirname, src_relative_path)
 
-                image_suffix = src_relative_path.split('.')[-1]
-                dst_file_name = construct_image_name(image_idx, image_suffix)
-                dst_relative_path = '{}/{}'.format(image_relative_dirname, dst_file_name)
-                dst_path = '{}/{}'.format(markdown_file_dirname, dst_relative_path)
-                if src_path != dst_path:
-                    copyfile(src_path, dst_path)
-                    print('\t{}  opt: copy to {}'.format(image_idx, dst_relative_path))
-                    print()
-                    markdown_file_content = markdown_file_content.replace(src_relative_path, dst_relative_path)
-                    is_modified = True
+            image_suffix = src_relative_path.split('.')[-1]
+            dst_file_name = construct_image_name(image_idx, image_suffix)
+            dst_relative_path = '{}/{}'.format(image_relative_dirname, dst_file_name)
+            dst_path = '{}/{}'.format(markdown_file_dirname, dst_relative_path)
+            copyfile(src_path, dst_path)
+            print('\t{}  dst: {}'.format(image_idx, dst_relative_path))
+            print()
+            markdown_file_content = markdown_file_content.replace(src_relative_path, dst_relative_path)
+            is_modified = True
             continue
 
         # print('\t{} host: {}'.format(image_idx, ', '.join(host)))
