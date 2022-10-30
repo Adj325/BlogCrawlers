@@ -15,7 +15,7 @@
     {
       "name": "div",
       "attrs": {
-        "class": "article-inner markdown-body"
+        "class": "article-inner"
       }
     }
   ],
