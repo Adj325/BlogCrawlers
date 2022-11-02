@@ -26,16 +26,18 @@ class Blog:
 
 
 class BlogCrawler:
-    def __init__(self, blog_dir_path, temp_dir_path, website_cfg_dir_path, main_cfg_file_path):
+    def __init__(self, blog_dir_path, temp_dir_path, website_cfg_dir_path, main_cfg_file_path, replace_dict_file_path):
         self.blog_dir_path = blog_dir_path
         self.temp_dir_path = temp_dir_path
         self.website_cfg_dir_path = website_cfg_dir_path
         self.main_cfg_file_path = main_cfg_file_path
+        self.replace_dict_file_path = replace_dict_file_path
 
         self.website_rules_dict = {}
         self.tag_names = []
         self.link_names = []
         self.load_config()
+        self.replace_dict = eval(open(replace_dict_file_path, encoding='utf-8').read())
 
     def run(self, blog_url):
         blog_url_host = self.get_host_from_url(blog_url)
@@ -107,6 +109,10 @@ class BlogCrawler:
         # 格式化
         markdown_content = markdown.format_markdown(markdown_content)
 
+        # 替换
+        for old_val, new_val in self.replace_dict.items():
+            markdown_content = markdown_content.replace(old_val, new_val)
+
         # 添加头部信息
         markdown_content = self.add_headers(blog_title, blog.url, markdown_content)
         markdown_content = re.sub('[\n]+\n\n', '\n\n', markdown_content)
@@ -121,9 +127,8 @@ class BlogCrawler:
             titles = self.get_content_by_bs_args(soup, title_bs_args, 'title')
         except:
             print('\n错误提示：标题提取失败')
-            print('\n标题参数: '+str(title_bs_args))
-            
-            
+            print('\n标题参数: ' + str(title_bs_args))
+
         if len(titles) == 0:
             blog_title = 'default'
         else:

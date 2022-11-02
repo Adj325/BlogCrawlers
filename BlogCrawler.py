@@ -10,12 +10,13 @@ TEMP_DIR_PATH = os.path.join(CURRENT_PATH, '.temp')
 CONFIG_DIR_PATH = os.path.join(CURRENT_PATH, 'config')
 WEBSITE_CONFIG_DIR_PATH = os.path.join(CONFIG_DIR_PATH, 'website')
 MAIN_CONFIG_FILE_PATH = os.path.join(CONFIG_DIR_PATH, 'main.json')
+REPLACE_DICT_FILE_PATH = os.path.join(CONFIG_DIR_PATH, 'replace_dict.json')
 
 for dir_name in [TEMP_DIR_PATH, BLOG_DIR_PATH, CONFIG_DIR_PATH, WEBSITE_CONFIG_DIR_PATH]:
     if not os.path.exists(dir_name):
         os.mkdir(dir_name)
 
-blogCrawler = BlogCrawler(BLOG_DIR_PATH, TEMP_DIR_PATH, WEBSITE_CONFIG_DIR_PATH, MAIN_CONFIG_FILE_PATH)
+blogCrawler = BlogCrawler(BLOG_DIR_PATH, TEMP_DIR_PATH, WEBSITE_CONFIG_DIR_PATH, MAIN_CONFIG_FILE_PATH, REPLACE_DICT_FILE_PATH)
 
 if __name__ == '__main__':
     while True:
