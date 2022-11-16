@@ -15,10 +15,10 @@
     {
       "name": "div",
       "attrs": {
-        "class": "article-box__content"
+        "class": "article-detail"
       }
     }
   ],
-  "html_replaces": [],
+  "html_replaces": [["--!>", "-->"]],
   "markdown_replaces": []
 }

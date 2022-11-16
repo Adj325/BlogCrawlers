@@ -80,6 +80,10 @@ class BlogCrawler:
         rep = session.get(blog.url, headers=HEADERS)
         rep.encoding = self.get_html_encoding(rep.text)
         html = rep.text
+
+        # 转换前，替换文本
+        html = self.replace_words_before_markdownify(blog, html, website_rule_dict)
+
         soup = BeautifulSoup(html, 'lxml')
 
         temp_html_file_path = os.path.join(self.temp_dir_path, "blog.html")
@@ -94,9 +98,6 @@ class BlogCrawler:
 
         with open(os.path.join(self.temp_dir_path, 'blog_content.html'), 'w', encoding='utf-8') as f:
             f.write(blog_content)
-
-        # 转换前，替换文本
-        blog_content = self.replace_words_before_markdownify(blog, blog_content, website_rule_dict)
 
         # 转换为 markdown
         markdown_content = markdownify(blog_content, heading_style="ATX")
