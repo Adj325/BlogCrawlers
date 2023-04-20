@@ -19,6 +19,6 @@
       }
     }
   ],
-  "html_replaces": [],
+  "html_replaces": [["<style[\\s\\S]*?</style>", ""]],
   "markdown_replaces": []
 }
