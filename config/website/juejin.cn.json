@@ -2,7 +2,7 @@
   "host": "juejin.cn",
   "name": "掘金",
   "author": "dcLunatic",
-  "version": "2020-06-28",
+  "version": "2023-04-20",
   "title_bs_args": [
     {
       "name": "h1",
@@ -19,6 +19,6 @@
       }
     }
   ],
-  "html_replaces": [],
+  "html_replaces": [["<style[\\s\\S]*?</style>", ""]],
   "markdown_replaces": []
 }
